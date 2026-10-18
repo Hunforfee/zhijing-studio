@@ -1,0 +1,16 @@
+import {createServer} from './server.mjs';
+import {mkdtemp,rm} from 'node:fs/promises';import os from 'node:os';import path from 'node:path';
+const outputDir=await mkdtemp(path.join(os.tmpdir(),'zj-smoke-'));
+setTimeout(()=>{console.log('WATCHDOG: still running after 15s, killing');process.exit(9);},15000);
+const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aWQAAAABJRU5ErkJggg==','base64');
+console.log('creating server...');
+const server=createServer({outputDir,service:{provider:'compatible',apiKey:'k',baseUrl:'https://example.test/v1',model:'m'},stylingReferencePaths:[],fetchImpl:async()=>Response.json({data:[{b64_json:png.toString('base64')}]}),});
+console.log('server created, listening...');
+await new Promise(r=>server.listen(0,'127.0.0.1',r));
+const base='http://127.0.0.1:'+server.address().port;
+console.log('GET /api/status ...');
+const s=await fetch(base+'/api/status');console.log('status',s.status,(await s.text()).slice(0,120));
+console.log('GET /api/history ...');
+const h=await fetch(base+'/api/history');console.log('history',h.status,(await h.text()).slice(0,120));
+await new Promise(r=>server.close(r));await rm(outputDir,{recursive:true,force:true});
+console.log('SMOKE OK');process.exit(0);

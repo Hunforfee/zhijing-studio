@@ -1,0 +1,150 @@
+
+html[data-ui-scheme=B] #creationPanel{background:#f1f2f3;border-color:#d0d3d5;border-radius:13px;box-shadow:-4px 6px 20px #20252a09}
+html[data-ui-scheme=B] #creationPanel>.panel-title{background:#fff;border-bottom:1px solid #d5d8da;min-height:70px;padding:16px;color:#202326}
+html[data-ui-scheme=B] #creationPanel .panel-title h2{color:#202326;font-size:18px;letter-spacing:0}
+html[data-ui-scheme=B] #creationPanel .workspace-header-icon{background:#e7e9eb;color:#3a3e42}
+html[data-ui-scheme=B] #creationPanel #resetBtn{color:#73787c}
+html[data-ui-scheme=B] #creationPanel .scheme-collapse-settings{border-color:#d8dbde;background:#f7f8f8;color:#484d51}
+html[data-ui-scheme=B] #creationPanel #creationGroups{padding:15px 13px;gap:13px}
+html[data-ui-scheme=B] #creationPanel #creationGroups>.compact-row{padding:13px;background:#fff;border-color:#dfe2e4;border-radius:9px;box-shadow:none}
+html[data-ui-scheme=B] #creationPanel #creationGroups>.compact-row>h3{color:#303539;font-size:13px;margin-bottom:11px}
+html[data-ui-scheme=B] #creationPanel #creationGroups>.compact-row>h3 b{background:#eceef0;color:#72787d;border-radius:4px}
+html[data-ui-scheme=B] #creationPanel .scheme-picker{background:#fafafa;border-color:#dadfe2;color:#3b4145;min-height:41px}
+html[data-ui-scheme=B] #creationPanel #patternSection .upload-cell .upload-box{height:86px;min-height:86px;background:#f7faff;border-color:#99b5dd;border-radius:8px}
+html[data-ui-scheme=B] #creationPanel #patternSection .upload-box strong{color:#366cb4}
+html[data-ui-scheme=B] #creationPanel #patternSection .upload-box small{color:#959da5}
+html[data-ui-scheme=B] #creationPanel .toolbar-field label{color:#53585c}
+html[data-ui-scheme=B] #creationPanel #patternSection .texture-source-panel,html[data-ui-scheme=B] #creationPanel #textureLibraryControl{background:#fafafa;border-color:#dce0e3}
+html[data-ui-scheme=B] #creationPanel #patternSection .texture-source-switch button{background:#f4f5f6;color:#858b90}
+html[data-ui-scheme=B] #creationPanel #patternSection .texture-source-switch button[aria-pressed=true]{background:#eaf1fc;color:#356caf}
+html[data-ui-scheme=B] #creationPanel #patternSection .fabric-picker-trigger{background:#fff;border-color:#dce0e3;color:#565c60}
+html[data-ui-scheme=B] #creationPanel #generationPanel{padding:14px;background:#e7e9eb;border:1px solid #d5d9dd;border-top:0;border-radius:9px;gap:12px}
+html[data-ui-scheme=B] #creationPanel #generationPanel .generation-total b{color:#25292c;font-size:27px}
+html[data-ui-scheme=B] #creationPanel #generationPanel .generation-plan-label,html[data-ui-scheme=B] #creationPanel #generationPanel .generation-total>span,html[data-ui-scheme=B] #creationPanel #generationPanel .extra-toolbar label{color:#535b60}
+html[data-ui-scheme=B] #creationPanel #modeHint,html[data-ui-scheme=B] #creationPanel .notes-field label>span{color:#92989c}
+html[data-ui-scheme=B] #creationPanel #generationPanel select,html[data-ui-scheme=B] #creationPanel #generationPanel textarea{border-color:#d1d7db;color:#444a4e;background:#fff}
+html[data-ui-scheme=B] #creationPanel #generationPanel .generate-footer .primary{background:#346ec2!important;border-color:#346ec2!important;min-height:46px!important;border-radius:8px!important;box-shadow:0 3px 8px #346ec218!important}
+html[data-ui-scheme=B] #creationPanel #patternSection .upload-info{height:84px;min-height:84px}
+html[data-ui-scheme=B] #creationPanel #patternSection .upload-info img{background:#f4f6f8}
+html[data-ui-scheme=B] #creationPanel #patternSection .upload-cell:has(.upload-info:not([hidden])) .upload-box strong{color:#366cb4}
+html[data-ui-scheme=B] #creationPanel #patternSection .upload-info .icon-button{border-color:#d7dce0;color:#60666b}
+html[data-ui-scheme=B] .scheme-reopen-settings{background:#fff;color:#343a3f;border-color:#d3d8dd}
+@media(min-width:1051px){
+html[data-ui-scheme=B] #creationPanel>.panel-title{padding-inline:12px}
+html[data-ui-scheme=B] #creationPanel .panel-title h2{font-size:14px}
+}
+@media(min-width:1051px) and (max-height:800px){
+html[data-ui-scheme=B] #creationPanel>.panel-title{min-height:60px;padding-block:12px}
+html[data-ui-scheme=B] #creationPanel #creationGroups{padding:8px;gap:6px}
+html[data-ui-scheme=B] #creationPanel #creationGroups>.compact-row{padding:8px}
+html[data-ui-scheme=B] #creationPanel #creationGroups>.compact-row>h3{margin-bottom:5px}
+html[data-ui-scheme=B] #creationPanel #patternSection .upload-cell .upload-box{height:76px;min-height:76px}
+html[data-ui-scheme=B] #creationPanel #patternSection .upload-info{height:74px;min-height:74px}
+html[data-ui-scheme=B] #creationPanel #generationPanel{padding:10px;gap:7px}
+html[data-ui-scheme=B] #creationPanel #generationPanel .generate-footer .primary{min-height:42px!important}
+}
+@media(min-width:1051px) and (max-width:1200px) and (max-height:800px){
+html[data-ui-scheme=B] #creationPanel #creationGroups{padding:8px;gap:6px}
+html[data-ui-scheme=B] #creationPanel #creationGroups>.compact-row{padding:8px}
+}
+html[data-ui-scheme=B] #creationPanel #patternSection .upload-cell .upload-box{height:58px;min-height:58px;padding:6px}
+html[data-ui-scheme=B] #creationPanel #patternSection .upload-info{height:56px;min-height:56px}
+html[data-ui-scheme=B] #creationPanel #patternSection .upload-box strong{font-size:11px}
+html[data-ui-scheme=B] #creationPanel #patternSection .upload-box small{font-size:9px}
+html[data-ui-scheme=B] #creationPanel #patternSection .pattern-reuse-row{display:none}
+html[data-ui-scheme=B] #creationPanel #fabricGroupTitle{gap:6px;flex-wrap:nowrap}
+html[data-ui-scheme=B] #creationPanel #fabricGroupTitle #restoreLastPatterns{margin-left:auto;flex:none;padding:3px 5px;border:1px solid #d9dfe5;border-radius:5px;background:#f7f9fc;color:#4773a7;font-size:9px;line-height:1.4;white-space:nowrap;font-weight:400;cursor:pointer}
+html[data-ui-scheme=B] #creationPanel #fabricGroupTitle #restoreLastPatterns:disabled{color:#9ca2a8;background:#f7f8f9;opacity:.6;cursor:default}
+.scheme-texture-controls{display:none}
+html[data-ui-scheme=B] #creationPanel #patternSection .scheme-texture-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px;padding:4px;border:1px solid #dce0e3;border-radius:8px;background:#fafafa}
+html[data-ui-scheme=B] #creationPanel .scheme-texture-controls button{display:flex;align-items:center;justify-content:space-between;gap:6px;height:34px;min-width:0;padding:4px 8px;border:1px solid #d9dfe5;border-radius:5px;background:#fff;color:#48515a;font-size:11px;cursor:pointer}
+html[data-ui-scheme=B] #creationPanel .scheme-texture-controls strong{display:block;font-size:11px;line-height:1.3;font-weight:600;color:#366cb4}
+html[data-ui-scheme=B] #creationPanel .scheme-texture-controls small{display:block;font-size:9px;line-height:1.3;color:#8d959d;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;max-width:75px;text-align:left}
+html[data-ui-scheme=B] #creationPanel .scheme-texture-controls .scheme-texture-upload{justify-content:center;background:#edf3fc;border-color:#cbdaf0;color:#366cb4;white-space:nowrap}
+html[data-ui-scheme=B] #creationPanel .scheme-texture-upload svg{width:14px;height:14px;flex:none}
+html[data-ui-scheme=B] #creationPanel .scheme-texture-controls button:hover:not(:disabled){border-color:#8eafd8;background:#f3f7fe}
+html[data-ui-scheme=B] #creationPanel #patternSection .texture-source-switch,html[data-ui-scheme=B] #creationPanel #textureLibraryControl{display:none!important}
+html[data-ui-scheme=B] #creationPanel #patternSection .texture-source-panel{display:block;padding:0;border:0;background:none}
+html[data-ui-scheme=B] #creationPanel #textureCustomControl{padding:0;background:none}
+html[data-ui-scheme=B] #creationPanel #textureUploadBtn,html[data-ui-scheme=B] #creationPanel .texture-custom-note{display:none}
+.scheme-modal-backdrop{position:fixed;inset:0;z-index:45;background:#18212b4a;backdrop-filter:blur(2px)}
+html[data-ui-scheme=B] .scheme-picker-dialog[open]{inset:auto!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%);max-width:calc(100vw - 32px)!important;max-height:calc(100dvh - 40px)!important;margin:0}
+@media(max-width:650px){html[data-ui-scheme=B] .scheme-picker-dialog[open]{width:calc(100vw - 32px)!important}}
+html[data-ui-scheme=B] .scheme-picker-dialog[data-picker=product]{width:min(1040px,calc(100vw - 40px));padding:22px}
+.scheme-product-layout{display:grid;grid-template-columns:145px minmax(0,1fr);gap:22px;align-items:start}
+.scheme-product-layout>.compact-body{min-width:0;border-right:1px solid #e1e5e8;padding-right:16px}
+.scheme-product-details{min-width:0}
+html[data-ui-scheme=B] .scheme-product-details>.set-variant-flyout{display:none!important}
+html[data-ui-scheme=B] .scheme-product-details>[data-embedded-active=true]{display:block!important;position:static!important;inset:auto!important;width:100%!important;max-height:none!important;overflow:visible;border:0;border-radius:0;box-shadow:none;transform:none;color:#3b444c;background:#fff}
+html[data-ui-scheme=B] .scheme-product-details .set-variant-close,html[data-ui-scheme=B] .scheme-product-details .set-variant-footer{display:none}
+html[data-ui-scheme=B] .scheme-product-details .set-variant-heading{padding:0 0 12px;background:transparent}
+html[data-ui-scheme=B] .scheme-product-details .set-variant-heading h2{font-size:16px;font-family:inherit}
+html[data-ui-scheme=B] .scheme-product-details .set-variant-heading p{font-size:11px;color:#8b949c}
+html[data-ui-scheme=B] .scheme-product-details .set-variant-options{padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+html[data-ui-scheme=B] .scheme-product-details .set-craft-group{padding:12px 10px;border:1px solid #dde4eb;border-radius:8px;background:#f8fafd;min-width:0}
+html[data-ui-scheme=B] .scheme-product-details .set-craft-header{display:block}
+html[data-ui-scheme=B] .scheme-product-details .set-craft-choice{display:none}
+html[data-ui-scheme=B] .scheme-product-details .set-craft-group .set-variant-grid{display:grid;grid-template-columns:1fr;gap:6px}
+html[data-ui-scheme=B] .scheme-product-details .set-craft-group .set-variant-option{font-size:11px;min-height:28px;padding:5px 7px;white-space:normal}
+html[data-ui-scheme=B] .scheme-product-details>.quilt-variant-flyout>.set-variant-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+html[data-ui-scheme=B] .scheme-product-details .product-variant-preview,html[data-ui-scheme=B] .scheme-product-details .sleepbag-variant-preview{height:80px}
+@media(max-width:750px){.scheme-product-layout{grid-template-columns:1fr;gap:14px}.scheme-product-layout>.compact-body{border-right:0;border-bottom:1px solid #e1e5e8;padding:0 0 10px}.scheme-product-layout #products{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:3px!important}html[data-ui-scheme=B] .scheme-product-details .set-variant-options{grid-template-columns:1fr}.scheme-product-layout #partsHint{display:none}html[data-ui-scheme=B] .scheme-product-details>.quilt-variant-flyout>.set-variant-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Match scheme A: vertically stacked craft groups with wrapping option rows. */
+html[data-ui-scheme=B] .scheme-product-details #setVariantPanel .set-variant-options{display:flex;flex-direction:column;gap:12px;padding:0}
+html[data-ui-scheme=B] .scheme-product-details #setVariantPanel .set-craft-group{padding:14px 16px}
+html[data-ui-scheme=B] .scheme-product-details #setVariantPanel .set-craft-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+html[data-ui-scheme=B] .scheme-product-details #setVariantPanel .set-craft-choice{display:inline-flex;flex:none;font-size:10px;padding:4px 7px}
+html[data-ui-scheme=B] .scheme-product-details #setVariantPanel .set-craft-group .set-variant-grid{display:flex;flex-direction:row;flex-wrap:wrap;gap:7px;margin-top:10px}
+html[data-ui-scheme=B] .scheme-product-details #setVariantPanel .set-craft-group .set-variant-option{flex:0 0 auto;min-height:32px;width:auto;padding:6px 9px;font-size:12px;line-height:1.5;white-space:nowrap}
+@media(max-width:750px){html[data-ui-scheme=B] .scheme-product-details #setVariantPanel .set-craft-group{padding:12px}html[data-ui-scheme=B] .scheme-product-details #setVariantPanel .set-craft-group .set-variant-option{font-size:11px;padding:5px 7px}}
+/* The left category is the only product heading; emphasize its selection. */
+html[data-ui-scheme=B] .scheme-product-details .set-variant-heading{display:none}
+html[data-ui-scheme=B] .scheme-picker-dialog[data-picker=product] #products{gap:6px}
+html[data-ui-scheme=B] .scheme-picker-dialog[data-picker=product] #products .product-option{border:0;border-radius:7px;padding:12px 10px;min-height:44px;background:#f7f8fa;color:#59616a;transition:background .15s,color .15s}
+html[data-ui-scheme=B] .scheme-picker-dialog[data-picker=product] #products .product-option.selected{background:#346ec2;color:#fff;box-shadow:0 3px 8px #346ec220}
+html[data-ui-scheme=B] .scheme-picker-dialog[data-picker=product] #products .product-option.selected strong{font-weight:700;color:#fff}
+html[data-ui-scheme=B] .scheme-picker-dialog[data-picker=product] #products .product-option.selected::after{content:'✓';font-size:16px;color:#fff;font-weight:700}
+html[data-ui-scheme=B] .scheme-picker-dialog[data-picker=product] #products .product-option:not(.selected)::after{content:'›';font-size:16px;color:#9aa3ad}
+html[data-ui-scheme=B] .scheme-picker-dialog[data-picker=product] #products .product-option:not(.selected):hover{background:#edf3fc;color:#346ec2}
+/* Compact, full-width subtype galleries without repeated category tips. */
+html[data-ui-scheme=B] .scheme-product-details .set-variant-options>h3{display:none}
+html[data-ui-scheme=B] .scheme-product-details .set-variant-flyout:not(#setVariantPanel) .set-variant-options{display:block;padding:0;border:0;margin:0}
+html[data-ui-scheme=B] .scheme-product-details .set-variant-flyout:not(#setVariantPanel) .set-variant-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:100%;margin:0;padding:0;border:0}
+html[data-ui-scheme=B] .scheme-product-details [data-option-density=few]:not(#setVariantPanel) .set-variant-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+html[data-ui-scheme=B] .scheme-product-details [data-option-density=compact]:not(#setVariantPanel) .set-variant-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+html[data-ui-scheme=B] .scheme-product-details .set-variant-flyout:not(#setVariantPanel) .set-variant-option{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px;width:100%;min-width:0;padding:9px 7px;border:1px solid #dce2e8;border-radius:8px;background:#fff;text-align:center;color:#555e66}
+html[data-ui-scheme=B] .scheme-product-details .set-variant-flyout:not(#setVariantPanel) .set-variant-option[aria-pressed=true]{border-color:#346ec2;background:#edf3fc;color:#346ec2;box-shadow:inset 0 0 0 1px #346ec2}
+html[data-ui-scheme=B] .scheme-product-details .set-variant-flyout:not(#setVariantPanel) .set-variant-option strong{font-size:12px;line-height:1.5;white-space:normal;overflow-wrap:anywhere}
+html[data-ui-scheme=B] .scheme-product-details .set-variant-flyout:not(#setVariantPanel) .set-variant-option small{display:none}
+html[data-ui-scheme=B] .scheme-product-details .set-variant-flyout:not(#setVariantPanel) .set-variant-option [role=img],html[data-ui-scheme=B] .scheme-product-details .set-variant-flyout:not(#setVariantPanel) .set-variant-option [class$="variant-preview"]{width:96px;max-width:100%;height:96px;min-height:0;aspect-ratio:1;flex:none;margin:0 auto 3px;border-radius:5px}
+html[data-ui-scheme=B] .scheme-product-details [data-option-density=compact]:not(#setVariantPanel) .set-variant-option [role=img]{width:64px;height:64px}
+html[data-ui-scheme=B] .scheme-product-details .set-variant-grid>h3{grid-column:1/-1;margin:2px 0 0;padding:5px 0;border:0;font-size:11px;color:#6c7680}
+@media(max-width:750px){html[data-ui-scheme=B] .scheme-product-details .set-variant-flyout:not(#setVariantPanel) .set-variant-grid,html[data-ui-scheme=B] .scheme-product-details [data-option-density=compact]:not(#setVariantPanel) .set-variant-grid{grid-template-columns:repeat(2,minmax(0,1fr))}html[data-ui-scheme=B] .scheme-product-details .set-variant-flyout:not(#setVariantPanel) .set-variant-option [role=img]{width:64px;height:64px}}
+.scheme-product-texture-row{display:none}
+html[data-ui-scheme=B] .scheme-product-texture-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7px}
+html[data-ui-scheme=B] #creationPanel .scheme-product-texture-row>.scheme-picker{min-width:0;min-height:44px;padding:7px;font-size:11px;gap:5px}
+html[data-ui-scheme=B] #creationPanel .scheme-product-texture-row>.scheme-picker>span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.scheme-texture-entry{display:flex;align-items:center;justify-content:space-between;gap:5px;min-width:0;min-height:44px;padding:6px 8px;border:1px solid #dadfe2;border-radius:7px;background:#fafafa;color:#424b54;text-align:left;cursor:pointer}
+.scheme-texture-entry strong{display:block;font-size:11px;line-height:1.4;font-weight:600}
+.scheme-texture-entry small{display:block;font-size:9px;line-height:1.4;color:#8a949e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:80px}
+.scheme-texture-entry:hover{border-color:#99b3d5;background:#f4f8fe}
+.scheme-picker-dialog[data-picker=texture]{width:730px;padding:20px;color:#3b454f}
+.scheme-picker-dialog[data-picker=texture] .texture-choice-field>label,.scheme-picker-dialog[data-picker=texture] .texture-choice-tip{display:none}
+.scheme-picker-dialog[data-picker=texture] .scheme-texture-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.scheme-picker-dialog[data-picker=texture] .scheme-texture-controls button{display:flex;align-items:center;justify-content:space-between;gap:9px;padding:9px 12px;border:1px solid #d5dfeb;border-radius:8px;background:#f3f7fd;color:#366cb4;text-align:left;font-size:13px;cursor:pointer}
+.scheme-picker-dialog[data-picker=texture] .scheme-texture-controls strong{display:block;font-size:13px}
+.scheme-picker-dialog[data-picker=texture] .scheme-texture-controls small{display:block;font-size:10px;color:#8a98a8}
+.scheme-picker-dialog[data-picker=texture] .scheme-texture-upload{justify-content:center!important}
+.scheme-picker-dialog[data-picker=texture] .scheme-texture-upload svg{width:19px;height:19px}
+.scheme-picker-dialog[data-picker=texture] .texture-source-switch,.scheme-picker-dialog[data-picker=texture] #textureLibraryControl,.scheme-picker-dialog[data-picker=texture] #textureUploadBtn,.scheme-picker-dialog[data-picker=texture] .texture-custom-note{display:none!important}
+.scheme-picker-dialog[data-picker=texture] .texture-source-panel{padding:0;border:0;background:none}
+.scheme-picker-dialog[data-picker=texture] #textureCustomControl{padding:0}
+.scheme-picker-dialog[data-picker=texture] #textureUploadInfo{margin:0 0 12px;padding:8px;background:#f5f8fc;border:1px solid #dbe4ef;border-radius:8px}
+.scheme-picker-dialog[data-picker=texture] #fabricPickerPanel{display:block!important;position:static!important;inset:auto!important;width:100%!important;max-width:none;max-height:none;overflow:visible;padding:0;border:0;box-shadow:none;border-radius:0}
+.scheme-picker-dialog[data-picker=texture] #fabricPickerPanel>strong,.scheme-picker-dialog[data-picker=texture] #fabricPickerPanel>small{display:none}
+.scheme-picker-dialog[data-picker=texture] .fabric-swatch-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.scheme-picker-dialog[data-picker=texture] .fabric-swatch{padding:5px;border:1px solid #e0e4e9;border-radius:7px;background:#fafbfc;color:#59636e}
+.scheme-picker-dialog[data-picker=texture] .fabric-swatch img{width:58px;height:58px;aspect-ratio:1;object-fit:cover;margin:0 auto}
+.scheme-picker-dialog[data-picker=texture] .fabric-swatch span{font-size:11px}
+.scheme-picker-dialog[data-picker=texture] .fabric-swatch[aria-pressed=true]{background:#edf3fc;border-color:#346ec2;color:#346ec2;box-shadow:inset 0 0 0 1px #346ec2}
+@media(max-width:650px){.scheme-picker-dialog[data-picker=texture] .fabric-swatch-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.scheme-picker-dialog[data-picker=texture] .fabric-swatch img{width:46px;height:46px}}

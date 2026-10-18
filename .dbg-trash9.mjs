@@ -1,0 +1,18 @@
+import {mkdtemp,rm,writeFile,mkdir,unlink,readdir,rmdir} from 'node:fs/promises';import os from 'node:os';import path from 'node:path';
+const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aWQAAAABJRU5ErkJggg==','base64');
+const root=await mkdtemp(path.join('E:/图片101/织景工作台/.tmpdbg/','t9-'));
+const dir=path.join(root,'aaaaaaaa-bbbb-4ccc-8ddd-000000000001');
+await mkdir(dir,{recursive:true});
+await writeFile(path.join(dir,'1.png'),png);
+const t=label=>{const t0=Date.now();return()=>console.log(label,Date.now()-t0,'ms');};
+let done=t('total');
+await unlink(path.join(dir,'1.png'));
+t('unlink')();
+await readdir(dir);
+t('readdir')();
+await rmdir(dir);
+t('rmdir')();
+done();
+await rm(root,{recursive:true,force:true});
+console.log('cleanup done');
+process.exit(0);

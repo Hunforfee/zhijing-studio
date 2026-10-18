@@ -1,0 +1,11 @@
+import {chromium} from 'file:///C:/Users/Hunfo/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs';
+const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+const page=await browser.newPage({viewport:{width:1440,height:1000}});
+await page.goto('http://localhost:4173/');
+await page.waitForFunction(()=>document.querySelector('[data-angle="low"] .angle-photo')?.dataset.previewSrc?.includes('v14-eighth'));
+const card=page.locator('[data-angle="low"]');await card.scrollIntoViewIfNeeded();
+const result=await card.locator('.angle-photo').evaluate(el=>{const r=el.getBoundingClientRect(),s=getComputedStyle(el,'::before');return {width:r.width,height:r.height,imageWidth:s.width,imageHeight:s.height,src:el.dataset.previewSrc,cell:el.dataset.previewCell}});
+if(Math.abs(result.width-result.height)>1||Math.abs(parseFloat(result.imageWidth)-result.width)>1||result.cell!=='6')throw Error(JSON.stringify(result));
+await card.hover();await page.waitForFunction(()=>!document.getElementById('angleImagePreview').hidden);
+await page.screenshot({path:'approved-eighth-installed.png'});
+console.log(JSON.stringify(result));await browser.close();

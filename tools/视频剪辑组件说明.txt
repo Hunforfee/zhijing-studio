@@ -1,0 +1,23 @@
+视频内容创作使用本机 FFmpeg 剪辑、归一化与烧录中文字幕。
+
+当前安装：tools/video-python/imageio_ffmpeg/binaries/ffmpeg-win-x86_64-v7.1.exe
+来源：imageio-ffmpeg 0.6.0（Python 包，附带 FFmpeg 程序及许可资料）。
+
+迁移或重新部署 Windows 工作台时可运行：
+python -m pip install --target tools/video-python imageio-ffmpeg==0.6.0
+
+也可用 FFMPEG_PATH 环境变量指定已安装且支持 libx264、AAC、ASS 字幕的 FFmpeg 可执行文件。
+视频任务开始前检查本地组件是否存在；未就绪时不提交付费分镜。
+
+内容脚本使用现有图片服务的识图模型，分镜使用独立的视频服务配置。
+基础模板不调用外部接口；测试使用模拟供应商和本地视频处理，不付费生成。
+
+分层景深试片（video-layered.mjs / video-layered.py）：
+使用本地 Python + NumPy + OpenCV 做遮罩、遮挡背景补全和各图层整体运镜，再由 FFmpeg 编码。
+当前 OpenCV：opencv-python-headless 5.0.0.93，安装于 tools/video-python。
+复现安装：python -m pip install --no-deps --target tools/video-python opencv-python-headless==5.0.0.93
+使用现有 Python 环境的 NumPy 2.3.5；VIDEO_PYTHON 可指定 Python 可执行文件。
+试片使用逐镜人工标注的主体和背景区域，不自动推断可靠深度；大幅环绕仍需真实多角度素材。
+主体层只作整体相似变换，不形变；微风区域排除主体及9像素边缘，最终合成由主体覆盖。
+背景补全为本地小范围视差露出所用，不改变原床品图片。所有试片生成均不调用图片或视频 API。
+试片是独立记录，现有稳定运镜和AI动态的默认流程保持。

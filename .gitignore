@@ -1,0 +1,59 @@
+# Local credentials and private configuration
+.env
+.env.*
+!.env.example
+.share/
+*.dpapi
+*.pem
+*.key
+
+# Generated user images, videos, exports and local review output
+generated/
+output/
+exports/
+styling-references/
+assets-source/
+.bootframes/
+.local-model-check/
+.tmpdbg/
+*.mp4
+*.mov
+*.webm
+*.avi
+*.zip
+# Code-only synchronization: keep local raster assets and generated media local.
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+*.bmp
+*.avif
+*.tif
+*.tiff
+*.ico
+*.mkv
+*.m4v
+*.webm
+
+# Local dependencies and caches
+node_modules/
+tools/video-python/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Local snapshots, diagnostics and intermediate edits
+prompt-backups/
+ui-backups/
+local-update-backups/
+*.log
+*.tmp
+*.bak
+*.backup
+*.debug-backup
+*.fixed
+.app.*
+.index.*
+.DS_Store
+Thumbs.db

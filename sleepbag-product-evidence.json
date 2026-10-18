@@ -1,0 +1,13 @@
+{
+  "version": "travel-liner/2026-10-09-v2",
+  "reviewedOn": "2026-10-09",
+  "category": "酒店隔脏旅行睡袋内衬 / travel sheet / rectangular sleeping bag liner",
+  "sources": [
+    {"url":"https://www.cocoon.at/en/products/travelsheet-5191da15ad78994d3f488978b59b8fc9-2", "observed":"官方将 TravelSheet 描述为酒店等旅行场景使用的轻薄睡袋内衬，列有侧入口和枕袋；该款采用魔术贴，不能证明本站款式的拉链位置。"},
+    {"url":"https://seatosummit.co.uk/products/comfort-blend-travel-liner", "observed":"官方提供矩形及带枕套袋矩形款，面料、尺寸和附件依款式不同，不应当作本站商品规格。"}
+  ],
+  "targetDesignBasis":"保留网站现有用户指定款式：上下等宽薄布，两长边下半段缝合、上半段侧入口，脚端隐形拉链，下片头端背面等宽枕袋，目标深度约40～50厘米。品牌资料用于识别类别，目标细节不是对所有旅行睡袋的通用断言。",
+  "connections":{"lowerSides":"脚端至中段连接，在中段终止","upperSides":"两片各自自由折边，不缝合","foot":"隐形短边拉链连接上下布片","pillowSleeve":"下片头端背面，头端与两侧连接，袋口朝脚端，枕芯在下片下面"},
+  "unknowns":["未提供真实SKU尺寸和结构近景；不从品牌示例伪造本商品尺寸","示例图为生成的拍摄构图参考，不能作为商品实拍或工艺合格证明"],
+  "atlas":{"file":"dist/assets/sleepbag-travel-angles-v2.png","cols":4,"rows":3,"order":["side","front","top","detail","left","right","low","wide","reverse","foot","pillowclose","drape"],"generation":"built-in imagegen；新图后针对隐形脚端拉链做一次局部要求修正"}
+}

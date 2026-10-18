@@ -1,0 +1,12 @@
+生成方式：内置 imagegen；AI 写实质感示例，不是实际面料实拍。
+cotton: plain woven cotton with fine regular over-under threads, matte clean dry surface, soft modest creases
+satin: long staple cotton sateen, very dense fine smooth weave, restrained broad satin highlights, substantial cotton folds, not mirror shiny
+silk: mulberry silk, luminous smooth very fine filaments, fluid thin graceful folds and soft specular highlights
+linen: natural linen, visibly uneven slub yarns and open plain weave, dry matte texture, irregular crisp folds
+velvet: flannel fleece, dense visible short plush pile and soft rounded thicker folds, fuzzy warm surface
+brushed: brushed cotton, very fine short raised fuzz over subtly visible woven base, matte, only slight nap, not thick fleece
+washed: washed cotton, fine matte woven base with characteristic relaxed small crinkles and soft casual rumpled folds, no long pile
+tencel: lyocell Tencel bedding fabric, smooth very fine fibers, restrained silky luster and supple heavy fluid drape, no fuzzy pile
+jacquard: cotton jacquard, monochrome woven geometric diamond relief motifs created by weave, visible raised and recessed thread structure, no printed colors
+
+通用提示词：Photorealistic textile catalog macro photograph for a bedding material comparison website. One single square full-bleed photograph of [上述材质描述]. Uniform warm-neutral ivory undyed cloth, neutral white balance, soft raking daylight from upper left reveals the material, realistic fine detail and contact shadows. Frame a small natural fold across the lower third and generous sharply focused fabric surface in center, 85mm macro aesthetic with sufficient depth of field for comparison. Cloth fills entire frame. No labels, lettering, borders, objects, hands, bed, collage, swatch charts, dramatic color tint or plastic CGI surface. This image represents [材质ID].

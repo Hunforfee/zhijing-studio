@@ -1,0 +1,65 @@
+{
+  "generator": "built-in imagegen",
+  "entries": [
+    {
+      "id": "warm",
+      "name": "暖白侘寂",
+      "file": "warm-v1.png",
+      "prompt": "Use case: photorealistic-natural. Asset type: small website scene-choice photo thumbnail. Primary request: ONE real-looking professional interior photograph of warm ivory wabi-sabi bedroom, tactile limewash wall, rounded cream upholstered headboard, sheer curtain and restrained ceramic vase. Subject: a realistically proportioned bed dressed in simple ivory cotton bedding, selected only to show the environment, no specific branded product. Composition: square image, diagonal three-quarter view, show bed and enough surrounding architectural details to identify this scene even when reduced to a tiny thumbnail. Bed occupies about 65 percent. Authentic camera photography, tactile materials, natural restrained styling, crisp readable silhouettes, soft neutral white balance. No text, labels, collage, border, logos, watermarks, people, drawing, vector art or CGI appearance."
+    },
+    {
+      "id": "natural",
+      "name": "原木自然",
+      "file": "natural-v1.png",
+      "prompt": "Use case: photorealistic-natural. Asset type: small website scene-choice photo thumbnail. Primary request: ONE real-looking professional interior photograph of natural oak bedroom, oak slat headboard, pale timber floor, linen curtain and soft side daylight. Subject: a realistically proportioned bed dressed in simple ivory cotton bedding, selected only to show the environment, no specific branded product. Composition: square image, diagonal three-quarter view, show bed and enough surrounding architectural details to identify this scene even when reduced to a tiny thumbnail. Bed occupies about 65 percent. Authentic camera photography, tactile materials, natural restrained styling, crisp readable silhouettes, soft neutral white balance. No text, labels, collage, border, logos, watermarks, people, drawing, vector art or CGI appearance."
+    },
+    {
+      "id": "hotel",
+      "name": "雅致酒店",
+      "file": "hotel-v1.png",
+      "prompt": "Use case: photorealistic-natural. Asset type: small website scene-choice photo thumbnail. Primary request: ONE real-looking professional interior photograph of elegant boutique hotel bedroom, substantial dark walnut headboard wall, paired bedside tables and restrained reading sconces. Subject: a realistically proportioned bed dressed in simple ivory cotton bedding, selected only to show the environment, no specific branded product. Composition: square image, diagonal three-quarter view, show bed and enough surrounding architectural details to identify this scene even when reduced to a tiny thumbnail. Bed occupies about 65 percent. Authentic camera photography, tactile materials, natural restrained styling, crisp readable silhouettes, soft neutral white balance. No text, labels, collage, border, logos, watermarks, people, drawing, vector art or CGI appearance."
+    },
+    {
+      "id": "studio",
+      "name": "纯色影棚",
+      "file": "studio-v1.png",
+      "prompt": "Use case: photorealistic-natural. Asset type: small website scene-choice photo thumbnail. Primary request: ONE real-looking professional interior photograph of professional seamless ivory photography studio, simple bed platform, clean cyclorama backdrop, soft diffused lighting; no furniture or window. Subject: a realistically proportioned bed dressed in simple ivory cotton bedding, selected only to show the environment, no specific branded product. Composition: square image, diagonal three-quarter view, show bed and enough surrounding architectural details to identify this scene even when reduced to a tiny thumbnail. Bed occupies about 65 percent. Authentic camera photography, tactile materials, natural restrained styling, crisp readable silhouettes, soft neutral white balance. No text, labels, collage, border, logos, watermarks, people, drawing, vector art or CGI appearance."
+    },
+    {
+      "id": "outdoor",
+      "name": "温暖户外",
+      "file": "outdoor-v1.png",
+      "prompt": "Use case: photorealistic-natural. Asset type: small website scene-choice photo thumbnail. Primary request: ONE real-looking professional interior photograph of real wooden bed on a dry sheltered garden terrace wooden deck, lush greenery in background, open air and soft shaded daylight. Subject: a realistically proportioned bed dressed in simple ivory cotton bedding, selected only to show the environment, no specific branded product. Composition: square image, diagonal three-quarter view, show bed and enough surrounding architectural details to identify this scene even when reduced to a tiny thumbnail. Bed occupies about 65 percent. Authentic camera photography, tactile materials, natural restrained styling, crisp readable silhouettes, soft neutral white balance. No text, labels, collage, border, logos, watermarks, people, drawing, vector art or CGI appearance."
+    },
+    {
+      "id": "terrace",
+      "name": "海景露台",
+      "file": "terrace-v1.png",
+      "prompt": "Use case: photorealistic-natural. Asset type: small website scene-choice photo thumbnail. Primary request: ONE real-looking professional interior photograph of real supported bed on a sheltered pale stone coastal terrace, balcony railing, distant visible sea and level horizon, airy daylight. Subject: a realistically proportioned bed dressed in simple ivory cotton bedding, selected only to show the environment, no specific branded product. Composition: square image, diagonal three-quarter view, show bed and enough surrounding architectural details to identify this scene even when reduced to a tiny thumbnail. Bed occupies about 65 percent. Authentic camera photography, tactile materials, natural restrained styling, crisp readable silhouettes, soft neutral white balance. No text, labels, collage, border, logos, watermarks, people, drawing, vector art or CGI appearance."
+    },
+    {
+      "id": "minimal",
+      "name": "现代简约",
+      "file": "minimal-v1.png",
+      "prompt": "Use case: photorealistic-natural. Asset type: small website scene-choice photo thumbnail. Primary request: ONE real-looking professional interior photograph of minimal contemporary white bedroom, smooth white wall, straight-lined bed frame, geometric bedside table, clean architectural lines. Subject: a realistically proportioned bed dressed in simple ivory cotton bedding, selected only to show the environment, no specific branded product. Composition: square image, diagonal three-quarter view, show bed and enough surrounding architectural details to identify this scene even when reduced to a tiny thumbnail. Bed occupies about 65 percent. Authentic camera photography, tactile materials, natural restrained styling, crisp readable silhouettes, soft neutral white balance. No text, labels, collage, border, logos, watermarks, people, drawing, vector art or CGI appearance."
+    },
+    {
+      "id": "french",
+      "name": "法式卧室",
+      "file": "french-v1.png",
+      "prompt": "Use case: photorealistic-natural. Asset type: small website scene-choice photo thumbnail. Primary request: ONE real-looking professional interior photograph of cream French bedroom, subtle wall panel mouldings, restrained carved curved headboard, small French bedside table and tall curtain. Subject: a realistically proportioned bed dressed in simple ivory cotton bedding, selected only to show the environment, no specific branded product. Composition: square image, diagonal three-quarter view, show bed and enough surrounding architectural details to identify this scene even when reduced to a tiny thumbnail. Bed occupies about 65 percent. Authentic camera photography, tactile materials, natural restrained styling, crisp readable silhouettes, soft neutral white balance. No text, labels, collage, border, logos, watermarks, people, drawing, vector art or CGI appearance."
+    },
+    {
+      "id": "kids",
+      "name": "童趣房间",
+      "file": "kids-v1.png",
+      "prompt": "Use case: photorealistic-natural. Asset type: small website scene-choice photo thumbnail. Primary request: ONE real-looking professional interior photograph of playful pastel bedroom, pastel blue and peach wall accents, rounded wooden furniture, little shelf with wooden toys, soft daylight. Subject: a realistically proportioned bed dressed in simple ivory cotton bedding, selected only to show the environment, no specific branded product. Composition: square image, diagonal three-quarter view, show bed and enough surrounding architectural details to identify this scene even when reduced to a tiny thumbnail. Bed occupies about 65 percent. Authentic camera photography, tactile materials, natural restrained styling, crisp readable silhouettes, soft neutral white balance. No text, labels, collage, border, logos, watermarks, people, drawing, vector art or CGI appearance."
+    },
+    {
+      "id": "childbed",
+      "name": "儿童床品",
+      "file": "childbed-v1.png",
+      "prompt": "Use case: photorealistic-natural. Asset type: small website scene-choice photo thumbnail. Primary request: ONE real-looking professional interior photograph of dedicated child bedroom, realistically sized narrow SINGLE CHILD BED 100cm wide and 190cm long, low rounded oak bed frame, one appropriately sized pillow, child-height bookshelf with picture books, small plush toy on background shelf, cream and sage room accents, soft daylight; not adult double bed or baby crib. Subject: a realistically proportioned bed dressed in simple ivory cotton bedding, selected only to show the environment, no specific branded product. Composition: square image, diagonal three-quarter view, show bed and enough surrounding architectural details to identify this scene even when reduced to a tiny thumbnail. Bed occupies about 65 percent. Authentic camera photography, tactile materials, natural restrained styling, crisp readable silhouettes, soft neutral white balance. No text, labels, collage, border, logos, watermarks, people, drawing, vector art or CGI appearance."
+    }
+  ]
+}

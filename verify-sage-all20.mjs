@@ -1,0 +1,8 @@
+import {chromium} from 'file:///C:/Users/Hunfo/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs';
+const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});const page=await browser.newPage({viewport:{width:1600,height:1100}});const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('http://localhost:4173/');await page.waitForFunction(()=>document.querySelectorAll('#angles [data-angle]').length===20&&document.querySelector('#angles .angle-photo')?.dataset.previewSrc?.includes('sage-refresh-20'));
+const cards=page.locator('#angles [data-angle]');for(let i=0;i<20;i++){
+ const card=cards.nth(i);await card.scrollIntoViewIfNeeded();const r=await card.locator('.angle-photo').evaluate(el=>{const b=el.getBoundingClientRect(),s=getComputedStyle(el,'::before');return {w:b.width,h:b.height,pw:parseFloat(s.width),ph:parseFloat(s.height),src:el.dataset.previewSrc,cell:el.dataset.previewCell,id:el.parentElement.dataset.angle}});
+ if(Math.abs(r.w-r.h)>1||Math.abs(r.w-r.pw)>1||Math.abs(r.h-r.ph)>1||!r.src.includes('sage-refresh-20'))throw Error(JSON.stringify(r));
+ await card.hover();await page.waitForFunction(()=>!document.getElementById('angleImagePreview').hidden&&document.querySelector('#angleImagePreview canvas')?.width===512);await page.mouse.move(0,0);await page.waitForFunction(()=>document.getElementById('angleImagePreview').hidden);console.log((i+1)+' '+r.id+' verified');
+}
+if(errors.length)throw Error(errors.join('\n'));await page.locator('#angles').evaluate(el=>el.scrollTop=0);await page.locator('#angles').screenshot({path:'generated/sage-angle-refresh/website-final.png'});await browser.close();

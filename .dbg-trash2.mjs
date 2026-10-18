@@ -1,0 +1,25 @@
+import {mkdtemp,rm,writeFile,mkdir} from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import {createImageHistory} from './image-history.mjs';
+
+const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aWQAAAABJRU5ErkJggg==','base64');
+const outputDir=await mkdtemp(path.join(os.tmpdir(),'zhijing-dbg2-'));
+const dir=path.join(outputDir,'aaaaaaaa-bbbb-4ccc-8ddd-000000000001');
+await mkdir(dir,{recursive:true});
+await writeFile(path.join(dir,'1.png'),png);
+await writeFile(path.join(dir,'2.png'),png);
+const history=createImageHistory(outputDir);
+let records=await history.list(true);
+console.log('records',records.map(r=>r.number));
+const sorted=[...records].sort((a,b)=>a.url.localeCompare(b.url));
+let t=Date.now();
+await history.setDeleted([sorted[0].number],true);
+console.log('setDeleted',Date.now()-t,'ms');
+t=Date.now();
+const purged=await history.purgeDeleted();
+console.log('purgeDeleted',Date.now()-t,'ms',purged.length);
+records=await history.list(true);
+console.log('after',records.map(r=>r.number));
+await rm(outputDir,{recursive:true,force:true});
+console.log('done');

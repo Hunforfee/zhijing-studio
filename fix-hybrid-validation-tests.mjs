@@ -1,0 +1,4 @@
+import {readFile,writeFile} from 'node:fs/promises';
+let s=await readFile('hybrid-cloth-test.mjs','utf8');s=s.replace("repeat:'tile',ratio", "repeat:'tile',plainSheet:false,ratio");await writeFile('hybrid-cloth-test.mjs',s);
+s=await readFile('reference-options-test.mjs','utf8');s=s.replace("['options','referencePlanDescription'", "['fixedEngineSelected','hybridEngineSelected','options','referencePlanDescription'");await writeFile('reference-options-test.mjs',s);
+s=await readFile('dist/app.js','utf8');s=s.replace("if(state.mode==='ai'&&!state.ready&&!fixedEngineSelected()){", "if((state.mode==='ai'||hybridEngineSelected())&&!state.ready&&!fixedEngineSelected()){");s=s.replace("const isAI=state.mode==='ai'&&!isFixed", "const isAI=(state.mode==='ai'||opt.engine==='hybrid-cloth')&&!isFixed");await writeFile('dist/app.js',s);

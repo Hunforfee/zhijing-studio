@@ -1,0 +1,31 @@
+import {chromium} from 'file:///C:/Users/Hunfo/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs';
+import assert from 'node:assert/strict';
+const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+try{
+ const page=await browser.newPage({viewport:{width:1366,height:768}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('http://127.0.0.1:4173/');await page.waitForSelector('.ui-scheme-switch');await page.locator('[data-scheme=B]').click();await page.waitForFunction(()=>!document.body.classList.contains('is-booting'));
+ await page.locator('#creationPanel').screenshot({path:'output/创作设置-新版.png'});
+ assert.ok(await page.locator('#creationPanel').evaluate(e=>e.scrollHeight<=e.clientHeight+2));
+ await page.locator('.group-product>.scheme-picker').click();
+ assert.equal(await page.locator('#products .product-option svg').first().isVisible(),false);
+ await page.locator('.scheme-picker-dialog[data-picker=product]').screenshot({path:'output/产品选择-文字版.png'});
+ await page.locator('[data-product=set]').click();await page.locator('[data-set-variant=fitted]').click();
+ assert.ok(await page.locator('.scheme-picker-dialog[data-picker=product]').evaluate(e=>e.open));
+ await page.locator('#setVariantPanel .set-variant-done').click();await page.locator('.breadcrumb').click();
+ assert.equal(await page.locator('.scheme-picker-dialog[open]').count(),0);
+ await page.locator('#shootSection>.scheme-picker').click();
+ const photos=await page.locator('#scenes .scene-mini-thumb').evaluateAll(es=>es.map(e=>({w:e.clientWidth,h:e.clientHeight})));
+ await page.locator('#scenes .scene-mini-thumb').evaluateAll(async es=>{await Promise.all(es.slice(0,4).map(e=>e.decode().catch(()=>{})));});
+ console.log('Scene image loaded:',await page.locator('#scenes .scene-mini-thumb').first().evaluate(e=>({complete:e.complete,width:e.naturalWidth})));
+ assert.ok(photos.length>0&&photos.every(x=>x.h===82&&x.w>90));
+ await page.locator('#setCount_main').fill('12');assert.ok(await page.locator('.scheme-picker-dialog[data-picker=shooting]').evaluate(e=>e.open));
+ assert.equal(await page.locator('#setCount_main').evaluate(e=>e.clientWidth),64);
+ assert.ok(await page.locator('#setCount_main').evaluate(e=>Math.abs(e.getBoundingClientRect().top-e.parentElement.querySelector('span').getBoundingClientRect().top)<15));
+ await page.locator('.scheme-picker-dialog[data-picker=shooting]').screenshot({path:'output/场景与角度-新版.png'});
+ await page.locator('.breadcrumb').click();assert.equal(await page.locator('.scheme-picker-dialog[open]').count(),0);
+ await page.setViewportSize({width:390,height:844});await page.locator('#shootSection>.scheme-picker').click();
+ assert.ok(await page.locator('.scheme-picker-dialog[open]').evaluate(e=>e.scrollWidth<=e.clientWidth+2));
+ await page.locator('.scheme-picker-dialog[open]>header button').click();
+ await page.locator('[data-scheme=A]').click();assert.equal(await page.locator('.group-product #products').count(),1);
+ assert.deepEqual(errors,[]);console.log('Verified: laptop fit, text products, product submenus, scene image sizes, count inputs, outside dismissal for both pickers, mobile width, scheme A restoration.');
+}finally{await browser.close();}

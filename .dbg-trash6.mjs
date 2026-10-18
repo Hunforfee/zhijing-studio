@@ -1,0 +1,18 @@
+import {mkdtemp,rm} from 'node:fs/promises';import os from 'node:os';import path from 'node:path';
+import {createServer} from './server.mjs';
+const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aWQAAAABJRU5ErkJggg==','base64');
+const outputDir=await mkdtemp(path.join(os.tmpdir(),'zhijing-dbg6-'));
+const server=createServer({outputDir,service:{provider:'compatible',apiKey:'k',baseUrl:'https://example.test/v1',model:'m'},stylingReferencePaths:[],fetchImpl:async()=>Response.json({data:[{b64_json:png.toString('base64')}]}),});
+await new Promise(r=>server.listen(0,'127.0.0.1',r));
+const base='http://127.0.0.1:'+server.address().port;
+const image='data:image/png;base64,'+png.toString('base64');
+const post=(route,data,headers)=>fetch(base+route,{method:'POST',headers:Object.assign({'Content-Type':'application/json'},headers),body:JSON.stringify(data===undefined?{}:data)});
+const t=async(label,p)=>{const t0=Date.now();const r=await p;console.log(label,Date.now()-t0,'ms ->',r.status);return r;};
+await t('add A',post('/api/history',{image,ratio:'1:1'}));
+await t('add B',post('/api/history',{image,ratio:'1:1'}));
+await t('delete #1',post('/api/history/delete',{number:1}));
+await t('empty conn-close',post('/api/history/empty-trash',{},{'Connection':'close'}));
+await t('delete #2 (reuse after close)',post('/api/history/delete',{number:2}));
+await new Promise(r=>server.close(r));
+await rm(outputDir,{recursive:true,force:true});
+console.log('done');process.exit(0);

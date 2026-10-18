@@ -1,0 +1,116 @@
+{
+  "date": "2026-10-12",
+  "sources": [
+    {
+      "url": "https://detail.91jf.com/search/goods?keywords=乳胶记忆枕",
+      "evidence": "乳胶、记忆慢回弹和生物基枕供应分类"
+    },
+    {
+      "url": "https://detail.91jf.com/store/7su43fb?cat_id=92585&type=1",
+      "evidence": "羽丝绒和荞麦枕商品"
+    },
+    {
+      "url": "https://detail.91jf.com/store/84u44p2?ad_flag=1&cat_id=132119&type=1",
+      "evidence": "大豆枕芯"
+    },
+    {
+      "url": "https://www.dssjiafang.com/",
+      "evidence": "荞麦枕商品与枕芯供货商"
+    },
+    {
+      "url": "https://detail.zhaojiafang.com/goods/51794363",
+      "evidence": "双芯三芯记忆棉枕芯"
+    },
+    {
+      "url": "https://www.airunjf.com/",
+      "evidence": "乳胶、记忆棉、凝胶枕系列"
+    },
+    {
+      "url": "https://www.hengyuantextiles.com/index.php?c=show&id=43",
+      "evidence": "荞麦与羽丝绒双面复合枕"
+    },
+    {
+      "url": "https://www.baomanshop.com/p/40.html",
+      "evidence": "决明子枕商品"
+    },
+    {
+      "url": "https://www.shopmarriott.cn/zh-CN/p/feather-down-pillow",
+      "evidence": "羽绒枕芯"
+    }
+  ],
+  "limits": "找源头官网未返回可读取商品内容；91和DSS采用搜索可检索商品信息。分类代表可选择目标结构，不证明用户SKU成分、含量、认证或功能。",
+  "variants": [
+    {
+      "id": "fiber",
+      "name": "纤维枕（羽丝绒）",
+      "group": "柔软填充",
+      "hint": "柔软蓬松 · 圆润边角",
+      "zh": "纤维填充枕，柔软矩形鼓包，中心饱满、边缘渐薄、底部受压；羽丝绒是纤维款名称，不画羽毛",
+      "en": "FIBER-FILLED pillow: soft rectangular loft, full center, tapered rounded edges and gravity-compressed base; imitation-down fiber is NOT feathers"
+    },
+    {
+      "id": "soy",
+      "name": "大豆纤维枕",
+      "group": "柔软填充",
+      "hint": "柔和蓬松 · 连续壳布",
+      "zh": "大豆纤维类填充枕，柔和矩形轮廓与适中蓬松，完整壳布；不生成黄豆颗粒或额外植物装饰",
+      "en": "SOY-FIBER blend style: moderately lofted soft rectangular shell; no visible soybeans or botanical decorations"
+    },
+    {
+      "id": "down",
+      "name": "羽绒 / 羽毛枕",
+      "group": "柔软填充",
+      "hint": "轻盈软塌 · 自然承托",
+      "zh": "羽绒或羽毛类填充枕，轻盈柔软、松弛下陷、圆润薄边，完整防绒壳布；不露羽毛，不虚构绒含量或分仓",
+      "en": "DOWN/FEATHER-filled style: soft yielding loft and rounded thin edges within an intact shell; no escaping feathers, invented down percentage or internal chambers"
+    },
+    {
+      "id": "latex",
+      "name": "乳胶枕",
+      "group": "定型支撑",
+      "hint": "一体定型 · 高低波浪轮廓",
+      "zh": "乳胶一体定型高低波浪枕，两条不同高度的长边与中间浅凹，保持弹性实芯轮廓，外罩贴合；孔洞仅在用户提供裸芯参考时呈现",
+      "en": "LATEX molded contour: unequal-height long ridges and a shallow central cradle; cohesive elastic core, close-fitting cover, not a loose puff; holes only when an explicit bare-core reference confirms them"
+    },
+    {
+      "id": "memory",
+      "name": "记忆棉枕",
+      "group": "定型支撑",
+      "hint": "慢回弹款 · 连续曲面",
+      "zh": "记忆棉一体高低波浪枕，柔和连续曲面、清楚高低边和中间凹槽，受压局部下陷；不画散棉鼓包或乳胶孔洞",
+      "en": "MEMORY-FOAM molded contour: continuous curved surface, high/low long edges and central cradle, local compression; no loose fiber puff or invented latex perforations"
+    },
+    {
+      "id": "gel",
+      "name": "凝胶复合枕",
+      "group": "定型支撑",
+      "hint": "复合定型 · 完整外罩",
+      "zh": "凝胶复合定型枕，记忆棉式连续曲面与完整贴合外罩；凝胶层藏于壳内，不自行加蓝色凝胶、液体或透明剖面",
+      "en": "GEL-COMPOSITE contour pillow with cohesive foam geometry and intact fitted cover; gel is internal, no invented blue panel, liquid or transparent cutaway"
+    },
+    {
+      "id": "buckwheat",
+      "name": "荞麦枕",
+      "group": "颗粒与复合",
+      "hint": "低蓬松 · 稳定颗粒承托",
+      "zh": "荞麦壳填充枕，偏低矩形、紧实稳固而非羽绒鼓包，真实微小不均匀起伏，完整壳布不露颗粒",
+      "en": "BUCKWHEAT-HULL filled pillow: low stable rectangular volume, subtle granular settling under intact cloth, not a fluffy down puff; no exposed hulls"
+    },
+    {
+      "id": "cassia",
+      "name": "决明子枕",
+      "group": "颗粒与复合",
+      "hint": "颗粒填充款 · 克制起伏",
+      "zh": "决明子颗粒类枕，低到中等蓬松、紧实矩形，壳布完整且局部轻微颗粒起伏；不臆造颗粒比例、分区或药用效果",
+      "en": "CASSIA-SEED style pillow: low-to-medium firm rectangular volume, slight granular settling beneath intact cloth; no invented seed ratio, partitions or medical claims"
+    },
+    {
+      "id": "adjustable",
+      "name": "可调节复合枕",
+      "group": "颗粒与复合",
+      "hint": "复合填充 · 高度按参考",
+      "zh": "可调节复合填充枕，默认完整适中蓬松矩形；多芯、可拆层和调节开口仅依明确产品参考，不自动加拉链、剖切或爆炸图",
+      "en": "ADJUSTABLE COMPOSITE pillow: intact moderately lofted rectangle by default; multiple cores, removable layers and adjustment closures ONLY when explicitly confirmed; no invented zipper, cutaway or exploded view"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "zhijing-studio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "test:first-image-review": "node --test --test-concurrency=1 first-image-review-test.mjs bedding-fidelity-test.mjs prompt-admin-test.mjs share-test.mjs current-image-edit-test.mjs set-construction-test.mjs",
+    "test:bedding-fidelity": "node --test --test-concurrency=1 bedding-fidelity-test.mjs set-construction-test.mjs prompt-admin-test.mjs reference-test.mjs image-history-test.mjs mattress-blanket-test.mjs",
+    "check": "node --check server.mjs && node --check dist/app.js && node --check image-history.mjs && node --check dist/image-history.js",
+    "test": "node --test test.mjs share-test.mjs reference-test.mjs reference-options-test.mjs set-variants-test.mjs quilt-variants-test.mjs selected-labels-test.mjs sheet-variants-test.mjs camera-reference-test.mjs angle-hover-test.mjs service-profiles-test.mjs mattress-blanket-test.mjs mattress-variants-test.mjs product-submenus-test.mjs prompt-admin-test.mjs image-history-test.mjs current-image-edit-test.mjs set-construction-test.mjs gallery-layout-test.mjs sleepbag-variants-test.mjs select-all-test.mjs image-viewer-test.mjs last-patterns-test.mjs apply-last-shooting-test.mjs boot-render-test.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
