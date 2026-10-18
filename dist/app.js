@@ -239,7 +239,10 @@ async function enqueueGeneration(opt){
   try{
     const cameraReferences=await prepareCameraReferences(opt);
 const payload={...opt,...(await globalThis.patternMaterials?.payload()||{}),cameraReferences,craftReferences:globalThis.getCraftReferences?.()||{},image:await patternData(),imageB:state.patternB?await patternData('B'):null,referenceImages:state.referenceUpload?await Promise.all(shootingReferenceItems().map(item=>patternData('R',item.pattern))):[],textureReferenceImage:state.textureSource==='upload'&&state.texturePattern?await patternData('T'):null};
-    const response=await fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}),data=await response.json();if(!response.ok)throw Error(data.error||'无法添加生成任务');
+    const response=await fetch('/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    let data;try{data=await response.json();}catch{}
+    if(!response.ok){const message=data?.error?.message||data?.error||data?.message||data?.msg;const fallback=response.status===413?'上传图片总量超过托管平台限制，请减少参考图或调整平台上传限制':[502,503,504].includes(response.status)?`网站网关或后台暂时不可用（HTTP ${response.status}），请检查云端服务状态和网站来源配置`:`无法添加生成任务（HTTP ${response.status}），请稍后重试`;throw Error(typeof message==='string'&&!/^(bad gateway|service unavailable|gateway timeout)$/i.test(message.trim())?message.slice(0,300):fallback);}
+    if(!data?.id)throw Error('服务器未返回任务编号，请检查网站部署的任务接口');
     const task={id:data.id,label:++generationTaskSequence,opt,total:(opt.recommendScene||opt.recommendAngle)?opt.recommendCount*(opt.recommendScene?1:opt.scenes.length):opt.scenes.length*opt.angles.length,outputs:[],status:data.status||'queued',message:'已提交生成任务',createdAt:Date.now()};generationTasks.set(task.id,task);state.queueDisplay=true;
     if(!state.generating)focusGenerationTask(task);
     renderGenerationTasks();void pollGenerationTask(task);toast(data.status==='queued'?'已加入生成队列':'生成任务已提交');

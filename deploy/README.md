@@ -31,6 +31,9 @@ node tools/check-deployment-config.mjs --network
 
 ## 其他运行条件
 
+- 允许提交任务的网站地址保存在 `deploy/site-config.json`，当前为 `https://a17ca245dd955fa7e.app.workbuddy.host`。换域名后更新这个文件，或设置 `PUBLIC_ORIGIN=https://你的完整网站域名` 后重启。该值是用户浏览器打开的网址，不是图片接口地址。不读取不受信任的转发头，也不放开任意来源；本机入口及提示词后台原有访问限制保留。
+- 更新代码后必须在 WorkBuddy 重新部署/重启 Node 服务，单独保存密钥不会更新任务入口。若仍提示来源不允许，请确认运行的是最新的 `server.mjs` 和 `request-source.mjs`。
+
 - Node.js 22 或更新版本。
 - 后端默认监听 `127.0.0.1:4173`，云服务器应通过带访问控制的 HTTPS 反向代理转发；还需提供目标域名和服务器/平台信息才能完成上线配置。
 - 托管平台如要求监听所有网卡，可设置 `HOST=0.0.0.0`，同时使用平台的访问控制。`PORT` 沿用平台注入的端口。

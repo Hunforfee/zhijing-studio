@@ -23,6 +23,7 @@ import {textureIds,materialPriority} from './material-priority.mjs';
 import './dist/fabric-library.js';
 import {loadServiceConfig,saveServiceConfig} from './secure-service-store.mjs';
 import {loadDeploymentConfiguration} from './deployment-config.mjs';
+import {createRequestSourcePolicy,deploymentPublicOrigin} from './request-source.mjs';
 import {serviceProfiles,savedServiceProfiles} from './service-profiles.mjs';
 import {zhipuJson,zhipuImage} from './zhipu-response.mjs';
 import {redrawWithZhipu} from './zhipu-edit.mjs';
@@ -226,6 +227,7 @@ async function relayError(response,config){
 }
 export function createServer(options={}) {
   const fetchImpl=options.fetchImpl||fetch;
+  const requestSourceAllowed=createRequestSourcePolicy({publicOrigin:options.publicOrigin??process.env.PUBLIC_ORIGIN??deploymentPublicOrigin()});
   const outputRoot=options.outputDir||path.join(root,'generated');
   const videoService=createVideoService({outputDir:outputRoot,fetchImpl,getPlanningConfig:()=>({...service}),getKeyframeConfig:()=>imageTaskConfig({...service},true),generateKeyframe:async({references,prompt,config,ratio,signal})=>{
     if(!config.apiKey||!['sub2api','openai','compatible'].includes(config.provider))throw Error('创意画面需要已配置的参考图生图服务，请检查图片服务');
@@ -390,11 +392,7 @@ export function createServer(options={}) {
     try {
       const adminPath=path.posix.normalize(decodeURIComponent(pathname).replaceAll('\\','/'));
       if((/^\/admin(?:\/|\.|$)/.test(adminPath)||adminPath.startsWith('/api/admin/'))&&!localAdminRequest(req))return json(res,403,{error:'提示词后台仅限本机访问'});
-      if(req.method==='POST') {
-        if(!req.headers.host?.match(/^(localhost|127\.0\.0\.1)(:\d+)?$/))return json(res,403,{error:'访问来源不允许'});
-        const origin=req.headers.origin;
-        if(origin&&origin!==`http://${req.headers.host}`)return json(res,403,{error:'来源不允许'});
-      }
+      if(!['GET','HEAD','OPTIONS'].includes(req.method)&&!requestSourceAllowed(req))return json(res,403,{error:'访问来源不允许：请从已配置的网站地址打开页面；更换域名后需更新 PUBLIC_ORIGIN 并重启服务',code:'ORIGIN_NOT_ALLOWED'});
       if(await videoService.handle(req,res,pathname,body,json))return;
       if(pathname==='/api/admin/catalog'&&req.method==='GET')return json(res,200,await inspector.catalog());
       if(pathname==='/api/admin/preview'&&req.method==='POST')return json(res,200,await inspector.preview(await body(req,16384)));

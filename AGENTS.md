@@ -1,5 +1,7 @@
 # 系统推荐的长期约定
 
+2026-10-18 云端域名来源校验使用 request-source.mjs，网站地址保存在 deploy/site-config.json，PUBLIC_ORIGIN 环境变量可覆盖；需精确匹配浏览器 Origin，不能用图片 API 地址，也不能用任意客户端转发头放行。仍保留本机同源请求、提示词后台仅本机及分享访客不能改密钥的限制。request-source-test.mjs 通过真实 HTTP 路由与空参数验证云端可进入参数校验、外站被拒绝，不为测试生成付费图片。
+
 2026-10-10 用户要求暂时移除“自选角度”。当前通过 dist/shooting-recommendation.js 中 CUSTOM_SHOOTING_ANGLES_ENABLED=false 关闭入口与选择面板，原功能完整保留。以后用户说加回“自选角度”时，将开关改为 true 并验证原功能完整恢复；详见 feature-archive/custom-angles-20261010/恢复说明.md。不要删除自选角度数据、事件、图片或后台兼容能力，也不要覆盖后续其他功能。
 
 用户要求系统推荐内所有现有和以后新增的功能保持随机拍摄逻辑，生成套图也遵守此规则。
