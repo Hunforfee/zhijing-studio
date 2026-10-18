@@ -1,10 +1,11 @@
 import {execFile} from 'node:child_process';
-import {access,readdir,readFile,writeFile,rename} from 'node:fs/promises';
+import {readFile,writeFile,rename} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {resolveVideoBinary} from './video-runtime.mjs';
 const root=path.dirname(fileURLToPath(import.meta.url));let binaryPromise;
 export async function videoBinary(){
-  if(!binaryPromise)binaryPromise=(async()=>{if(process.env.FFMPEG_PATH){await access(process.env.FFMPEG_PATH);return process.env.FFMPEG_PATH;}const directory=path.join(root,'tools/video-python/imageio_ffmpeg/binaries'),files=await readdir(directory);const name=files.find(x=>/^ffmpeg.*\.exe$/i.test(x));if(!name)throw Error('没有找到视频剪辑组件');return path.join(directory,name);})().catch(()=>{binaryPromise=null;throw Error('视频剪辑组件未安装，请先安装本地 FFmpeg');});return binaryPromise;
+  if(!binaryPromise)binaryPromise=resolveVideoBinary({root}).catch(error=>{binaryPromise=null;throw error;});return binaryPromise;
 }
 function execute(binary,args,{cwd,signal,probe=false}={}){return new Promise((resolve,reject)=>{execFile(binary,args,{cwd,signal,windowsHide:true,timeout:240000,maxBuffer:2*1024*1024},(error,stdout,stderr)=>{if(error&&!probe)return reject(Error(signal?.aborted?'已停止剪辑':'视频剪辑失败，请继续获取原任务重试；分镜文件已保留'));resolve(stdout+'\n'+stderr);});});}
 export async function checkVideoComposer(){try{await videoBinary();return true;}catch{return false;}}

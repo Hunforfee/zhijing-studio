@@ -152,7 +152,7 @@ export function createVideoService({outputDir,fetchImpl=fetch,loadConfig=default
     if(pathname==='/api/video/jobs'&&req.method==='GET'){json(res,200,{jobs:[...jobs.values()].sort((a,b)=>b.created-a.created).map(publicJob)});return true;}
     if(pathname==='/api/video/jobs'&&req.method==='POST'){
       if([...jobs.values()].filter(isActive).length>=5){json(res,429,{error:'视频队列已满，请等待当前任务完成'});return true;}
-      if(!await checkComposer()){json(res,409,{error:'本地视频剪辑组件未就绪，尚未提交生成'});return true;}
+      if(!await checkComposer()){req.resume();json(res,409,{error:'当前服务器的视频剪辑组件未就绪，请安装项目依赖并重启服务，或配置 FFMPEG_PATH；尚未提交分镜生成',code:'VIDEO_COMPOSER_UNAVAILABLE'});return true;}
       const imageConfig=getKeyframeConfig();if(!imageConfig?.apiKey||!['sub2api','compatible','openai'].includes(imageConfig.provider)||!generateKeyframe){json(res,409,{error:'请先配置支持参考图生图的图片服务，视频只使用重新创作的分镜画面'});return true;}
       const v=validateVideoInput(await body(req,45*1024*1024)),{sources,...input}=v;
       if(v.motionMode==='ai'){if(!config.apiKey){json(res,409,{error:'请先配置视频生成服务'});return true;}assertVideoCapabilities(config,v);}

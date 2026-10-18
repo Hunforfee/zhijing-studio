@@ -38,7 +38,10 @@ node tools/check-deployment-config.mjs --network
 - 后端默认监听 `127.0.0.1:4173`，云服务器应通过带访问控制的 HTTPS 反向代理转发；还需提供目标域名和服务器/平台信息才能完成上线配置。
 - 托管平台如要求监听所有网卡，可设置 `HOST=0.0.0.0`，同时使用平台的访问控制。`PORT` 沿用平台注入的端口。
 - 内置面料、场景、产品机位、工艺示意和默认褶皱参考已随仓库提供。部署时须保留 `dist/assets/` 和清单中的两个 `styling-references/` 文件；不要在构建时只复制 JS/CSS。可运行 `node tools/check-builtin-assets.mjs --http` 验证完整性。用户上传、生成图片视频、原始素材源文件和旧版备份仍不入 Git。
-- 视频剪辑需要本机 FFmpeg，按 `tools/视频剪辑组件说明.txt` 安装，或用 `FFMPEG_PATH` 指定服务器程序。
+- 视频剪辑需要在**实际运行网站的云端**安装 FFmpeg。先运行 `npm ci`，再运行 `npm run check:video`，最后运行 `npm start`；`ffmpeg-static` 会按部署机器的平台安装程序。安装时需允许依赖的安装脚本，并能访问其二进制下载地址。本机 Windows 的程序不会自动迁移到 Linux。
+- 若平台已有 FFmpeg，可通过系统 PATH 自动检测，也可设置 `FFMPEG_PATH=/usr/bin/ffmpeg`；检测会实际运行程序并确认 H.264、AAC、ASS 字幕和稳定运镜功能。该变量设置错误时需修正或移除，不能填写本机 Windows 路径。
+- 使用 Docker 部署可采用仓库的 `Dockerfile`，已安装系统 FFmpeg 和中文字体，保留内置参考素材。云端中文字幕还需要中文字体（例如 Noto CJK）。不要上传 `node_modules/` 或 `tools/video-python/` 代替云端安装。
+- `/api/video/status` 的 `compositionReady` 必须为 `true` 才可提交分镜任务；默认稳定运镜无需视频 API 密钥。缺少组件时前端先提示，服务端也会返回 `VIDEO_COMPOSER_UNAVAILABLE`，不会提交付费分镜。WorkBuddy 需重新安装依赖并部署后才会应用这些变更。
 - Linux 的原 Windows DPAPI 文件无法解密，使用本目录的加密部署备份及 `ZHJ_DEPLOYMENT_KEY`。
 
 更新本地服务配置后，可以运行 `node tools/sync-deployment-config.mjs Hunforfee/zhijing-studio` 重新加密备份、更新仓库 Secret，然后提交更新的 `deploy/` 文件。

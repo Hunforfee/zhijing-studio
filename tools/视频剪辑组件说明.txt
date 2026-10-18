@@ -1,5 +1,14 @@
 视频内容创作使用本机 FFmpeg 剪辑、归一化与烧录中文字幕。
 
+云服务器 / Node 托管平台：
+在运行网站的服务器执行 npm ci，再执行 npm run check:video，检查通过后 npm start。
+项目依赖 ffmpeg-static 5.3.0 会安装目标平台对应的 FFmpeg，必须允许依赖安装脚本及其下载网络。
+检测同时支持系统 PATH 中的 ffmpeg 和 FFMPEG_PATH 指定的程序；会验证可执行性和必要的编码、字幕功能。
+Linux 可预装系统 ffmpeg 与中文字体（fonts-noto-cjk），并设置 FFMPEG_PATH=/usr/bin/ffmpeg。
+仓库 Dockerfile 已提供此部署方式。不要把 Windows .exe 或本机 node_modules 复制到 Linux。
+先检查组件再提交创意分镜图，组件缺失时不调用付费生成。稳定运镜不需要视频 API 密钥。
+ffmpeg-static 官方来源与二进制安装说明：https://github.com/eugeneware/ffmpeg-static
+
 当前安装：tools/video-python/imageio_ffmpeg/binaries/ffmpeg-win-x86_64-v7.1.exe
 来源：imageio-ffmpeg 0.6.0（Python 包，附带 FFmpeg 程序及许可资料）。
 

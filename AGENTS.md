@@ -1,5 +1,7 @@
 # 系统推荐的长期约定
 
+2026-10-18 云端视频提交失败定位为 compositionReady=false。video-runtime.mjs 支持显式 FFMPEG_PATH、本机旧 Windows 安装、系统 PATH 和 npm ffmpeg-static 平台程序，并运行可执行性及 H.264/AAC/ASS/zoompan 功能检查。云端需 npm ci 安装依赖或使用 Dockerfile 的系统 FFmpeg+中文字体；不将本机依赖目录或可执行程序上传 Git。dist/video-request.js 在分镜提交和确认成片前检查 readiness，显示具体网关/上传/组件错误；稳定运镜不可强制要求视频 API key。缺组件时后台仍拦截付费分镜。回归使用模拟接口和本地 FFmpeg，不调用付费生成。
+
 2026-10-18 用户最新要求恢复网站默认素材到 Git，覆盖此前“所有位图均不上传”的范围。允许的内置面料、场景、产品机位、工艺和默认褶皱参考以 tools/builtin-assets.json 清单及 .gitignore 逐文件例外为准；用户上传、生成图片视频、素材源文件、历史备份及凭据继续排除。新增内置素材需同时更新清单哈希与忽略例外。部署需保留这些文件，可运行 node tools/check-builtin-assets.mjs --http 验证，不调用付费生成服务。
 
 2026-10-18 云端域名来源校验使用 request-source.mjs，网站地址保存在 deploy/site-config.json，PUBLIC_ORIGIN 环境变量可覆盖；需精确匹配浏览器 Origin，不能用图片 API 地址，也不能用任意客户端转发头放行。仍保留本机同源请求、提示词后台仅本机及分享访客不能改密钥的限制。request-source-test.mjs 通过真实 HTTP 路由与空参数验证云端可进入参数校验、外站被拒绝，不为测试生成付费图片。
