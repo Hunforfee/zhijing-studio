@@ -1,0 +1,630 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "path": "dist/assets/angle-details-atlas.png",
+      "bytes": 2139943,
+      "sha256": "d89a14396ea7de92ec2b167c549bb4f9544a7bccd68d820f0dba59f5bb836583"
+    },
+    {
+      "path": "dist/assets/angle-photography-atlas.png",
+      "bytes": 2689813,
+      "sha256": "41f816f4a86a74809382929b0fe9f816a1e7911cf6280fa6ab41271c4f35e12a"
+    },
+    {
+      "path": "dist/assets/bedding-scenes.png",
+      "bytes": 2755316,
+      "sha256": "1b4fe87a7e796ae9d7aebf8d0254b88198532ee322e763c633d5fd7d62980c66"
+    },
+    {
+      "path": "dist/assets/blanket-angles-v1.jpg",
+      "bytes": 384876,
+      "sha256": "5b4cc021b2573c74c751b01510add001799543d093edeb8f9f7300463e635bfb"
+    },
+    {
+      "path": "dist/assets/blanket-cloud-angles-v1.jpg",
+      "bytes": 460577,
+      "sha256": "a72f96054096a2afd588d12d8ad076930383b2bd5aef7a4e817802f2a2286cd2"
+    },
+    {
+      "path": "dist/assets/blanket-fleece-angles-v1.jpg",
+      "bytes": 384876,
+      "sha256": "5b4cc021b2573c74c751b01510add001799543d093edeb8f9f7300463e635bfb"
+    },
+    {
+      "path": "dist/assets/blanket-gauze-angles-v1.png",
+      "bytes": 2576014,
+      "sha256": "2242a5f42ad44284be7784216794ebf3c2671f532681e3fe807f2a07bec8cd2f"
+    },
+    {
+      "path": "dist/assets/blanket-milk-angles-v1.jpg",
+      "bytes": 463488,
+      "sha256": "5f509c7f544d289246ce33e789378ea4d0e2e4116ffe626afa2a1fd00cba4179"
+    },
+    {
+      "path": "dist/assets/crafts/binding.png",
+      "bytes": 9756,
+      "sha256": "ccf6af1c2da527ef12e48fe7dbfaedeee3feaa76c3d834c7f9f85273d57a6c0a"
+    },
+    {
+      "path": "dist/assets/crafts/coverlet.png",
+      "bytes": 11644,
+      "sha256": "77f88dc4809eb3a67d3e440ba25e126a0958813583e1c4ed4f3c049862d26a1e"
+    },
+    {
+      "path": "dist/assets/crafts/fitted.png",
+      "bytes": 13620,
+      "sha256": "a77b588c9382f4313fc6d69154386d5d073e1f4e3091d8e3dd2b06ae52b33f8e"
+    },
+    {
+      "path": "dist/assets/crafts/lace.png",
+      "bytes": 13448,
+      "sha256": "cd5ba2f06e08981e73c241ab8f4465b3db18a8078e1a6b4fffd9b9e30c5148e4"
+    },
+    {
+      "path": "dist/assets/crafts/narrow-flange.png",
+      "bytes": 20622,
+      "sha256": "7420678a8bcc0446d83c2e8573da008e1b6c56dfe51abad4c7ac1bdfea90b9c9"
+    },
+    {
+      "path": "dist/assets/crafts/piping.png",
+      "bytes": 9011,
+      "sha256": "082d28d48058a2766cf71df2ecdd5da832958c185e9f9a0902b66b0d79e5dc32"
+    },
+    {
+      "path": "dist/assets/crafts/pleated-skirt.png",
+      "bytes": 12242,
+      "sha256": "5e2ce9dde04ab093b399756e75db3e486f85af4f452e156ce9c8fcfad9131632"
+    },
+    {
+      "path": "dist/assets/crafts/ruffle-skirt.png",
+      "bytes": 11788,
+      "sha256": "38bf6ef3262b1585f5f8eea795ff28896a156f893166a760a496bf69049aec0d"
+    },
+    {
+      "path": "dist/assets/crafts/ruffle.png",
+      "bytes": 15860,
+      "sha256": "540d9e552f6d7c8c1aadc0761724a5e38162a7ee0a4e506166b3aff14550e765"
+    },
+    {
+      "path": "dist/assets/crafts/scallop.png",
+      "bytes": 12104,
+      "sha256": "c3812bee7701f81463ab6796133005dee4c7a181fa8b771d3417680795f9b3a4"
+    },
+    {
+      "path": "dist/assets/crafts/skirt.png",
+      "bytes": 11590,
+      "sha256": "0956b1d170e4cef58cc889204c8c7e97d07b7672eb4e613574644e0369621158"
+    },
+    {
+      "path": "dist/assets/crafts/wide-flange.png",
+      "bytes": 20885,
+      "sha256": "02b2b0c701e3696b674b662769140ad79ce1f924c3e1bd04455e1452c45bc025"
+    },
+    {
+      "path": "dist/assets/fabrics/brushed.png",
+      "bytes": 2353206,
+      "sha256": "997df7af58fce996fd7a9e1802a26495ed65e27f6a815cbc182af52427d42adc"
+    },
+    {
+      "path": "dist/assets/fabrics/cotton.png",
+      "bytes": 2527786,
+      "sha256": "d8fd19226addedc5467ec821ce7b5b7017f802bf4185ce0eae19b55464bfd788"
+    },
+    {
+      "path": "dist/assets/fabrics/gloss-bright.jpg",
+      "bytes": 17512,
+      "sha256": "0e128cd78ced099bc6b907875654a8ef10763d2c0ff5218c11c8b098065bfdbf"
+    },
+    {
+      "path": "dist/assets/fabrics/gloss-bright.png",
+      "bytes": 2567113,
+      "sha256": "ed7ba66cd211d9c8f285e1b32315b00801578d08b341caf2e5c0c9df7f3e3ccc"
+    },
+    {
+      "path": "dist/assets/fabrics/gloss-matte.jpg",
+      "bytes": 22502,
+      "sha256": "4cb12490e125cd5cf0e3f5e0c5c2490a31ad2b5e4c9196984234a0fb485df313"
+    },
+    {
+      "path": "dist/assets/fabrics/gloss-matte.png",
+      "bytes": 2676712,
+      "sha256": "2c5284c8fa4b02c3e4df396e0b7c7449f42db120e57d01cd20c0f6fab4a7ad69"
+    },
+    {
+      "path": "dist/assets/fabrics/gloss-micro.jpg",
+      "bytes": 26634,
+      "sha256": "945109ed5acf88a7f71fac84e3c0cb384da92bd28e6f2d5cf8db4e695d2bbcfd"
+    },
+    {
+      "path": "dist/assets/fabrics/gloss-micro.png",
+      "bytes": 3052862,
+      "sha256": "d281fbe289a7c24030be7265825f1e1abd8893dd9ba5888ca593d04ab7b99342"
+    },
+    {
+      "path": "dist/assets/fabrics/gloss-soft.jpg",
+      "bytes": 19189,
+      "sha256": "5593c8e4308a67144ee30f7723dcc6a63005cee6c7be276583c7d89946856266"
+    },
+    {
+      "path": "dist/assets/fabrics/gloss-soft.png",
+      "bytes": 2740709,
+      "sha256": "2af500c7d3b004929303f2f9194494fb239fb2bea85710a585ac847d3790512c"
+    },
+    {
+      "path": "dist/assets/fabrics/jacquard.png",
+      "bytes": 2981773,
+      "sha256": "cdbc8d29708cf2e7b2e6b2994dd8d4fbc5291bfed1715459020f12a8536f4d9c"
+    },
+    {
+      "path": "dist/assets/fabrics/linen.png",
+      "bytes": 3145200,
+      "sha256": "4d1d6906e34e72d22d3f6c63aee22503a32d80f3b25b2a2612f28a57f47118cd"
+    },
+    {
+      "path": "dist/assets/fabrics/pile-dense.jpg",
+      "bytes": 23643,
+      "sha256": "447b44be8af23465ae0365299d7c1c63c41ebea315647187a88db2f4409087b8"
+    },
+    {
+      "path": "dist/assets/fabrics/pile-dense.png",
+      "bytes": 2665546,
+      "sha256": "a6d89b6f56edc493518884a5778be45bed8002e44736e34cb3bb7d197ec6b0a5"
+    },
+    {
+      "path": "dist/assets/fabrics/pile-fluffy.jpg",
+      "bytes": 20538,
+      "sha256": "1cf1dc853854fa752f3bfefd413d6eba274182c345c6101510c4493c5f1f9513"
+    },
+    {
+      "path": "dist/assets/fabrics/pile-fluffy.png",
+      "bytes": 2235319,
+      "sha256": "7b64decb0538f6797b5ac6a6ce98ba453ac5d3eba08a2434b1a4a0a3f5293f8e"
+    },
+    {
+      "path": "dist/assets/fabrics/pile-long.jpg",
+      "bytes": 24303,
+      "sha256": "c5a7e355630a129efd295c5b4bceac18bfd89640e086f7fba4daa675a14af7f2"
+    },
+    {
+      "path": "dist/assets/fabrics/pile-long.png",
+      "bytes": 2772343,
+      "sha256": "600eca18d5c6fe2baa2870c31d37b65adc299e3d361d2fa7e90f3fae1526e416"
+    },
+    {
+      "path": "dist/assets/fabrics/pile-none.jpg",
+      "bytes": 24483,
+      "sha256": "daa1bb6d0858c7ec6b2f0a501ec3b5dd5a6daf31cbbe1e45689e59bef562f33b"
+    },
+    {
+      "path": "dist/assets/fabrics/pile-none.png",
+      "bytes": 2923815,
+      "sha256": "84522357445bb64fa1c5389d2c1f5668d281f5e22e2cdf779574a94e22a19020"
+    },
+    {
+      "path": "dist/assets/fabrics/pile-peach.jpg",
+      "bytes": 20655,
+      "sha256": "aea2b93cd04f866940dd08d6f943e8e2ee7976b2837e6821076ed93b7fdf1504"
+    },
+    {
+      "path": "dist/assets/fabrics/pile-peach.png",
+      "bytes": 2639139,
+      "sha256": "a952d9b5d31450a27f8db36a2f0c7c8a8c5a205fa8d3c710a2d9618fbcdc85dc"
+    },
+    {
+      "path": "dist/assets/fabrics/pile-short.jpg",
+      "bytes": 25477,
+      "sha256": "34c9b2a705405734e3846175579824843a309cee884cc8d9bd9a14ec959648b2"
+    },
+    {
+      "path": "dist/assets/fabrics/pile-short.png",
+      "bytes": 2511364,
+      "sha256": "baf888dc3b51975dfc64445fc34c299039a873dcd648098ecbcc6e7ad7eb6ac5"
+    },
+    {
+      "path": "dist/assets/fabrics/satin.png",
+      "bytes": 2516043,
+      "sha256": "ba16fb7cfe691926e7b78d3f699360d807139cbce686865f811ce11e63b2901f"
+    },
+    {
+      "path": "dist/assets/fabrics/silk.png",
+      "bytes": 2625118,
+      "sha256": "332cc5dbe81c89ddfe470780c0eba046ff6de65b1f93a0c9c3c3f8653bf64eca"
+    },
+    {
+      "path": "dist/assets/fabrics/smooth-fine.jpg",
+      "bytes": 426068,
+      "sha256": "f97a7b89f7aaedc4ea416cb01e56eb118375ff8b809af263c3323dff4c1e6f8b"
+    },
+    {
+      "path": "dist/assets/fabrics/smooth-fine.png",
+      "bytes": 3242052,
+      "sha256": "0e18a80357d807fb0bd7554d4be1d44b823f975cf551785d67c849d2479a3373"
+    },
+    {
+      "path": "dist/assets/fabrics/smooth-flow.jpg",
+      "bytes": 327991,
+      "sha256": "082c04f181397364541e9d8adcbeb6a73f11e64f5577e0465f968e6b75493d80"
+    },
+    {
+      "path": "dist/assets/fabrics/smooth-flow.png",
+      "bytes": 2792077,
+      "sha256": "6c9fda271d60eb30a5c607763cb5efc323a3d8a498a49b1e2c41bf0bd29cf1ed"
+    },
+    {
+      "path": "dist/assets/fabrics/smooth-micro.jpg",
+      "bytes": 342809,
+      "sha256": "6299e6bbddb98bdd5a090ed12a5d893e1e41db4fbfa5edea60de8d35d8d4a323"
+    },
+    {
+      "path": "dist/assets/fabrics/smooth-micro.png",
+      "bytes": 2756916,
+      "sha256": "6e3e84106feadfd2337bb017bff42f3a712441cf58362b59e3960bbb38880b5e"
+    },
+    {
+      "path": "dist/assets/fabrics/smooth-premium.jpg",
+      "bytes": 294866,
+      "sha256": "3cf441995de2d38dd8846d7eddb8a32441736f359ab874b226d94e65b6d7fed0"
+    },
+    {
+      "path": "dist/assets/fabrics/smooth-premium.png",
+      "bytes": 2743943,
+      "sha256": "8f3757972c63dc95f01a57a3744ce87a242e0081fc4ce28dd7e668ca56fdd86b"
+    },
+    {
+      "path": "dist/assets/fabrics/smooth-silk.jpg",
+      "bytes": 322862,
+      "sha256": "0b7ecd510a9536f5b8253465b01afe45d8a99221543f3a9ec4088e94d3409a5b"
+    },
+    {
+      "path": "dist/assets/fabrics/smooth-silk.png",
+      "bytes": 2866646,
+      "sha256": "830ed6d66f9a797834e2f45a75e121cdeb38bccea29d65d7fe6e2ab248714e60"
+    },
+    {
+      "path": "dist/assets/fabrics/tencel.png",
+      "bytes": 2709162,
+      "sha256": "b804642aa100fdbe632ce6e4059afb417ba3ed40c6e8ad19df810c91350c3867"
+    },
+    {
+      "path": "dist/assets/fabrics/velvet.png",
+      "bytes": 2136399,
+      "sha256": "1b3416afb2e20641aa6ac6baec7ec3eeb4f0554dbe1c1916cee8191f96d3b202"
+    },
+    {
+      "path": "dist/assets/fabrics/washed.png",
+      "bytes": 2502234,
+      "sha256": "3772f614916b5886df4e817b891bbc7e1e1dfce0996e5fd206b366352df72df9"
+    },
+    {
+      "path": "dist/assets/fabrics/weave-jacquard.jpg",
+      "bytes": 24836,
+      "sha256": "dfa17c35ce9a288191b55b6cae7a2efe9fe1aa7de704d12dd039f1d1e0f52664"
+    },
+    {
+      "path": "dist/assets/fabrics/weave-jacquard.png",
+      "bytes": 3175112,
+      "sha256": "8f8c38dddfd97113be20b6a9c0313ea33f20c02443aa2d48ec0e82d3e5e73224"
+    },
+    {
+      "path": "dist/assets/fabrics/weave-plain.jpg",
+      "bytes": 24969,
+      "sha256": "8badfb277a98ba938b2e818047fdfee6292d72e650126d0529d0a8950defe03e"
+    },
+    {
+      "path": "dist/assets/fabrics/weave-plain.png",
+      "bytes": 2534380,
+      "sha256": "f9ee0ffd9e783b487e441b994441650a1b0f94439f8f7f6ce8d3fc54ed308388"
+    },
+    {
+      "path": "dist/assets/fabrics/weave-slub.jpg",
+      "bytes": 29677,
+      "sha256": "1fc6a40b0584efa2491a6bc992a878bf778a259f34fad9f71ae0213cecedda8e"
+    },
+    {
+      "path": "dist/assets/fabrics/weave-slub.png",
+      "bytes": 3227300,
+      "sha256": "2432306dadc1c4e3e186dcf4d66657de3096bbbc3f05efea1359dcbf8d500d5d"
+    },
+    {
+      "path": "dist/assets/fabrics/weave-twill.jpg",
+      "bytes": 21724,
+      "sha256": "c78a7c316abf2b6b4fecb276cb21e001a37407543eaa2f4362cfbd4260a01ea0"
+    },
+    {
+      "path": "dist/assets/fabrics/weave-twill.png",
+      "bytes": 2590011,
+      "sha256": "f78595f81c3a92c3f69a5c484410d1becafabd6d43769ca1c67ef7c01df92b2d"
+    },
+    {
+      "path": "dist/assets/fabrics/weave-waffle.jpg",
+      "bytes": 27347,
+      "sha256": "c883c23f839b238abfc2a1bd5f08e4c297318009a11e01a85fa29fe4bbc6a96a"
+    },
+    {
+      "path": "dist/assets/fabrics/weave-waffle.png",
+      "bytes": 2762211,
+      "sha256": "4e7251c5375c66043d359cf23cf38ac418aaaf1a015c0e4ceb381325a4c8d8cb"
+    },
+    {
+      "path": "dist/assets/fabrics/wrinkle-flat.jpg",
+      "bytes": 19979,
+      "sha256": "e166f40a7f8f7585a8b272e61761091851b3504df018d748efa1484c6ac75edd"
+    },
+    {
+      "path": "dist/assets/fabrics/wrinkle-flat.png",
+      "bytes": 3052998,
+      "sha256": "78cd6244bf97770d5f0a684021e19780ddf3bd22ca8f9144f5f706008ecf7fe4"
+    },
+    {
+      "path": "dist/assets/fabrics/wrinkle-light.jpg",
+      "bytes": 15217,
+      "sha256": "d68f30c148351f2051f3b3f22ae449df26a47ca170aa5fbc2f1bdb4ebeb5b924"
+    },
+    {
+      "path": "dist/assets/fabrics/wrinkle-light.png",
+      "bytes": 3211349,
+      "sha256": "e018ee62a7dc4c53281df0d69ade92c1181602a5926d278fe7c0dd9ccda48a42"
+    },
+    {
+      "path": "dist/assets/fabrics/wrinkle-natural.jpg",
+      "bytes": 18570,
+      "sha256": "0fcd3995fc865d901e39f8f2e2a99fb3231222ea53ee03c6ae062ea838ee2f90"
+    },
+    {
+      "path": "dist/assets/fabrics/wrinkle-natural.png",
+      "bytes": 3317501,
+      "sha256": "6e242a65fef57d0e71f86ca8e725e61008811768868467865cbd78b71462baac"
+    },
+    {
+      "path": "dist/assets/fabrics/wrinkle-strong.jpg",
+      "bytes": 25699,
+      "sha256": "a77d1d0513622f06e0b1a6972eddc2d896c80a7c493cb2b49a2c0516d4f5a2b4"
+    },
+    {
+      "path": "dist/assets/fabrics/wrinkle-strong.png",
+      "bytes": 3082449,
+      "sha256": "dbba49c01b7e85a1de0b30401112d86d2b6abaadf20883ab20a121aca0d830e0"
+    },
+    {
+      "path": "dist/assets/mat-bamboo-angles-v1.png",
+      "bytes": 2408928,
+      "sha256": "5029dc5573a7ff25d5472fcaf7b7fad4a84e66c8e76ef0834e5fbe790a2f959a"
+    },
+    {
+      "path": "dist/assets/mat-ice-angles-v1.png",
+      "bytes": 2574255,
+      "sha256": "336ee6e8f2a0e6c27c660bbc2d63bbc4a946eb51b8dec88e606650300ddb3811"
+    },
+    {
+      "path": "dist/assets/mat-rattan-angles-v1.png",
+      "bytes": 2586028,
+      "sha256": "1fc7a587e9a2019ee1f5e10c52f6410f399f0182d3c787ce9716f0d57b368e34"
+    },
+    {
+      "path": "dist/assets/mattress-foam-angles-v2.png",
+      "bytes": 2233570,
+      "sha256": "a98d054cc40ad45da0d7f1b3b6e6d7e79d37646c646d2fda446c5ccf84d22c9b"
+    },
+    {
+      "path": "dist/assets/mattress-padded-angles-v2.png",
+      "bytes": 2139679,
+      "sha256": "d06b38be01cda58929067859918cbfab1c0b3898f2252479d00b682b68f18ae5"
+    },
+    {
+      "path": "dist/assets/mattress-thin-angles-v2.png",
+      "bytes": 2257943,
+      "sha256": "1acb4bcd8b678b50c5bd484e4b420bc5c1e7c4877dbeb86f7e0a39f8c0e3ca0c"
+    },
+    {
+      "path": "dist/assets/pillowcore-adjustable-angles.svg",
+      "bytes": 6719,
+      "sha256": "7c76cfd66b276ffd2fef0e88143ee73da8a24bc722c586ae2a77137b3b187044"
+    },
+    {
+      "path": "dist/assets/pillowcore-buckwheat-angles.svg",
+      "bytes": 7571,
+      "sha256": "68947f747a60a4831fc37a536e5181685ab360138647f49786e1f7224c41ce35"
+    },
+    {
+      "path": "dist/assets/pillowcore-cassia-angles.svg",
+      "bytes": 7571,
+      "sha256": "68947f747a60a4831fc37a536e5181685ab360138647f49786e1f7224c41ce35"
+    },
+    {
+      "path": "dist/assets/pillowcore-down-angles.svg",
+      "bytes": 6719,
+      "sha256": "7c76cfd66b276ffd2fef0e88143ee73da8a24bc722c586ae2a77137b3b187044"
+    },
+    {
+      "path": "dist/assets/pillowcore-fiber-angles.svg",
+      "bytes": 6719,
+      "sha256": "7c76cfd66b276ffd2fef0e88143ee73da8a24bc722c586ae2a77137b3b187044"
+    },
+    {
+      "path": "dist/assets/pillowcore-gel-angles.svg",
+      "bytes": 7797,
+      "sha256": "c923958ccad43e43dda81db0e633ce5d4149beeb421b85003ee26a385ecd32b2"
+    },
+    {
+      "path": "dist/assets/pillowcore-latex-angles.svg",
+      "bytes": 7797,
+      "sha256": "c923958ccad43e43dda81db0e633ce5d4149beeb421b85003ee26a385ecd32b2"
+    },
+    {
+      "path": "dist/assets/pillowcore-memory-angles.svg",
+      "bytes": 7797,
+      "sha256": "c923958ccad43e43dda81db0e633ce5d4149beeb421b85003ee26a385ecd32b2"
+    },
+    {
+      "path": "dist/assets/pillowcore-soy-angles.svg",
+      "bytes": 6719,
+      "sha256": "7c76cfd66b276ffd2fef0e88143ee73da8a24bc722c586ae2a77137b3b187044"
+    },
+    {
+      "path": "dist/assets/quilt-summer-angles-v3-framed.png",
+      "bytes": 2517225,
+      "sha256": "ba67befa4b3876deb98169610fac32c186723fcbbac15071fc23bb3a84663acd"
+    },
+    {
+      "path": "dist/assets/quilt-winter-angles-v3-framed.png",
+      "bytes": 2468867,
+      "sha256": "a5d1b97fbdea700de14b0201481710cd69e5995784cfeaa91fceb6577a8be0ec"
+    },
+    {
+      "path": "dist/assets/scene-photos/childbed-v1.png",
+      "bytes": 2483580,
+      "sha256": "cb30c16a3aa9f0e3fae3eb4c0d1fe2495d738824a93b1f6b58e94d7e55f27ec3"
+    },
+    {
+      "path": "dist/assets/scene-photos/french-v1.png",
+      "bytes": 2450899,
+      "sha256": "b8b5ed7e19cffe5e62fc5645e3860592dc054f7958dae05e71a3d1bf74a2184f"
+    },
+    {
+      "path": "dist/assets/scene-photos/hotel-v1.png",
+      "bytes": 2681884,
+      "sha256": "0b3879f5b995260d4c1560b502ae7ec70a483b21134cd41d2d9e6093ec662530"
+    },
+    {
+      "path": "dist/assets/scene-photos/kids-v1.png",
+      "bytes": 2609917,
+      "sha256": "dc3bc7bb8b807a4f2b719c5abce3a35077b5fd459ec94659cf9a3c337d55c32c"
+    },
+    {
+      "path": "dist/assets/scene-photos/minimal-v1.png",
+      "bytes": 2521169,
+      "sha256": "1ce5f9f44ae83fcc262a9132e7a4260c776e5b99f20d52cab30b55a7b4d1bbc9"
+    },
+    {
+      "path": "dist/assets/scene-photos/natural-v1.png",
+      "bytes": 2520139,
+      "sha256": "c86c99e4b8b1c224021344c51ced769caf9568aebe870b880a0cf6882baab125"
+    },
+    {
+      "path": "dist/assets/scene-photos/outdoor-v1.png",
+      "bytes": 2975724,
+      "sha256": "5169aec6921aec29b07896c7942d6896685d2b9468b1c05d7bc6b78dd6b2ea8d"
+    },
+    {
+      "path": "dist/assets/scene-photos/studio-v1.png",
+      "bytes": 1836171,
+      "sha256": "a40bc3edf80ce582846e540aa790364d1d86c02a21cc239258c35de3838f6878"
+    },
+    {
+      "path": "dist/assets/scene-photos/terrace-v1.png",
+      "bytes": 2677064,
+      "sha256": "79aeaff4b6f3768bea262cd76dc8f159d25a47ab0fff6631de7697bac075b9c0"
+    },
+    {
+      "path": "dist/assets/scene-photos/warm-v1.png",
+      "bytes": 2745281,
+      "sha256": "92eb3208cc6c04fbc5674f3ee55ec05ff964daae7116e10da60c313409d143f1"
+    },
+    {
+      "path": "dist/assets/scene-thumbs/childbed.svg",
+      "bytes": 709,
+      "sha256": "e31e0592105d8a90ab4698d7100e902e340a5e634ea68e8d59176c1e017d2b17"
+    },
+    {
+      "path": "dist/assets/scene-thumbs/french.svg",
+      "bytes": 571,
+      "sha256": "be80a5e770db72100825db412ebe88cd940ad0480246391ab75baa058355bdde"
+    },
+    {
+      "path": "dist/assets/scene-thumbs/hotel.svg",
+      "bytes": 613,
+      "sha256": "c7633b77a61dd139f89ffa5d6088ba15b976ee56761e6a128739c00a300a77c4"
+    },
+    {
+      "path": "dist/assets/scene-thumbs/kids.svg",
+      "bytes": 613,
+      "sha256": "4126e4491bfa9437a68010d5f9deeb64cf7fc740871e72ca181614882fefa5cf"
+    },
+    {
+      "path": "dist/assets/scene-thumbs/minimal.svg",
+      "bytes": 613,
+      "sha256": "9a288e9b8ab49f596d575537ef72457294d17ea24d18a9d3b96abab0d506ffdd"
+    },
+    {
+      "path": "dist/assets/scene-thumbs/natural.svg",
+      "bytes": 613,
+      "sha256": "980ac52917dd351ffa914ec5bdefac25b024b45e88dc41c7b2793336517374bd"
+    },
+    {
+      "path": "dist/assets/scene-thumbs/outdoor.svg",
+      "bytes": 557,
+      "sha256": "e7beeb65d0b2f2e236258570e4bf8b19cb5d01ddae3450b778399a4372847b4e"
+    },
+    {
+      "path": "dist/assets/scene-thumbs/studio.svg",
+      "bytes": 613,
+      "sha256": "87ab3608ad5e66a10f8ec45e2950367e7082ab98cd9bbc97dc6da69806995a3d"
+    },
+    {
+      "path": "dist/assets/scene-thumbs/terrace.svg",
+      "bytes": 557,
+      "sha256": "b66f5a9ee80a9b63c0d51208303450c350f4b1ad0949abe2400d75447ff16244"
+    },
+    {
+      "path": "dist/assets/scene-thumbs/warm.svg",
+      "bytes": 613,
+      "sha256": "7df794ceff4259e7db3ac1147f9dfc8b0ff7f95d37bb986f15a99d6a4daa1aa7"
+    },
+    {
+      "path": "dist/assets/set-angles-v21-left-diagonal.png",
+      "bytes": 12201208,
+      "sha256": "fc013328fd4ff57fcd4f2451f07d41f8bdc24a3337a3dbb8f9f0f7bd4c502865"
+    },
+    {
+      "path": "dist/assets/set-framed-angles-v2-printed.png",
+      "bytes": 2769404,
+      "sha256": "edc38b0c09f291c90e33e351ffb2a94be9144461c5f3c0062f137c117160978d"
+    },
+    {
+      "path": "dist/assets/set-framed-angles-v3-approved-front.png",
+      "bytes": 2774811,
+      "sha256": "9a155325f0e97bf0ad5bc30924d6f9a4c4ba32fb87048e868df173cd0a347541"
+    },
+    {
+      "path": "dist/assets/set-framed-angles-v4-floral-front.png",
+      "bytes": 2790887,
+      "sha256": "b4f3f022af70e43b945e079ddfb3fbf77c30f7e44c22476b4d2807d99da22f93"
+    },
+    {
+      "path": "dist/assets/sheet-fitted-angles-v3-framed.png",
+      "bytes": 2383370,
+      "sha256": "1bf39386bac0382886a791970d4d1406687d946c6b6263297a244588d329fd3f"
+    },
+    {
+      "path": "dist/assets/sheet-flat-angles-v3-framed.png",
+      "bytes": 2258402,
+      "sha256": "ca957a522971d48ae37f0d3ed96e3f40f16f562a3bbf8edecb1dc749d4b5fc4b"
+    },
+    {
+      "path": "dist/assets/sheet-quilted-angles-v3-framed.png",
+      "bytes": 2519496,
+      "sha256": "bffee5bf8b173c97ac274d6ff865b950f0536055569ece8784801a1d8ca2ac5c"
+    },
+    {
+      "path": "dist/assets/sleepbag-travel-angles-v2.png",
+      "bytes": 2132832,
+      "sha256": "bb98f0714b67227addbbed1e999d6c650f71ca5c69ce6b6ae1a41cb8547231b1"
+    },
+    {
+      "path": "dist/assets/sleeping-mats.png",
+      "bytes": 2766794,
+      "sha256": "41954be4eef418389673c1e07f294fe40c28216dc7715634cb8f8b5bf274cd17"
+    },
+    {
+      "path": "styling-references/relaxed-fold-1.png",
+      "bytes": 1352949,
+      "sha256": "32a0ce827705f6a1dde88d71f8fe0fea361f5467e21fe15f9fdf14551102d923"
+    },
+    {
+      "path": "styling-references/relaxed-fold-2.png",
+      "bytes": 2333112,
+      "sha256": "09e27cd90176ca251a3b70888ae61e844351e29ae52bf1e0132ef4a23a050bd6"
+    }
+  ]
+}

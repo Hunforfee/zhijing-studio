@@ -2,7 +2,7 @@
 
 `service-config.enc.json` 是本地服务配置的 AES-256-GCM 加密备份，包含图片及视频各服务的密钥、模型、地址和当前所选服务。`service-settings.json` 是不含密钥的可读清单。
 
-解密密钥保存在私有仓库的 GitHub Actions Secret：`ZHJ_DEPLOYMENT_KEY`。本机另有 Windows 加密副本 `.share/deployment-sync-key.dpapi`，不进入 Git。不要把解密密钥写入代码、前端 JS 或提交历史。
+解密密钥保存在仓库的 GitHub Actions Secret：`ZHJ_DEPLOYMENT_KEY`。本机另有 Windows 加密副本 `.share/deployment-sync-key.dpapi`，不进入 Git。不要把解密密钥写入代码、前端 JS 或提交历史。
 
 ## 部署时必须设置
 
@@ -37,7 +37,7 @@ node tools/check-deployment-config.mjs --network
 - Node.js 22 或更新版本。
 - 后端默认监听 `127.0.0.1:4173`，云服务器应通过带访问控制的 HTTPS 反向代理转发；还需提供目标域名和服务器/平台信息才能完成上线配置。
 - 托管平台如要求监听所有网卡，可设置 `HOST=0.0.0.0`，同时使用平台的访问控制。`PORT` 沿用平台注入的端口。
-- 原素材库此前按要求未上传。角度、面料与场景预览及相关参考文件应从本机另外恢复，不包含用户生成记录。
+- 内置面料、场景、产品机位、工艺示意和默认褶皱参考已随仓库提供。部署时须保留 `dist/assets/` 和清单中的两个 `styling-references/` 文件；不要在构建时只复制 JS/CSS。可运行 `node tools/check-builtin-assets.mjs --http` 验证完整性。用户上传、生成图片视频、原始素材源文件和旧版备份仍不入 Git。
 - 视频剪辑需要本机 FFmpeg，按 `tools/视频剪辑组件说明.txt` 安装，或用 `FFMPEG_PATH` 指定服务器程序。
 - Linux 的原 Windows DPAPI 文件无法解密，使用本目录的加密部署备份及 `ZHJ_DEPLOYMENT_KEY`。
 

@@ -7,7 +7,7 @@ const id='11111111-1111-1111-1111-111111111111';
 test('shared website loads every frontend module and material thumbnail while private source stays unavailable',()=>fixture(async({base,auth,calls})=>{
   const html=await readFile('dist/index.html','utf8');
   const scripts=[...html.matchAll(/<script[^>]+src="([^"]+)"/g)].map(m=>m[1]);
-  for(const file of [...scripts,'/pattern-color.js','/camera-contract.js','/assets/fabrics/cotton.png','/assets/sheet-fitted-angles-v3-framed.png'])assert.equal((await fetch(base+file,{headers:auth})).status,200,file);
+  for(const file of [...scripts,'/pattern-color.js','/camera-contract.js','/assets/fabrics/cotton.png','/assets/sheet-fitted-angles-v3-framed.png','/assets/scene-photos/warm-v1.png','/assets/scene-thumbs/warm.svg','/assets/crafts/wide-flange.png'])assert.equal((await fetch(base+file,{headers:auth})).status,200,file);
   const forwarded=calls.length;
   for(const file of ['/server.mjs','/secure-service-store.mjs','/.share/service-config.dpapi','/assets/fabrics/nested/private.png'])assert.equal((await fetch(base+file,{headers:auth})).status,404,file);
   assert.equal(calls.length,forwarded);
