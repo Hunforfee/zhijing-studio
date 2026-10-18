@@ -23,6 +23,7 @@ import {textureIds,materialPriority} from './material-priority.mjs';
 import './dist/fabric-library.js';
 import {loadServiceConfig,saveServiceConfig} from './secure-service-store.mjs';
 import {loadDeploymentConfiguration} from './deployment-config.mjs';
+import {createFreeCreation} from './free-creation.mjs';
 import {createRequestSourcePolicy,deploymentPublicOrigin} from './request-source.mjs';
 import {serviceProfiles,savedServiceProfiles} from './service-profiles.mjs';
 import {zhipuJson,zhipuImage} from './zhipu-response.mjs';
@@ -250,11 +251,21 @@ export function createServer(options={}) {
     const [id,task]=entry;pendingGenerations.delete(id);const job=jobs.get(id);
     if(job.cancelled){drainGenerations();return;}
     job.status='running';job.started=Date.now();job.message=task.kind==='edit'?'正在准备编辑':'花型已就绪，正在安排拍摄';
-    if(task.kind==='detail')void runDetail(job,task);
+    if(task.kind==='free')void task.run(job).catch(error=>{job.status='error';job.message='自由创作记录保存失败，请检查服务器存储';}).finally(()=>{job.finished=Date.now();delete job.controller;drainGenerations();});
+    else if(task.kind==='detail')void runDetail(job,task);
     else if(task.kind==='edit')void runEdit(job,task.source,task.prompt,task.config,task.referenceBytes);
     else void runJob(job,task.input,task.config).finally(drainGenerations);
   }
   const history=createImageHistory(outputRoot);
+  const freeCreation=createFreeCreation({outputDir:outputRoot,fetchImpl,getConfig:()=>imageTaskConfig({...service},true),downloadImage:(url,signal)=>downloadImage(url,signal,options),getJob:id=>jobs.get(id),enqueue:task=>{
+    if(serviceUpdating)throw Object.assign(Error('图片服务配置正在保存，请稍后编辑'),{status:409});
+    if(pendingGenerations.size>=20)throw Object.assign(Error('图片编辑队列已满，请稍后再试'),{status:429});
+    const job={id:task.id,workspace:'free',status:'queued',created:Date.now(),results:[],progress:0,message:'自由创作已加入图片编辑队列',cancelled:false,controller:new AbortController()};
+    jobs.set(job.id,job);pendingGenerations.set(job.id,{kind:'free',run:task.run});drainGenerations();
+  },cancelJob:id=>{
+    const job=jobs.get(id);if(!job||!['queued','running'].includes(job.status))return;
+    job.cancelled=true;job.controller?.abort();if(job.status==='queued'){pendingGenerations.delete(id);job.status='cancelled';job.message='已取消排队';job.finished=Date.now();delete job.controller;drainGenerations();}
+  }});
   // Keep initialization errors observable by API requests without unhandled rejections.
   history.list().catch(()=>{});
   const promptEdits=createPromptEdits(options.promptEditsFile||path.join(outputRoot,'prompt-edits.json'),{products:productMap,scenes:sceneMap,angles:angleMap});
@@ -394,6 +405,7 @@ export function createServer(options={}) {
       if((/^\/admin(?:\/|\.|$)/.test(adminPath)||adminPath.startsWith('/api/admin/'))&&!localAdminRequest(req))return json(res,403,{error:'提示词后台仅限本机访问'});
       if(!['GET','HEAD','OPTIONS'].includes(req.method)&&!requestSourceAllowed(req))return json(res,403,{error:'访问来源不允许：请从已配置的网站地址打开页面；更换域名后需更新 PUBLIC_ORIGIN 并重启服务',code:'ORIGIN_NOT_ALLOWED'});
       if(await videoService.handle(req,res,pathname,body,json))return;
+      if(await freeCreation.handle(req,res,pathname,body,json))return;
       if(pathname==='/api/admin/catalog'&&req.method==='GET')return json(res,200,await inspector.catalog());
       if(pathname==='/api/admin/preview'&&req.method==='POST')return json(res,200,await inspector.preview(await body(req,16384)));
       if(pathname==='/api/admin/section-edit'&&req.method==='POST'){
@@ -568,7 +580,7 @@ export function createServer(options={}) {
         jobs.set(job.id,job);pendingGenerations.set(job.id,{input:v,config:{...service}});drainGenerations();json(res,202,{id:job.id,status:job.status});return;
       }
       if(pathname==='/api/jobs/active'&&req.method==='GET'){
-        const j=[...jobs.values()].find(j=>j.status==='running');
+        const j=[...jobs.values()].find(j=>j.status==='running'&&j.workspace!=='free');
         return json(res,200,j?{id:j.id,status:j.status,review:j.review||null}:null);
       }
       const match=pathname.match(/^\/api\/jobs\/([a-f0-9-]{36})(\/cancel)?$/);

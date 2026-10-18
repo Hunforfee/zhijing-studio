@@ -9,7 +9,7 @@ function matches(a,b){return typeof a==='string'&&a.length===b.length&&timingSaf
 function reply(res,status,data){res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(data));}
 export function createShareServer({token,backend='http://127.0.0.1:4173',getPublicOrigin=async()=>'',fetchImpl=fetch}={}){
   if(!token||token.length<32)throw Error('分享邀请凭证缺失');
-  const jobs=new Set(),videoJobs=new Set();
+  const jobs=new Set(),videoJobs=new Set(),freeDocuments=new Set();
   return http.createServer(async(req,res)=>{
     res.setHeader('Referrer-Policy','no-referrer');res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Cache-Control','no-store');
     try{
@@ -34,6 +34,13 @@ export function createShareServer({token,backend='http://127.0.0.1:4173',getPubl
       if(url.pathname==='/api/video/jobs'&&req.method==='GET'){
         const upstream=await fetchImpl(backend+'/api/video/jobs'),data=await upstream.json();return reply(res,upstream.status,{jobs:(data.jobs||[]).filter(j=>videoJobs.has(j.id))});
       }
+      if(url.pathname==='/api/free/documents'&&req.method==='GET'){
+        const upstream=await fetchImpl(backend+'/api/free/documents'),data=await upstream.json();return reply(res,upstream.status,{documents:(data.documents||[]).filter(doc=>freeDocuments.has(doc.id))});
+      }
+      const freeDocument=url.pathname.match(/^\/api\/free\/documents\/([a-f0-9-]{36})(?:\/(edit|cancel|images\/(?:original|[a-f0-9-]{36})))?$/);
+      if(freeDocument&&!freeDocuments.has(freeDocument[1]))return reply(res,404,{error:'自由创作记录不存在'});
+      const newFreeDocument=url.pathname==='/api/free/documents'&&req.method==='POST';
+      const freeRequest=newFreeDocument||freeDocument&&(['GET','HEAD'].includes(req.method)&&(!freeDocument[2]||freeDocument[2].startsWith('images/'))||req.method==='POST'&&['edit','cancel'].includes(freeDocument[2]));
       const videoJob=url.pathname.match(/^\/api\/video\/jobs\/([a-f0-9-]{36})(?:\/(cancel|content|source|resume|render|script|subtitles|shots\/[0-5]\/(?:content|frame)))?$/);
       if(videoJob&&!videoJobs.has(videoJob[1]))return reply(res,404,{error:'视频任务不存在'});
       const videoRequest=url.pathname==='/api/video/status'&&req.method==='GET'||['/api/video/jobs','/api/video/storyboard'].includes(url.pathname)&&req.method==='POST'||videoJob&&(['GET','HEAD'].includes(req.method)&&!['cancel','resume','render'].includes(videoJob[2])||req.method==='POST'&&['cancel','resume','render'].includes(videoJob[2]));
@@ -54,7 +61,7 @@ export function createShareServer({token,backend='http://127.0.0.1:4173',getPubl
       const newJob=url.pathname==='/api/jobs'&&req.method==='POST';
       const recognition=['/api/product-recognition','/api/pattern-materials/analyze'].includes(url.pathname)&&req.method==='POST'||url.pathname==='/api/product-recognition/catalog'&&req.method==='GET';
       const readJob=job&&(req.method==='GET'&&!job[2]||req.method==='POST'&&job[2]);
-      if(!(staticFile&&['GET','HEAD'].includes(req.method)||image&&req.method==='GET'||newJob||readJob||recognition||videoRequest))return reply(res,404,{error:'页面不存在'});
+      if(!(staticFile&&['GET','HEAD'].includes(req.method)||image&&req.method==='GET'||newJob||readJob||recognition||videoRequest||freeRequest))return reply(res,404,{error:'页面不存在'});
       const headers={};if(req.headers['content-type'])headers['Content-Type']=req.headers['content-type'];
       if(videoJob&&req.headers.range)headers.Range=req.headers.range;
       let body;
@@ -65,6 +72,7 @@ export function createShareServer({token,backend='http://127.0.0.1:4173',getPubl
       const upstream=await fetchImpl(backend+url.pathname,{method:req.method,headers,body,signal:AbortSignal.timeout(60000),redirect:'error'});
       const bytes=Buffer.from(await upstream.arrayBuffer());
       if(newJob&&upstream.status===202){const data=JSON.parse(bytes.toString());if(/^[a-f0-9-]{36}$/.test(data.id))jobs.add(data.id)}
+      if(newFreeDocument&&upstream.status===201){const data=JSON.parse(bytes.toString());if(/^[a-f0-9-]{36}$/.test(data.document?.id))freeDocuments.add(data.document.id)}
       if(url.pathname==='/api/video/jobs'&&req.method==='POST'&&upstream.status===202){const data=JSON.parse(bytes.toString());if(/^[a-f0-9-]{36}$/.test(data.id))videoJobs.add(data.id)}
       const responseHeaders={'Content-Type':upstream.headers.get('content-type')||'application/octet-stream'};if(videoJob)for(const name of ['content-range','accept-ranges','content-disposition']){const value=upstream.headers.get(name);if(value)responseHeaders[name]=value;}
       res.writeHead(upstream.status,responseHeaders);res.end(bytes);

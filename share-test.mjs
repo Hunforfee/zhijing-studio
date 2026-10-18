@@ -15,6 +15,7 @@ test('shared website loads every frontend module and material thumbnail while pr
 async function fixture(fn){
   const calls=[];const server=createShareServer({token,getPublicOrigin:async()=>'https://friend.example',fetchImpl:async(url,init)=>{
     calls.push({url,init});if(url.endsWith('/api/status'))return Response.json({configured:true,verified:true,provider:'sub2api',model:'gpt-image-2',baseUrl:'https://private-provider.example',apiKey:'never-expose-secret'});
+    if(url.endsWith('/api/free/documents'))return init?.method==='POST'?Response.json({document:{id}},{status:201}):Response.json({documents:[{id},{id:'22222222-2222-4222-8222-222222222222'}]});
     if(url.endsWith('/api/video/jobs'))return init?.method==='POST'?Response.json({id},{status:202}):Response.json({jobs:[{id},{id:'22222222-2222-4222-8222-222222222222'}]});
     if(url.includes('/api/video/jobs/'))return new Response('test-video',{status:206,headers:{'content-type':'video/mp4','content-range':'bytes 0-9/100','accept-ranges':'bytes'}});
     if(url.endsWith('/api/jobs'))return Response.json({id},{status:202});
@@ -25,6 +26,19 @@ async function fixture(fn){
   const auth={Cookie:'zhijing_invite='+token};
   try{await fn({base,auth,calls})}finally{await new Promise(r=>server.close(r))}
 }
+
+test('shared free creation exposes only documents created through the current invitation',()=>fixture(async({base,auth,calls})=>{
+  const requestHeaders={...auth,Origin:'https://friend.example','Content-Type':'application/json'};
+  assert.equal((await fetch(base+'/api/free/documents/'+id+'/images/original',{headers:auth})).status,404);
+  assert.equal((await fetch(base+'/api/free/documents',{method:'POST',headers:requestHeaders,body:'{}'})).status,201);
+  assert.deepEqual((await(await fetch(base+'/api/free/documents',{headers:auth})).json()).documents,[{id}]);
+  assert.equal((await fetch(base+'/api/free/documents/'+id+'/images/original',{headers:auth})).status,200);
+  assert.equal((await fetch(base+'/api/free/documents/'+id+'/edit',{method:'POST',headers:requestHeaders,body:'{}'})).status,200);
+  const count=calls.length;
+  assert.equal((await fetch(base+'/api/free/documents/22222222-2222-4222-8222-222222222222',{headers:auth})).status,404);
+  assert.equal((await fetch(base+'/api/free/documents/'+id+'/edit',{method:'POST',headers:{...auth,Origin:'https://evil.example'},body:'{}'})).status,403);
+  assert.equal(calls.length,count);
+}));
 test('public share requires invitation and sets a secure non-readable browser cookie',()=>fixture(async({base})=>{
   assert.equal((await fetch(base+'/')).status,403);
   assert.equal((await fetch(base+'/api/status')).status,403);

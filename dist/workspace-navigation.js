@@ -6,14 +6,15 @@
     '<path d="M3 6h18M3 12h18M3 18h18"/><circle cx="8" cy="6" r="2" fill="currentColor"/><circle cx="16" cy="12" r="2" fill="currentColor"/><circle cx="10" cy="18" r="2" fill="currentColor"/>',
     '<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m3 17 5-5 4 4 4-6 5 7"/>',
     '<rect x="5" y="2" width="14" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h8M8 18h5"/>',
-    '<rect x="3" y="5" width="13" height="14" rx="3"/><path d="m16 10 5-3v10l-5-3z"/>'
+    '<rect x="3" y="5" width="13" height="14" rx="3"/><path d="m16 10 5-3v10l-5-3z"/>',
+    '<path d="m4 20 4-1 12-12-3-3L5 16zM14 7l3 3M5 3v5M2.5 5.5h5M19 15v6M16 18h6"/>'
   ];
   const nav = document.createElement('nav');
   nav.className = 'floating-workspace-nav';
   nav.setAttribute('aria-label', '工作区导航');
-  const ids = ['creationPanel', 'results', 'detailPageModule', 'videoDesignModule'];
-  const names = ['拍摄设置', '图片设计', '详情设计', '视频设计'];
-  const shortNames = ['拍摄', '图片', '详情', '视频'];
+  const ids = ['creationPanel', 'results', 'detailPageModule', 'videoDesignModule', 'freeCreationWorkspace'];
+  const names = ['拍摄设置', '图片设计', '详情设计', '视频设计', '自由创作'];
+  const shortNames = ['拍摄', '图片', '详情', '视频', '自由创作'];
   nav.classList.add('workspace-docked-nav');
   const leaf = '<svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M15 16C6 17 3 11 4 5c7 0 12 4 11 11M18 17C16 8 21 3 28 3c1 7-3 13-10 14M15 20C7 18 2 22 3 27c7 3 12 0 12-7M18 21c1-6 6-9 12-8 0 7-5 12-12 8"/><path d="M16 13v17" stroke="currentColor" stroke-width="2"/></svg>';
   nav.innerHTML = `<div class="workspace-nav-brand">${leaf}</div><div class="workspace-nav-links" id="workspaceNavLinks">` + names.map((name, i) => `<a href="#${ids[i]}" aria-label="${name}" title="${name}" ${i === 0 ? 'aria-current="location"' : ''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[i]}</svg><span>${shortNames[i]}</span></a>`).join('') + '</div><div class="workspace-nav-bottom"><button type="button" id="workspaceNavSettings" title="生成服务设置" aria-label="生成服务设置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m9 3 6 0 1 3 3 1 2 5-2 5-3 1-1 3H9l-1-3-3-1-2-5 2-5 3-1z"/><circle cx="12" cy="12" r="3"/></svg><span>设置</span></button></div>';
@@ -28,7 +29,7 @@
     const guide = document.createElement('aside');
     guide.className = 'workspace-nav-guide';
     guide.setAttribute('aria-labelledby', 'workspaceNavGuideTitle');
-    const descriptions = ['选产品与花型', '预览与编辑图片', '制作商品详情页', '制作商品展示视频'];
+    const descriptions = ['选产品与花型', '预览与编辑图片', '制作商品详情页', '制作商品展示视频', '上传图片，修改场景与细节'];
     guide.innerHTML = '<button type="button" class="nav-guide-close" aria-label="关闭导航说明">×</button><h3 id="workspaceNavGuideTitle">工作区入口</h3>' + names.map((name, i) => `<div class="nav-guide-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[i]}</svg><span><strong>${name}</strong><small>${descriptions[i]}</small></span></div>`).join('') + '<button type="button" class="nav-guide-done">知道了</button>';
     document.body.append(guide);
     function dismissGuide() {
@@ -120,7 +121,7 @@
       const section = document.getElementById(id === 'videoDesignModule' ? 'videoDesignWorkspace' : id);
       if (section && section.getBoundingClientRect().top <= 48) active = i;
     });
-    if (window.scrollY > 0 && window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) active = document.getElementById('videoDesignModule') ? ids.length - 1 : 2;
+    if (window.scrollY > 0 && window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) active = ids.findLastIndex(id=>document.getElementById(id));
     nav.querySelectorAll('a').forEach(link => {
       if (link.hash === '#' + ids[active]) link.setAttribute('aria-current', 'location');
       else link.removeAttribute('aria-current');

@@ -1,5 +1,7 @@
 # 系统推荐的长期约定
 
+2026-10-18 用户要求新增左侧自由创作并先本地实现、再同步 Git。自由创作独立工作区支持上传/作品导入、六种编辑方式、辅助参考、框选、对比、下载、版本分支与刷新恢复；默认比例3:4，保留花型/工艺。dist/free-creation-policy.js 共享规则，free-creation.mjs 独立记录放 generated/free-creation/，与原图库分开；生成任务通过主图片 FIFO 排队，不能再建独立并发付费队列。pngjs 验证PNG及合成框选结果，框外必须保留当前底图的解码像素；区域修改跟随原图比例，扩图不能同时框选。用户上传及生成内容仍不入Git。接口只在点击生成后使用当前图片编辑配置，失败/重启不自动付费重试；邀请分享只允许访问本邀请创建的自由创作记录。说明在 docs/自由创作设计说明.md，回归 free-creation-test.mjs/free-creation-ui-test.mjs，不为测试付费生成。
+
 2026-10-18 云端视频提交失败定位为 compositionReady=false。video-runtime.mjs 支持显式 FFMPEG_PATH、本机旧 Windows 安装、系统 PATH 和 npm ffmpeg-static 平台程序，并运行可执行性及 H.264/AAC/ASS/zoompan 功能检查。云端需 npm ci 安装依赖或使用 Dockerfile 的系统 FFmpeg+中文字体；不将本机依赖目录或可执行程序上传 Git。dist/video-request.js 在分镜提交和确认成片前检查 readiness，显示具体网关/上传/组件错误；稳定运镜不可强制要求视频 API key。缺组件时后台仍拦截付费分镜。回归使用模拟接口和本地 FFmpeg，不调用付费生成。
 
 2026-10-18 用户最新要求恢复网站默认素材到 Git，覆盖此前“所有位图均不上传”的范围。允许的内置面料、场景、产品机位、工艺和默认褶皱参考以 tools/builtin-assets.json 清单及 .gitignore 逐文件例外为准；用户上传、生成图片视频、素材源文件、历史备份及凭据继续排除。新增内置素材需同时更新清单哈希与忽略例外。部署需保留这些文件，可运行 node tools/check-builtin-assets.mjs --http 验证，不调用付费生成服务。
