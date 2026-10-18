@@ -22,6 +22,7 @@ import {matchingPillowRule,cameraFramingRule,cameraReferenceRule,matAngleName,ma
 import {textureIds,materialPriority} from './material-priority.mjs';
 import './dist/fabric-library.js';
 import {loadServiceConfig,saveServiceConfig} from './secure-service-store.mjs';
+import {loadDeploymentConfiguration} from './deployment-config.mjs';
 import {serviceProfiles,savedServiceProfiles} from './service-profiles.mjs';
 import {zhipuJson,zhipuImage} from './zhipu-response.mjs';
 import {redrawWithZhipu} from './zhipu-edit.mjs';
@@ -43,7 +44,7 @@ import {isIP} from 'node:net';
 import {sceneDirections,angleDirections,photographyRules,productCameraAdjustment,promptVersion} from './photography-prompts.mjs';
 const root=path.dirname(fileURLToPath(import.meta.url));
 try { for(const line of (await readFile(path.join(root,'.env'),'utf8')).split(/\r?\n/)) {
-  const m=line.match(/^([A-Z_]+)\s*=\s*(.*)$/);
+  const m=line.match(/^([A-Z_][A-Z0-9_]*)\s*=\s*(.*)$/);
   if(m&&!process.env[m[1]])process.env[m[1]]=m[2].trim().replace(/^['"]|['"]$/g,'');
 }} catch {}
 const productMap={pillowcore:{name:'one finished pillow insert with intact shell and selected core',fabrics:['cotton','satin','linen']},set:{name:'four-piece bedding set: exactly one duvet cover, one bedsheet and two pillowcases',fabrics:['cotton','satin','silk','linen','velvet']},mat:{name:'summer sleeping mat with two matching mat pillow covers, thin flat structured woven surface with narrow sewn binding, fully supported by the mattress, no hanging skirt or fabric overhang, no duvet and no puffy quilt, no quilted padding, two low-profile mat-covered pillows',fabrics:['ice','rattan','bamboo']},quilt:{name:'a single filled quilt with visible quilting and narrow sewn binding, following the selected season',fabrics:['cotton','satin','silk']},sheet:{name:'a single bedsheet or fitted sheet, following supplied product size',fabrics:['cotton','satin','linen']},mattress:{name:'one upholstered mattress with structural sidewall and sewn binding',fabrics:['cotton','satin','linen','jacquard']},pillow:{name:'exactly two removable pillowcases on softly supported pillows, show only naturally visible seams, do not force hidden openings',fabrics:['cotton','satin','silk','linen']},blanket:{name:'a single soft blanket with visible pile and binding',fabrics:['velvet','cotton']},sleepbag:{name:'one flat TWO-LAYER travel sleeping bag liner made of two same-width panels joined only along the LOWER HALF of both long sides, with a completely unsewn open upper half, a zipper closing the bottom foot end, and a same-width 50 cm fabric sleeve sewn on the BACK of the bottom panel at the head edge to hold one plain pillow underneath, fully supported on the mattress top; no elastic corner straps, no fitted skirt, no drawstring pouch, no filling, no hood, no full-length zipper and no mummy taper',fabrics:['cotton','washed']}};
@@ -597,8 +598,9 @@ export function createServer(options={}) {
   const cleanup=setInterval(()=>{for(const[id,j]of jobs)if(j.finished&&Date.now()-j.finished>86400000)jobs.delete(id)},3600000);cleanup.unref();server.on('close',()=>{clearInterval(cleanup);videoService.close();});return server;
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
-  const port=Number(process.env.PORT||4173);const savedService=await loadServiceConfig();
+  const port=Number(process.env.PORT||4173);const savedService=await loadServiceConfig()||(await loadDeploymentConfiguration())?.image;
   const server=createServer({service:savedService,persistService:saveServiceConfig});
-  server.listen(port,'127.0.0.1',()=>console.log(`织景工作台 Local URL: http://127.0.0.1:${port}`));
+  const host=process.env.HOST||'127.0.0.1';
+  server.listen(port,host,()=>console.log(`织景工作台 Local URL: http://${host}:${port}`));
   server.on('error',e=>{console.error(e.code==='EADDRINUSE'?`端口 ${port} 已被占用，请在 .env 设置其他 PORT`:e.message);process.exitCode=1});
 }

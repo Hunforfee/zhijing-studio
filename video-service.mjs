@@ -5,6 +5,7 @@ import path from 'node:path';
 import {randomUUID,createHash} from 'node:crypto';
 import {setTimeout as delay} from 'node:timers/promises';
 import {loadServiceConfig,saveServiceConfig} from './secure-service-store.mjs';
+import {loadDeploymentConfiguration} from './deployment-config.mjs';
 import {normalizeCreativeBrief,normalizeStoryboard,normalizePatternReference,shotPrompt,creativeFramePrompt} from './dist/video-storyboard.js';
 import {planVideoStory,draftStoryboard} from './video-story-planner.mjs';
 import {composeVideoStory,checkVideoComposer,storyboardSrt,cropVideoPatterns} from './video-composer.mjs';
@@ -31,7 +32,8 @@ export function validateVideoInput(v){
 }
 const fingerprint=c=>createHash('sha256').update(videoProvider(c)==='minimax'?JSON.stringify(['minimax',c.model,c.apiKey]):c.apiKey||'').digest('hex');
 const imageFingerprint=c=>createHash('sha256').update(JSON.stringify([c?.provider,c?.baseUrl,c?.model,c?.apiKey])).digest('hex');
-export function createVideoService({outputDir,fetchImpl=fetch,loadConfig=()=>loadServiceConfig(new URL('./.share/video-service.dpapi',import.meta.url)),saveConfig=c=>saveServiceConfig(c,new URL('./.share/video-service.dpapi',import.meta.url)),pollMs=5000,downloadVideo,getPlanningConfig=()=>({}),getKeyframeConfig=getPlanningConfig,generateKeyframe,cropPatterns=cropVideoPatterns,composeVideo=composeVideoStory,renderCamera=renderCameraShot,checkComposer=checkVideoComposer}={}){
+async function defaultVideoConfiguration(){return await loadServiceConfig(new URL('./.share/video-service.dpapi',import.meta.url))||(await loadDeploymentConfiguration())?.video;}
+export function createVideoService({outputDir,fetchImpl=fetch,loadConfig=defaultVideoConfiguration,saveConfig=c=>saveServiceConfig(c,new URL('./.share/video-service.dpapi',import.meta.url)),pollMs=5000,downloadVideo,getPlanningConfig=()=>({}),getKeyframeConfig=getPlanningConfig,generateKeyframe,cropPatterns=cropVideoPatterns,composeVideo=composeVideoStory,renderCamera=renderCameraShot,checkComposer=checkVideoComposer}={}){
   const directory=path.join(outputDir,'videos'),jobs=new Map(),recordWrites=new Map();let config={},profiles={},busy=false,closed=false,saving=false;
   const isActive=j=>['queued','running','submitting','assembling','designing'].includes(j.status);
   const canResume=j=>j.status==='failed'&&(j.motionMode==='camera'&&j.phase==='video'||(j.workflow==='creative-frames-v1'&&j.phase==='frames'?j.imageFingerprint===imageFingerprint(getKeyframeConfig())&&j.shotTasks.some(s=>s.frameStatus==='completed')&&!j.shotTasks.some(s=>s.frameUncertain):j.fingerprint===fingerprint(config)&&(j.storyboard?j.shotTasks.some(s=>s.providerId||s.status==='completed')&&!j.shotTasks.some(s=>s.providerFailed||s.uncertain&&!s.providerId):!!j.providerId)));

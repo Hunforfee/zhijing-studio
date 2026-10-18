@@ -1,0 +1,30 @@
+import {execFile} from 'node:child_process';
+import {mkdir,readFile,writeFile} from 'node:fs/promises';
+import {randomBytes} from 'node:crypto';
+import {fileURLToPath} from 'node:url';
+import path from 'node:path';
+import {loadServiceConfig,saveServiceConfig} from '../secure-service-store.mjs';
+import {serviceProfiles,savedServiceProfiles} from '../service-profiles.mjs';
+import {videoConfigProfiles} from '../video-providers.mjs';
+import {encryptConfiguration,deploymentKey} from '../deployment-config.mjs';
+const root=fileURLToPath(new URL('../',import.meta.url)),repo=process.argv[2]||'Hunforfee/zhijing-studio';
+if(!/^[\w.-]+\/[\w.-]+$/.test(repo))throw Error('请提供 owner/repository 格式的仓库名');
+const gh=process.env.GH_PATH||(process.platform==='win32'?'C:/Program Files/GitHub CLI/gh.exe':'gh');
+const run=(args,input)=>new Promise((resolve,reject)=>{const child=execFile(gh,args,{cwd:root,windowsHide:true,timeout:60000,maxBuffer:1024*1024},(error,stdout)=>error?reject(Error('GitHub 配置同步失败，请检查登录状态及仓库权限')):resolve(stdout));child.stdin.on('error',()=>{});child.stdin.end(input);});
+// Key material is carried only via stdin or encrypted local storage, never argv or logs.
+const imageSource=await loadServiceConfig();if(!imageSource)throw Error('未找到本地图片服务配置');
+const image=serviceProfiles(imageSource);if(!Object.values(image.profiles).some(x=>x.apiKey))throw Error('图片服务尚未配置密钥');
+const videoSource=await loadServiceConfig(new URL('../.share/video-service.dpapi',import.meta.url)),video=videoConfigProfiles(videoSource||{});
+const keyFile=new URL('../.share/deployment-sync-key.dpapi',import.meta.url);let keyRecord=await loadServiceConfig(keyFile);
+const existing=JSON.parse(await run(['secret','list','--repo',repo,'--json','name']));
+if(!keyRecord){if(existing.some(x=>x.name==='ZHJ_DEPLOYMENT_KEY'))throw Error('仓库已存在部署密钥，但本机未保存对应密钥；请先恢复原本机密钥，避免覆盖线上配置');keyRecord={key:randomBytes(32).toString('base64')};await saveServiceConfig(keyRecord,keyFile);}
+deploymentKey(keyRecord.key);
+const bundle={version:1,image:savedServiceProfiles(image.profiles,image.activeProvider),video:{version:2,activeProvider:video.activeProvider,profiles:video.profiles}};
+const encrypted=encryptConfiguration(bundle,keyRecord.key);
+await run(['secret','set','ZHJ_DEPLOYMENT_KEY','--repo',repo],keyRecord.key);
+await mkdir(new URL('../deploy/',import.meta.url),{recursive:true});
+await writeFile(new URL('../deploy/service-config.enc.json',import.meta.url),JSON.stringify(encrypted,null,2)+'\n');
+const describe=(profiles,active)=>({activeProvider:active,providers:Object.fromEntries(Object.entries(profiles).map(([id,p])=>{let baseUrl=p.baseUrl;if(baseUrl){const url=new URL(baseUrl);url.username='';url.password='';url.search='';url.hash='';baseUrl=url.href.replace(/\/$/,'');}return [id,{provider:id,configured:!!p.apiKey,...(baseUrl?{baseUrl}:{}),...Object.fromEntries(['model','generationModel','editModel','visionModel','recognitionModel','recognitionApi'].filter(k=>p[k]!=null).map(k=>[k,p[k]]))}];}))});
+const settings={version:1,image:describe(image.profiles,image.activeProvider),video:describe(video.profiles,video.activeProvider),encryptedFile:'deploy/service-config.enc.json',githubSecret:'ZHJ_DEPLOYMENT_KEY'};
+await writeFile(new URL('../deploy/service-settings.json',import.meta.url),JSON.stringify(settings,null,2)+'\n');
+console.log(JSON.stringify({repository:repo,imageProviders:Object.keys(image.profiles),videoProviders:Object.keys(video.profiles),activeImage:image.activeProvider,activeVideo:video.activeProvider,secret:'ZHJ_DEPLOYMENT_KEY',encryptedConfigReady:true}));

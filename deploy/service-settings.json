@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "image": {
+    "activeProvider": "sub2api",
+    "providers": {
+      "sub2api": {
+        "provider": "sub2api",
+        "configured": true,
+        "baseUrl": "http://127.0.0.1:8080/v1",
+        "model": "gpt-image-2.5-flare",
+        "visionModel": "glm-4.6v"
+      },
+      "zhipu": {
+        "provider": "zhipu",
+        "configured": true,
+        "baseUrl": "https://open.bigmodel.cn/api/paas/v4",
+        "model": "glm-image",
+        "visionModel": "glm-4.6v"
+      }
+    }
+  },
+  "video": {
+    "activeProvider": "minimax",
+    "providers": {
+      "zhipu": {
+        "provider": "zhipu",
+        "configured": true,
+        "model": "cogvideox-3"
+      },
+      "minimax": {
+        "provider": "minimax",
+        "configured": true,
+        "model": "MiniMax-Hailuo-2.3"
+      }
+    }
+  },
+  "encryptedFile": "deploy/service-config.enc.json",
+  "githubSecret": "ZHJ_DEPLOYMENT_KEY"
+}

@@ -1,0 +1,41 @@
+# 云服务器与 Node.js 托管配置
+
+`service-config.enc.json` 是本地服务配置的 AES-256-GCM 加密备份，包含图片及视频各服务的密钥、模型、地址和当前所选服务。`service-settings.json` 是不含密钥的可读清单。
+
+解密密钥保存在私有仓库的 GitHub Actions Secret：`ZHJ_DEPLOYMENT_KEY`。本机另有 Windows 加密副本 `.share/deployment-sync-key.dpapi`，不进入 Git。不要把解密密钥写入代码、前端 JS 或提交历史。
+
+## 部署时必须设置
+
+在目标托管平台的服务端环境变量中注入 `ZHJ_DEPLOYMENT_KEY`，再运行 `npm start`。如果经 GitHub Actions 部署，工作流可通过 `${{ secrets.ZHJ_DEPLOYMENT_KEY }}` 获取并安全注入目标服务器。**GitHub Secrets 不会自动变成托管平台的环境变量**；具体注入方式须按最终平台或服务器连接方式配置。
+
+后台启动时先读取服务器已有的加密运行配置；首次部署没有运行配置时，从此加密备份恢复。服务器后续保存设置使用同一环境密钥进行 AES-GCM 加密，可在 Linux 使用。必须持久保存 `.share/` 与 `generated/` 并保持环境密钥稳定。已有 Windows 本地 DPAPI 配置照常工作。
+
+## 当前本机中转依赖
+
+当前主用图片服务是 Sub2API，地址是 `http://127.0.0.1:8080/v1`。这里的 API key 属于该中转，不能自动替代中转中配置的上游账号。
+
+在云端达到相同效果，需要同时部署原 Sub2API 中转并迁移其必要账户/模型配置，或使用已部署且可访问的同一中转。仅克隆本仓库不能提供这项中转服务。
+
+- 同机部署中转并仍监听 `127.0.0.1:8080` 时，原地址可沿用。
+- 若中转在另一主机或容器，设置服务端环境变量 `SUB2API_BASE_URL` 为可访问的 `/v1` 地址。此变量只覆盖加密备份里的 Sub2API 地址，保留原密钥与模型。
+- 中转更换后密钥必须属于新中转，不同中转的密钥不能互用。
+
+## 部署检查
+
+```sh
+node tools/check-deployment-config.mjs
+node tools/check-deployment-config.mjs --network
+```
+
+网络检查只访问图片服务的模型列表，不发送图片或生成任务，不消耗生图次数。输出只显示是否已配置、模型名和连接状态，不显示密钥。
+
+## 其他运行条件
+
+- Node.js 22 或更新版本。
+- 后端默认监听 `127.0.0.1:4173`，云服务器应通过带访问控制的 HTTPS 反向代理转发；还需提供目标域名和服务器/平台信息才能完成上线配置。
+- 托管平台如要求监听所有网卡，可设置 `HOST=0.0.0.0`，同时使用平台的访问控制。`PORT` 沿用平台注入的端口。
+- 原素材库此前按要求未上传。角度、面料与场景预览及相关参考文件应从本机另外恢复，不包含用户生成记录。
+- 视频剪辑需要本机 FFmpeg，按 `tools/视频剪辑组件说明.txt` 安装，或用 `FFMPEG_PATH` 指定服务器程序。
+- Linux 的原 Windows DPAPI 文件无法解密，使用本目录的加密部署备份及 `ZHJ_DEPLOYMENT_KEY`。
+
+更新本地服务配置后，可以运行 `node tools/sync-deployment-config.mjs Hunforfee/zhijing-studio` 重新加密备份、更新仓库 Secret，然后提交更新的 `deploy/` 文件。

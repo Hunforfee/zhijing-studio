@@ -2,7 +2,9 @@ import {execFile} from 'node:child_process';
 import {readFile,writeFile,mkdir,rename} from 'node:fs/promises';
 import path from 'node:path';
 import {pathToFileURL} from 'node:url';
+import {encryptConfiguration,decryptConfiguration} from './deployment-config.mjs';
 const defaultFile=new URL('./.share/service-config.dpapi',import.meta.url);
+const portableHeader='ZHJ-AES-GCM-1\n';
 function protect(bytes,decrypt=false){
   if(process.platform!=='win32')throw Error('此加密配置仅支持当前 Windows 用户');
   const operation=decrypt?'Unprotect':'Protect';
@@ -14,12 +16,15 @@ function protect(bytes,decrypt=false){
 }
 export async function saveServiceConfig(config,file=defaultFile){
   const destination=file instanceof URL?file:pathToFileURL(path.resolve(file));
-  const encrypted=await protect(Buffer.from(JSON.stringify(config),'utf8'));
+  const encrypted=process.env.ZHJ_DEPLOYMENT_KEY?Buffer.from(portableHeader+JSON.stringify(encryptConfiguration(config,process.env.ZHJ_DEPLOYMENT_KEY))):await protect(Buffer.from(JSON.stringify(config),'utf8'));
   await mkdir(new URL('.',destination),{recursive:true});
   const temporary=new URL(destination.href+'.tmp');
   await writeFile(temporary,encrypted,{mode:0o600});await rename(temporary,destination);
 }
 export async function loadServiceConfig(file=defaultFile){
   let encrypted;try{encrypted=await readFile(file)}catch(error){if(error.code==='ENOENT')return undefined;throw Error('无法读取本机加密配置')}
+  if(encrypted.subarray(0,portableHeader.length).toString('utf8')===portableHeader){
+    try{return {...decryptConfiguration(JSON.parse(encrypted.subarray(portableHeader.length).toString('utf8')),process.env.ZHJ_DEPLOYMENT_KEY),verified:false};}catch{throw Error('无法解密服务器配置，请检查 ZHJ_DEPLOYMENT_KEY');}
+  }
   try{return {...JSON.parse((await protect(encrypted,true)).toString('utf8')),verified:false}}catch{throw Error('无法解密服务配置，请使用原 Windows 账户启动网站')}
 }
