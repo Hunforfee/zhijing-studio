@@ -1,5 +1,19 @@
 # 系统推荐的长期约定
 
+2026-10-19 用户本轮明确要求同步到Git，现授权将当前已完成的首页、九项AI工具、场景创建、统一服务设置及删除上传分析等全部代码提交并推送现有GitHub仓库Hunforfee/zhijing-studio的main；覆盖此前等待本地验收后再同步的限制，仅限代码同步、不部署。内置素材按现有清单保留；用户上传、生成媒体、凭据明文、运行配置和本机依赖继续排除。
+
+2026-10-19 用户删除花型上传后的多图分析功能：pattern-materials.js只做本机上传、管理、缓存与A/B补充图打包；移除自动分析、状态栏、重新分析及自动改工艺/面料，生成不等待分析也不发送observations。旧POST /api/pattern-materials/analyze固定410 PATTERN_ANALYSIS_REMOVED，禁止调用模型；保留手动产品识别、详情/视频和工具主动AI以及生图多图参考。pattern-materials-browser-check.mjs验证上传/管理/恢复零分析请求、工艺质感不变及补充图实际传入生图，全部模拟、仍仅本地、不推送Git。
+
+2026-10-19 新增场景创建：/scenes、/scene-studio由dist/scene-studio.html提供，scene-creation.mjs复用主图片服务及FIFO。文字/可选参考→候选确认→命名入库；持久保存generated/scene-creation，不入Git、不自动付费重试，已删场景显式再次保存恢复而非强迫重新生成。分享按邀请隔离任务/库/图片。首页第9入口与工作台左侧“场景”可进入；custom-scene-picker.js在拍摄设置提供“我的场景”，选用会替换拍摄参考，referenceScene=true/referenceAngle=false，保留A/B、产品工艺和智能角度，禁止场景加载期间发起拍摄，并防旧异步覆盖新设置。/workspace?scene=<id>#results自动选用仅在用户未改设置时执行。场景模块测试全部模拟，仍仅本地验收、不提交/推送/部署。
+
+2026-10-19 用户要求所有创作功能统一接入其Sub2API；地址和密钥仅保存于本机加密配置，不写源码/Git。ai-service-models.mjs集中解析recognitionModel/recognitionApi；五类在线识图/内容消费者复用，Sub2API强制Responses，详情识别不许转旧智谱profile。设置增加识图与文案模型并按供应商保存；/api/service/check仅GET models，返回imageModels/analysisModels，检测通过不宣称生成权限已实测。八个新工具及原图片/详情/自由创作/视频AI策划与分镜共用主服务，默认稳定运镜本机合成；可选AI动态仍独立视频供应商，禁止向其发送Sub2API密钥。缺失任务明确404才清本机pending，网络不明保留。测试使用模拟服务，不为联调付费生成；仍先本地验收，未经确认不提交/推送/部署。
+
+2026-10-19 最新要求：新增工具突出真实 AI 实用性；首页采用舒展的杂志式排版，大幅氛围图片可仅作展示；八个真实AI入口下移，用户不再要求每张图片均可点击。新增首页动效只用原生CSS/SVG，不调用模型；home-motion.js控制暂停偏好、系统减少动态、视口与后台暂停，data-home-motion标记动画元素，html data-home-motion-state记录全局状态，两者不得撞名。五类结构化提案使用 /api/textile/plan（palette/moodboard/delivery/copy/design），复用现有服务配置、来源限制及邀请网关；失败不回退冒充AI的模板。高清/提取/接缝与设计室位图沿用 /api/free/documents，共享图片FIFO，先候选确认、不自动付费重试；检查/取消要绑定当前任务，过期响应不得覆盖新任务或删除新pending。AI进行中禁止跨工具覆盖素材，采用方案避免重复排序，并可撤回。高清明确区分AI修复与本机Lanczos放大；上架适配实际为AI参数建议+本机批量处理，不宣称AI扩图。首页仅内置素材/矢量效果示意，不读取用户作品。覆盖此前“多数功能仅本机、文案仅模板”的实现说明；手动辅助仍保留。用户仍要求先本地运行，等其通过后才提交、推送或部署。
+
+2026-10-19 首页新增八个独立入口：花型设计室、花型高清处理、提取校正、换色、四方连续、搭配板、批量交付、商品文案，不重建原图片/详情/视频/自由创作入口。/tools 由 dist/toolbox.html 提供七个工具，/pattern-design 为独立图层编辑器。多数功能浏览器本机处理，用户图片、工程与导出继续不入 Git；高清使用 Worker Lanczos 与受限锐化，不能伪称 AI 超分。设计室保留图层/工程/SVG、花回厘米/DPI、PNG pHYs、本机 IndexedDB 草稿；RGB 不伪称印染色号。AI 辅助仅用户点击后走现有 /api/free/documents 与共享图片 FIFO，先候选确认、不自动重试；邀请网关的隔离与配置保护保持。详情见 docs/家纺灵感工具箱使用说明.md，新增算法与浏览器检查禁止付费调用。用户再次明确：先本地运行，等其通过后才提交、推送 Git 或部署。
+
+2026-10-18 新增织景品牌首页，根地址及 /home 显示 dist/home.html；完整原工作台继续由 dist/index.html 提供，入口为 /workspace，旧 /index.html 保持可用。首页四个工具卡直达图片、详情、视频和自由创作，工作台左侧品牌链接返回首页；已知旧根地址锚点转到工作台，模块异步挂载和刷新后仍需正确定位。首页只复用已入库的内置示意素材，不读取用户作品、不调用生成接口。用户明确要求本次先本地测试，等其确认后才同步 Git，确认前不得提交、推送或部署。检查入口为 homepage-test.mjs / homepage-ui-test.mjs，旧工作台浏览器测试从 /workspace 打开。
+
 2026-10-18 用户要求新增左侧自由创作并先本地实现、再同步 Git。自由创作独立工作区支持上传/作品导入、六种编辑方式、辅助参考、框选、对比、下载、版本分支与刷新恢复；默认比例3:4，保留花型/工艺。dist/free-creation-policy.js 共享规则，free-creation.mjs 独立记录放 generated/free-creation/，与原图库分开；生成任务通过主图片 FIFO 排队，不能再建独立并发付费队列。pngjs 验证PNG及合成框选结果，框外必须保留当前底图的解码像素；区域修改跟随原图比例，扩图不能同时框选。用户上传及生成内容仍不入Git。接口只在点击生成后使用当前图片编辑配置，失败/重启不自动付费重试；邀请分享只允许访问本邀请创建的自由创作记录。说明在 docs/自由创作设计说明.md，回归 free-creation-test.mjs/free-creation-ui-test.mjs，不为测试付费生成。
 
 2026-10-18 云端视频提交失败定位为 compositionReady=false。video-runtime.mjs 支持显式 FFMPEG_PATH、本机旧 Windows 安装、系统 PATH 和 npm ffmpeg-static 平台程序，并运行可执行性及 H.264/AAC/ASS/zoompan 功能检查。云端需 npm ci 安装依赖或使用 Dockerfile 的系统 FFmpeg+中文字体；不将本机依赖目录或可执行程序上传 Git。dist/video-request.js 在分镜提交和确认成片前检查 readiness，显示具体网关/上传/组件错误；稳定运镜不可强制要求视频 API key。缺组件时后台仍拦截付费分镜。回归使用模拟接口和本地 FFmpeg，不调用付费生成。

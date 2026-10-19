@@ -39,6 +39,7 @@ body.has-workspace-navigation #workspace>.topbar{height:64px;margin-bottom:12px}
 .floating-workspace-nav.workspace-docked-nav{top:0;bottom:0;left:0;right:auto;width:80px;height:100dvh;transform:none;flex-direction:column;gap:0;padding:24px 8px 16px;border:0;border-radius:0;background:linear-gradient(155deg,#184d37,#103d2c 75%);box-shadow:3px 0 16px #173e2910;overflow-y:auto;box-sizing:border-box}
 .workspace-nav-brand{display:flex;justify-content:center;padding:4px 0 28px;color:#f1f8ef}
 .workspace-nav-brand svg{width:32px;height:32px}
+.floating-workspace-nav a.workspace-nav-brand{min-height:0;border-radius:8px;flex-shrink:0}
 .workspace-nav-links{display:flex;flex-direction:column;gap:14px}
 .workspace-docked-nav .workspace-nav-links a{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:76px;padding:10px 4px;border-radius:13px;font-size:13px;line-height:1.2;gap:8px;box-sizing:border-box}
 .workspace-docked-nav .workspace-nav-links svg{width:26px;height:26px}

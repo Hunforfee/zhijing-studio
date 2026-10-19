@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {mkdtemp,rm} from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
-import {analyzePatternMaterials,normalizePatternMaterials,patternMaterialInstruction} from './pattern-materials.mjs';
+import {normalizePatternMaterials,patternMaterialInstruction} from './pattern-materials.mjs';
 import {createServer,validateInput} from './server.mjs';
 const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aWQAAAABJRU5ErkJggg==','base64');
 const image='data:image/png;base64,'+png.toString('base64');
@@ -13,15 +13,7 @@ test('side ownership, count and bytes validation; source settings retain priorit
  assert.throws(()=>normalizePatternMaterials({A:Array(8).fill(image)}));assert.throws(()=>normalizePatternMaterials({A:['bad']}));assert.throws(()=>normalizePatternMaterials({B:[image.replace('iVBOR','ZZZZZ')]}));
  const p=patternMaterialInstruction(v,5);assert.match(p,/Image 5: A-side/);assert.match(p,/Image 7: B-side/);assert.match(p,/explicit product\/craft, texture reference\/library and user settings retain priority/);
 });
-for(const provider of ['compatible','sub2api','zhipu'])test(provider+' analysis sends every image and only accepts well-evidenced catalog choices',async()=>{
- const response=await analyzePatternMaterials({images:{A:[image,image],B:[image]},product:'set',config:{provider,apiKey:'synthetic',baseUrl:'https://example.test/v1'},fetchImpl:async(url,init)=>{
-  const body=JSON.parse(init.body),content=provider==='sub2api'?body.input[0].content:body.messages[0].content;
-  assert.equal(content.filter(x=>['input_image','image_url'].includes(x.type)).length,3);assert.match(content.at(-1).text,/A面第2张/);assert.match(content.at(-1).text,/不改变用户选定/);
-  return Response.json(provider==='sub2api'?{output_text:JSON.stringify(result)}:{choices:[{message:{content:JSON.stringify(result)}}]});
- }});
- assert.equal(response.observations.A.pattern,result.A.pattern);assert.equal(response.craftChoices.duvetCraft.id,'wide-flange');assert.equal(response.craftChoices.pillowCraft,null);assert.equal(response.textureChoice.id,'smooth-silk');assert.equal(response.product,'set');
-});
-test('API analysis and real provider request include all supplemental images with independent A/B labels',async()=>{
+test('retired analysis endpoint returns 410 without model calls while generation keeps all A/B supplemental images',async()=>{
  const outputDir=await mkdtemp(path.join(os.tmpdir(),'zhijing-multi-pattern-'));let generated=0,analyzed=0;
  const server=createServer({outputDir,stylingReferencePaths:[],service:{provider:'sub2api',apiKey:'synthetic',baseUrl:'https://example.test/v1',model:'synthetic-image'},fetchImpl:async(url,init)=>{
   if(url.endsWith('/responses')){analyzed++;return Response.json({output_text:JSON.stringify(result)});}
@@ -31,12 +23,13 @@ test('API analysis and real provider request include all supplemental images wit
  }});
  await new Promise(r=>server.listen(0,'127.0.0.1',r));const url='http://127.0.0.1:'+server.address().port;
  try{
-  const r=await fetch(url+'/api/pattern-materials/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({images:{A:[image,image],B:[image]},product:'set'})});assert.equal(r.status,200);assert.equal((await r.json()).imageCount,3);assert.equal(analyzed,1);
+  const r=await fetch(url+'/api/pattern-materials/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({images:{A:[image,image],B:[image]},product:'set'})});assert.equal(r.status,410);assert.equal((await r.json()).code,'PATTERN_ANALYSIS_REMOVED');assert.equal(analyzed,0);assert.equal(generated,0);
+  const malformed=await fetch(url+'/api/pattern-materials/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:'not-json'});assert.equal(malformed.status,410);assert.equal(analyzed,0);assert.equal(generated,0);
   const base={product:'set',fabric:'cotton',fabricMode:'auto',size:'参考图款式',scale:100,direction:0,repeat:'tile',plainSheet:false,ratio:'1:1',notes:'',image,imageB:image,referenceImage:image,referenceScene:true,referenceAngle:true,scenes:['warm'],angles:['front'],autoReview:false,patternMaterials:{A:[image,image],B:[image],observations:{A:result.A}}};
   assert.equal(validateInput(base).patternMaterialBytes.length,3);
   const response=await fetch(url+'/api/jobs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(base)});assert.equal(response.status,202);const job=await response.json();let last;
   for(let i=0;i<100;i++){last=await (await fetch(url+'/api/jobs/'+job.id)).json();if(['done','error','cancelled'].includes(last.status))break;await new Promise(r=>setTimeout(r,15));}
-  assert.equal(last.status,'done',last.message);assert.equal(generated,1);
+  assert.equal(last.status,'done',last.message);assert.equal(generated,1);assert.equal(analyzed,0);
  }finally{await new Promise(r=>server.close(r));if(!outputDir.startsWith(path.join(os.tmpdir(),'zhijing-multi-pattern-')))throw Error('Unexpected test directory');await rm(outputDir,{recursive:true,force:true});}
 });
 test('Zhipu vision receives all side references and final text generation retains multi-image evidence',async()=>{

@@ -27,7 +27,7 @@ try{
     }
     return url.protocol==='data:'||url.protocol==='blob:'?route.continue():route.abort();
   });
-  await page.goto(base);
+  await page.goto(base+'/workspace');
   await page.waitForSelector('#videoGenerate',{state:'attached'});
   await page.locator('#videoSourceFile').setInputFiles('dist/assets/crafts/wide-flange.png');
   await page.locator('#videoProduct').selectOption('set');

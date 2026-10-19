@@ -1,0 +1,40 @@
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+import {mkdtemp,rm,mkdir} from 'node:fs/promises';
+import path from 'node:path';
+import os from 'node:os';
+import {createServer} from './server.mjs';
+const require=createRequire('C:/Users/Hunfo/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/package.json');
+const {chromium}=require('playwright');
+const outputDir=await mkdtemp(path.join(os.tmpdir(),'zhijing-home-motion-'));let paidRequests=0;
+const server=createServer({outputDir,stylingReferencePaths:[],videoOptions:{loadConfig:async()=>null},fetchImpl:async()=>{paidRequests++;throw Error('Homepage must not call a model');}});
+await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+const base='http://127.0.0.1:'+server.address().port,browser=await chromium.launch({channel:'msedge',headless:true});
+try {
+  const page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'no-preference'}),errors=[];
+  page.on('pageerror',error=>errors.push(error.message));
+  await page.route('**/*',route=>route.request().url().startsWith(base)||/^(data|blob):/.test(route.request().url())?route.continue():route.abort());
+  await page.goto(base,{waitUntil:'networkidle'});
+  const toggle=page.locator('#homeMotionToggle');await toggle.waitFor();
+  assert.ok(await page.locator('[data-home-motion]').count()>=3);
+  await page.waitForFunction(()=>document.getAnimations().filter(item=>item.effect?.target?.closest('[data-home-motion]')&&item.playState==='running').length>=3);
+  const activeCount=await page.evaluate(()=>document.getAnimations().filter(item=>item.effect?.target?.closest('[data-home-motion]')&&item.playState==='running').length);
+  await toggle.click();await page.waitForFunction(()=>document.documentElement.dataset.homeMotionState==='paused');assert.equal(await toggle.getAttribute('aria-pressed'),'true');
+  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+  const pausedTimes=await page.evaluate(()=>document.getAnimations().filter(item=>item.effect?.target?.closest('[data-home-motion]')).map(item=>({time:item.currentTime,state:item.playState})));
+  await page.waitForTimeout(150);
+  const stillTimes=await page.evaluate(()=>document.getAnimations().filter(item=>item.effect?.target?.closest('[data-home-motion]')).map(item=>({time:item.currentTime,state:item.playState})));
+  assert.ok(pausedTimes.length>=3);assert.ok(stillTimes.every(item=>item.state==='paused'));assert.deepEqual(stillTimes,pausedTimes,'pause must stop actual animations');
+  await page.reload({waitUntil:'networkidle'});await page.waitForFunction(()=>document.documentElement.dataset.homeMotionState==='paused');assert.equal(await toggle.locator('.motion-toggle-label').textContent(),'播放动态');
+  await toggle.click();await page.waitForFunction(()=>document.documentElement.dataset.homeMotionState==='running');assert.equal(await toggle.getAttribute('aria-pressed'),'false');
+  await page.evaluate(()=>scrollTo(0,document.documentElement.scrollHeight));
+  await page.waitForFunction(()=>getComputedStyle(document.querySelector('[data-home-motion]')).getPropertyValue('--home-motion-state').trim()==='paused');
+  await page.evaluate(()=>scrollTo(0,0));await page.waitForFunction(()=>getComputedStyle(document.querySelector('[data-home-motion]')).getPropertyValue('--home-motion-state').trim()==='running');
+  await page.emulateMedia({reducedMotion:'reduce'});await page.waitForFunction(()=>document.documentElement.dataset.homeMotionState==='paused');assert.equal(await toggle.isDisabled(),true);assert.equal(await toggle.locator('.motion-toggle-label').textContent(),'已减少动态');
+  assert.ok(await page.locator('.ambient-photo img').evaluate(image=>image.complete&&image.naturalWidth>0));
+  const reducedAnimations=await page.evaluate(()=>document.getAnimations().filter(item=>item.effect?.target?.closest('[data-home-motion]')).map(item=>item.playState));assert.ok(reducedAnimations.every(state=>state!=='running'));
+  await page.emulateMedia({reducedMotion:'no-preference'});await page.waitForFunction(()=>document.documentElement.dataset.homeMotionState==='running');
+  await mkdir('.share',{recursive:true});await page.screenshot({path:'.share/homepage-motion-first-screen.png'});
+  for(const viewport of [{width:1440,height:1000},{width:768,height:1024},{width:390,height:844},{width:320,height:700}]){await page.setViewportSize(viewport);const dimensions=await page.evaluate(()=>({viewport:innerWidth,scroll:document.documentElement.scrollWidth}));assert.ok(dimensions.scroll<=dimensions.viewport+1,JSON.stringify(dimensions));}
+  assert.equal(paidRequests,0);assert.deepEqual(errors,[]);console.log(JSON.stringify({actualAnimations:activeCount,pauseAndResume:true,pausePersisted:true,offscreenPaused:true,reducedMotion:true,viewports:4,paidRequests}));
+} finally {await browser.close();await new Promise(resolve=>server.close(resolve));assert.ok(path.resolve(outputDir).startsWith(path.resolve(os.tmpdir())+path.sep+'zhijing-home-motion-'));await rm(outputDir,{recursive:true,force:true,maxRetries:5,retryDelay:100});}

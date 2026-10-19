@@ -17,7 +17,7 @@
   const shortNames = ['拍摄', '图片', '详情', '视频', '自由创作'];
   nav.classList.add('workspace-docked-nav');
   const leaf = '<svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M15 16C6 17 3 11 4 5c7 0 12 4 11 11M18 17C16 8 21 3 28 3c1 7-3 13-10 14M15 20C7 18 2 22 3 27c7 3 12 0 12-7M18 21c1-6 6-9 12-8 0 7-5 12-12 8"/><path d="M16 13v17" stroke="currentColor" stroke-width="2"/></svg>';
-  nav.innerHTML = `<div class="workspace-nav-brand">${leaf}</div><div class="workspace-nav-links" id="workspaceNavLinks">` + names.map((name, i) => `<a href="#${ids[i]}" aria-label="${name}" title="${name}" ${i === 0 ? 'aria-current="location"' : ''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[i]}</svg><span>${shortNames[i]}</span></a>`).join('') + '</div><div class="workspace-nav-bottom"><button type="button" id="workspaceNavSettings" title="生成服务设置" aria-label="生成服务设置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m9 3 6 0 1 3 3 1 2 5-2 5-3 1-1 3H9l-1-3-3-1-2-5 2-5 3-1z"/><circle cx="12" cy="12" r="3"/></svg><span>设置</span></button></div>';
+  nav.innerHTML = `<a class="workspace-nav-brand" href="/" aria-label="返回织景首页" title="返回首页">${leaf}</a><div class="workspace-nav-links" id="workspaceNavLinks">` + names.map((name, i) => `<a href="#${ids[i]}" aria-label="${name}" title="${name}" ${i === 0 ? 'aria-current="location"' : ''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[i]}</svg><span>${shortNames[i]}</span></a>`).join('') + '</div><div class="workspace-nav-bottom"><button type="button" id="workspaceNavSettings" title="生成服务设置" aria-label="生成服务设置"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m9 3 6 0 1 3 3 1 2 5-2 5-3 1-1 3H9l-1-3-3-1-2-5 2-5 3-1z"/><circle cx="12" cy="12" r="3"/></svg><span>设置</span></button></div>';
   nav.querySelector('a[href="#creationPanel"]')?.remove();
   document.body.append(nav);
   document.body.classList.add('has-workspace-navigation');
@@ -137,4 +137,35 @@
   window.addEventListener('resize', schedule);
   new ResizeObserver(schedule).observe(document.getElementById('workspace'));
   updateActive();
+  // Homepage shortcuts may target modules mounted asynchronously after this script.
+  let entryObserver;
+  function openEntry() {
+    entryObserver?.disconnect();
+    const aliases = {imageDesignWorkspace:'results', detailDesignWorkspace:'detailPageModule', videoDesignWorkspace:'videoDesignModule'};
+    const hash = location.hash.slice(1), id = aliases[hash] || hash;
+    if (!ids.includes(id)) return;
+    function enter() {
+      const target = document.getElementById(id);
+      const mounted = ['imageDesignWorkspace','detailDesignWorkspace','videoDesignWorkspace','freeCreationWorkspace'].every(name => document.getElementById(name));
+      if (!target || !mounted) return false;
+      entryObserver?.disconnect();
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        if (location.hash.slice(1) !== hash) return;
+        expand(id);
+        const scrollTarget = id === 'videoDesignModule' ? document.getElementById('videoDesignWorkspace') || target : target;
+        scrollTarget.scrollIntoView({block:'start', behavior:'instant'});
+        updateActive();
+      }));
+      return true;
+    }
+    if (!enter()) {
+      entryObserver = new MutationObserver(enter);
+      entryObserver.observe(document.getElementById('workspace'), {childList:true,subtree:true});
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', openEntry, {once:true});
+  else openEntry();
+  window.addEventListener('hashchange', openEntry);
+  window.addEventListener('pageshow', openEntry);
+  window.addEventListener('pagehide', () => entryObserver?.disconnect());
 })();

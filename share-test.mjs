@@ -67,3 +67,16 @@ test('shared videos isolate tasks and preserve range playback without exposing s
   const media=await fetch(base+'/api/video/jobs/'+id+'/content',{headers:{...auth,Range:'bytes=0-9'}});assert.equal(media.status,206);assert.equal(media.headers.get('content-range'),'bytes 0-9/100');assert.equal(calls.at(-1).init.headers.Range,'bytes=0-9');
   assert.equal((await fetch(base+'/api/service/video',{method:'POST',headers:{...auth,Origin:'https://friend.example'},body:'{}'})).status,403);
 }));
+
+test('shared textile planning permits only the invited same-origin POST endpoint',()=>fixture(async({base,auth,calls})=>{
+  const route='/api/textile/plan',headers={...auth,Origin:'https://friend.example','Content-Type':'application/json'};
+  assert.equal((await fetch(base+route,{method:'POST',body:'{}'})).status,403);
+  assert.equal((await fetch(base+route,{headers:auth})).status,404);
+  assert.equal((await fetch(base+route+'/private',{method:'POST',headers,body:'{}'})).status,404);
+  assert.equal((await fetch(base+route,{method:'POST',headers:{...headers,Origin:'https://evil.example'},body:'{}'})).status,403);
+  assert.equal(calls.length,0);
+  const result=await fetch(base+route,{method:'POST',headers,body:JSON.stringify({kind:'copy',facts:{name:'测试被套'}})});
+  assert.equal(result.status,200);assert.equal(calls.length,1);assert.equal(calls[0].url,'http://127.0.0.1:4173'+route);
+  assert.equal(calls[0].init.headers.Origin,'http://127.0.0.1:4173');assert.equal(calls[0].init.headers.Cookie,undefined);
+  assert.equal(JSON.parse(calls[0].init.body.toString()).kind,'copy');
+}));

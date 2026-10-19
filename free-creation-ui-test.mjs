@@ -20,7 +20,7 @@ try{
   await page.addInitScript(()=>localStorage.setItem('zhijing-workspace-nav-guide-v1','seen'));
   await page.emulateMedia({reducedMotion:'reduce'});
   await page.route('**/*',route=>{const url=route.request().url();return url.startsWith(base)||url.startsWith('data:')||url.startsWith('blob:')?route.continue():route.abort();});
-  await page.goto(base);await page.waitForSelector('#freeCreationWorkspace');
+  await page.goto(base+'/workspace');await page.waitForSelector('#freeCreationWorkspace');
   const nav=page.locator('.workspace-nav-links a[href="#freeCreationWorkspace"]');assert.equal(await nav.textContent(),'自由创作');await nav.click();
   await page.waitForFunction(()=>document.getElementById('freeCreationWorkspace').getBoundingClientRect().top<32);
   assert.equal(await page.locator('#fcEmpty').isVisible(),true);assert.equal(await page.locator('#fcRatio').inputValue(),'3:4');

@@ -9,7 +9,7 @@ function matches(a,b){return typeof a==='string'&&a.length===b.length&&timingSaf
 function reply(res,status,data){res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(data));}
 export function createShareServer({token,backend='http://127.0.0.1:4173',getPublicOrigin=async()=>'',fetchImpl=fetch}={}){
   if(!token||token.length<32)throw Error('分享邀请凭证缺失');
-  const jobs=new Set(),videoJobs=new Set(),freeDocuments=new Set();
+  const jobs=new Set(),videoJobs=new Set(),freeDocuments=new Set(),sceneJobs=new Set(),scenes=new Set();
   return http.createServer(async(req,res)=>{
     res.setHeader('Referrer-Policy','no-referrer');res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Cache-Control','no-store');
     try{
@@ -37,6 +37,16 @@ export function createShareServer({token,backend='http://127.0.0.1:4173',getPubl
       if(url.pathname==='/api/free/documents'&&req.method==='GET'){
         const upstream=await fetchImpl(backend+'/api/free/documents'),data=await upstream.json();return reply(res,upstream.status,{documents:(data.documents||[]).filter(doc=>freeDocuments.has(doc.id))});
       }
+      if(url.pathname==='/api/scenes/jobs'&&req.method==='GET'){
+        const upstream=await fetchImpl(backend+'/api/scenes/jobs'),data=await upstream.json();return reply(res,upstream.status,{jobs:(data.jobs||[]).filter(job=>sceneJobs.has(job.id))});
+      }
+      if(url.pathname==='/api/scenes'&&req.method==='GET'){
+        const upstream=await fetchImpl(backend+'/api/scenes'),data=await upstream.json();return reply(res,upstream.status,{scenes:(data.scenes||[]).filter(scene=>scenes.has(scene.id))});
+      }
+      const sceneJob=url.pathname.match(/^\/api\/scenes\/jobs\/([a-f0-9-]{36})(?:\/(image|cancel))?$/),scene=url.pathname.match(/^\/api\/scenes\/([a-f0-9-]{36})\/(image|delete)$/);
+      if(sceneJob&&!sceneJobs.has(sceneJob[1])||scene&&!scenes.has(scene[1]))return reply(res,404,{error:'场景或任务不存在'});
+      const newSceneJob=url.pathname==='/api/scenes/jobs'&&req.method==='POST',saveScene=url.pathname==='/api/scenes'&&req.method==='POST';
+      const sceneRequest=newSceneJob||saveScene||sceneJob&&(!sceneJob[2]&&req.method==='GET'||sceneJob[2]==='image'&&['GET','HEAD'].includes(req.method)||sceneJob[2]==='cancel'&&req.method==='POST')||scene&&(scene[2]==='image'&&['GET','HEAD'].includes(req.method)||scene[2]==='delete'&&req.method==='POST');
       const freeDocument=url.pathname.match(/^\/api\/free\/documents\/([a-f0-9-]{36})(?:\/(edit|cancel|images\/(?:original|[a-f0-9-]{36})))?$/);
       if(freeDocument&&!freeDocuments.has(freeDocument[1]))return reply(res,404,{error:'自由创作记录不存在'});
       const newFreeDocument=url.pathname==='/api/free/documents'&&req.method==='POST';
@@ -57,22 +67,27 @@ export function createShareServer({token,backend='http://127.0.0.1:4173',getPubl
         res.writeHead(upstream.status,{'Content-Type':upstream.headers.get('content-type')||'application/octet-stream'});
         return res.end(Buffer.from(await upstream.arrayBuffer()));
       }
-      const staticFile=/^\/[A-Za-z0-9_.-]+\.(?:js|css)$/.test(url.pathname)||['/','/index.html','/app.js','/style.css','/pattern-color.js','/fabric-picker.js','/product-submenus.js','/set-variants.js','/mat-variants.js','/quilt-variants.js','/sheet-variants.js','/shooting-reference.js','/camera-input.js','/camera-contract.js','/mattress-contract.js','/mattress-variants.js','/blanket-contract.js','/blanket-variants.js','/sleepbag-contract.js','/sleepbag-variants.js','/image-history.js','/image-history.css','/history-groups.js','/local-model-input.js','/fixed-cloth-renderer.js','/fixed-cloth-model.js','/fixed-cloth-materials.js','/vendor/three.module.js','/vendor/three.core.js','/vendor/addons/GLTFLoader.js','/vendor/addons/BufferGeometryUtils.js','/vendor/pathtracer.module.js','/vendor/mesh-bvh.module.js','/vendor/addons/RoomEnvironment.js','/vendor/addons/Pass.js'].includes(url.pathname)||/^\/assets\/(?:(?:fabrics|scene-photos|scene-thumbs|crafts)\/)?[\w.-]+$/.test(url.pathname);
+      const staticFile=/^\/[A-Za-z0-9_.-]+\.(?:js|css)$/.test(url.pathname)||['/','/home','/home/','/home.html','/tools','/tools/','/toolbox.html','/pattern-design','/pattern-design/','/pattern-design.html','/scenes','/scenes/','/scene-studio','/scene-studio/','/scene-studio.html','/workspace','/workspace/','/index.html','/app.js','/style.css','/pattern-color.js','/fabric-picker.js','/product-submenus.js','/set-variants.js','/mat-variants.js','/quilt-variants.js','/sheet-variants.js','/shooting-reference.js','/camera-input.js','/camera-contract.js','/mattress-contract.js','/mattress-variants.js','/blanket-contract.js','/blanket-variants.js','/sleepbag-contract.js','/sleepbag-variants.js','/image-history.js','/image-history.css','/history-groups.js','/local-model-input.js','/fixed-cloth-renderer.js','/fixed-cloth-model.js','/fixed-cloth-materials.js','/vendor/three.module.js','/vendor/three.core.js','/vendor/addons/GLTFLoader.js','/vendor/addons/BufferGeometryUtils.js','/vendor/pathtracer.module.js','/vendor/mesh-bvh.module.js','/vendor/addons/RoomEnvironment.js','/vendor/addons/Pass.js'].includes(url.pathname)||/^\/assets\/(?:(?:fabrics|scene-photos|scene-thumbs|crafts)\/)?[\w.-]+$/.test(url.pathname);
       const newJob=url.pathname==='/api/jobs'&&req.method==='POST';
       const recognition=['/api/product-recognition','/api/pattern-materials/analyze'].includes(url.pathname)&&req.method==='POST'||url.pathname==='/api/product-recognition/catalog'&&req.method==='GET';
+      const textilePlanning=url.pathname==='/api/textile/plan'&&req.method==='POST';
       const readJob=job&&(req.method==='GET'&&!job[2]||req.method==='POST'&&job[2]);
-      if(!(staticFile&&['GET','HEAD'].includes(req.method)||image&&req.method==='GET'||newJob||readJob||recognition||videoRequest||freeRequest))return reply(res,404,{error:'页面不存在'});
+      if(!(staticFile&&['GET','HEAD'].includes(req.method)||image&&req.method==='GET'||newJob||readJob||recognition||textilePlanning||videoRequest||freeRequest||sceneRequest))return reply(res,404,{error:'页面不存在'});
       const headers={};if(req.headers['content-type'])headers['Content-Type']=req.headers['content-type'];
       if(videoJob&&req.headers.range)headers.Range=req.headers.range;
       let body;
       if(req.method==='POST'){
         const chunks=[];let length=0;for await(const chunk of req){length+=chunk.length;if(length>45*1024*1024)return reply(res,413,{error:'上传数据过大'});chunks.push(chunk)}body=Buffer.concat(chunks);
       }
+      if(saveScene){let input;try{input=JSON.parse(body.toString());}catch{return reply(res,400,{error:'场景保存参数无效'});}if(!sceneJobs.has(input?.jobId))return reply(res,404,{error:'只能保存本邀请生成的场景候选'});}
       headers.Origin=backend;
       const upstream=await fetchImpl(backend+url.pathname,{method:req.method,headers,body,signal:AbortSignal.timeout(60000),redirect:'error'});
       const bytes=Buffer.from(await upstream.arrayBuffer());
       if(newJob&&upstream.status===202){const data=JSON.parse(bytes.toString());if(/^[a-f0-9-]{36}$/.test(data.id))jobs.add(data.id)}
       if(newFreeDocument&&upstream.status===201){const data=JSON.parse(bytes.toString());if(/^[a-f0-9-]{36}$/.test(data.document?.id))freeDocuments.add(data.document.id)}
+      if(newSceneJob&&upstream.status===202){const data=JSON.parse(bytes.toString());if(/^[a-f0-9-]{36}$/.test(data.job?.id))sceneJobs.add(data.job.id)}
+      if(saveScene&&upstream.status===200){const data=JSON.parse(bytes.toString());if(/^[a-f0-9-]{36}$/.test(data.scene?.id)&&sceneJobs.has(data.scene.jobId))scenes.add(data.scene.id)}
+      if(scene?.[2]==='delete'&&req.method==='POST'&&upstream.status===200)scenes.delete(scene[1]);
       if(url.pathname==='/api/video/jobs'&&req.method==='POST'&&upstream.status===202){const data=JSON.parse(bytes.toString());if(/^[a-f0-9-]{36}$/.test(data.id))videoJobs.add(data.id)}
       const responseHeaders={'Content-Type':upstream.headers.get('content-type')||'application/octet-stream'};if(videoJob)for(const name of ['content-range','accept-ranges','content-disposition']){const value=upstream.headers.get(name);if(value)responseHeaders[name]=value;}
       res.writeHead(upstream.status,responseHeaders);res.end(bytes);
