@@ -101,6 +101,10 @@
     bind('detail-edit',one('#detailEditTitle'),'编辑详情切片',[],()=>[originalPlaceholder('detailEditPrompt')]);
     bind('video',one('#videoSettingsTitle'),'视频创作',all('.video-spec-note'),()=>['先策划并核对分镜，再生成画面与视频。稳定运镜移动镜头、保持床品静止；AI 动态仍可能产生形变。',originalPlaceholder('videoBrief')]);
     bind('free-creation',one('#fcSettingsTitle'),'自由创作',all('.fc-rail-header>small,.fc-field-note,.fc-product-locks>small'),()=>['可上传原图，或从已有作品导入；支持原图对比与框选修改。',originalPlaceholder('fcPrompt')]);
+    bind('commerce-tool',one('#ecTitle'),'家纺电商工具',[],['营销、SKU、尺寸导购与核对共用同一份商品资料。填写资料与本机排版不会自动调用 AI。AI 只在点击后提出候选，确认采用才会改变作品。']);
+    bind('commerce-profile',one('#ecProfileTitle'),'商品资料与规格',[],['商品图最多6张，每张32MB，整组64MB。请按真实花色对应图片；尺寸单位为cm，适用床宽与被套宽度是不同字段。可用CSV模板批量填写规格。资料与原图保存于当前浏览器，不自动上传分析。']);
+    bind('commerce-ai',one('#ecAITitle'),'AI创作与辅助核对',[],['点击AI按钮时，将最多6张缩小后的参考图及已填写的商品资料交给当前配置服务。采用候选前原稿保留，失败不会自动重试。商品核对为辅助意见，需要逐项人工判断，图片不能证明成分、功效或实物尺寸。']);
+    bind('commerce-edit',one('#ecEditTitle'),'精修与导出',[],['文字、配色和版式可调整，商品主体使用上传原图。默认3:4，导出为所选像素尺寸的合成图，不是放大原始素材。SKU与尺寸导购可按全部规格打包，价格和尺寸来自已填资料。']);
     bind('tool',one('#toolTitle'),'使用当前工具',all('#toolDescription,#toolFootnote,.toolbox-sidebar>p'));
     for(const settings of all('.tt-settings')){
       const id=settings.closest('[data-tool]')?.dataset.tool||settings.parentElement.id;

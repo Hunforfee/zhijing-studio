@@ -1,5 +1,6 @@
 import {freeImageData} from './free-creation-images.mjs';
 import {resolveAnalysisService} from './ai-service-models.mjs';
+import {commerceKinds,normalizeCommerceRequest,validateCommercePlan,commerceSchemas} from './ecommerce-planning.mjs';
 
 const kinds=['palette','moodboard','delivery','copy','design'];
 const factKeys=['name','product','material','size','craft','features','audience','tone'];
@@ -21,6 +22,7 @@ function enumValue(value,allowed,label){if(!allowed.includes(value))throw fail('
 function numeric(value,min,max,label,integer=false){if(!Number.isFinite(value)||value<min||value>max||integer&&!Number.isInteger(value))throw fail('AI 返回的'+label+'超出可用范围，请重新发起分析',502,'TEXTILE_AI_INVALID_RESPONSE');return value;}
 
 export function normalizeTextileRequest(input){
+  if(commerceKinds.includes(input?.kind))return normalizeCommerceRequest(input);
   if(!record(input)||Object.keys(input).some(key=>!['kind','images','facts','brief'].includes(key))||!kinds.includes(input.kind))throw fail('请选择有效的 AI 家纺工具');
   if(input.brief!=null&&(typeof input.brief!=='string'||input.brief.length>2000))throw fail('创作要求应在 2000 字以内');
   const brief=(input.brief||'').trim(),facts={};
@@ -76,6 +78,7 @@ function copyGrounding(plan,facts){
 }
 
 export function validateTextilePlan(kind,raw,{facts={},images=[]}={}){
+  if(commerceKinds.includes(kind))return validateCommercePlan(kind,raw,{facts,images},copyGrounding);
   if(kind==='palette'){
     exact(raw,['summary','palettes'],'配色方案');
     if(!Array.isArray(raw.palettes)||raw.palettes.length!==3)throw fail('AI 应返回三套配色，请重新发起分析',502,'TEXTILE_AI_INVALID_RESPONSE');
@@ -111,6 +114,7 @@ export function validateTextilePlan(kind,raw,{facts={},images=[]}={}){
 }
 
 const schemas={
+  ...commerceSchemas,
   palette:'{"summary":"对上传花型的色彩与层次观察","palettes":[{"name":"方案名","colors":["#HEXHEX","#HEXHEX","#HEXHEX","#HEXHEX"],"reason":"如何让底色、主纹、辅纹和点缀形成协调关系"}]}；palettes 必须恰好 3 套，每套 colors 恰好 4 个 #RRGGBB，依次是背景、主纹、辅纹、点缀。给出有区分且适合家纺的方案，不把 RGB 称为印染或潘通色号。',
   moodboard:'{"title":"提案标题，80字内","note":"搭配说明，400字内","colors":["#HEXHEX","#HEXHEX","#HEXHEX","#HEXHEX"],"order":[0,1],"layout":"focus或grid","background":"#RRGGBB","reason":"选主图、排序与色彩依据"}；order 必须是本次所有图片的 0 基索引完整排列，不重复不遗漏。colors 恰好 4 色。比较每张实际内容，图案/成品适合做主图，局部/质感为辅。不要假设文件名或顺序等于主次。',
   delivery:'{"ratio":"source或3:4或1:1或4:3或9:16或16:9","fit":"contain或cover","format":"image/jpeg或image/png或image/webp","maxEdge":2048,"quality":90,"prefix":"不带路径与扩展名的短文件前缀","reason":"说明如何适配用户用途并保留图案"}；maxEdge 为 320..4096 整数，quality 40..100 整数。裁切可能截断花型或商品时优先 contain。未指定平台时不要宣称平台官方标准尺寸；导出不会让低清素材凭空变清。',
@@ -137,7 +141,7 @@ export function createTextilePlanner({getConfig,fetchImpl=fetch,maxConcurrent=2,
     const {zhipu,responses,model}=resolveAnalysisService(config);
     const content=normalized.images.map(image=>responses?{type:'input_image',image_url:image,detail:'high'}:{type:'image_url',image_url:{url:zhipu?image.slice(image.indexOf(',')+1):image}});
     const prompt=planningPrompt(normalized);content.push(responses?{type:'input_text',text:prompt}:{type:'text',text:prompt});
-    const tokens=normalized.kind==='design'?6500:normalized.kind==='copy'?3000:2400;
+    const tokens=commerceKinds.includes(normalized.kind)?6000:normalized.kind==='design'?6500:normalized.kind==='copy'?3000:2400;
     const payload=responses?{model,input:[{role:'user',content}],store:false,stream:false,max_output_tokens:tokens,reasoning:{effort:'low'}}:{model,messages:[{role:'user',content}],max_tokens:tokens,...(zhipu?{thinking:{type:'disabled'}}:{})};
     const timeout=AbortSignal.timeout(timeoutMs),requestSignal=signal?AbortSignal.any([signal,timeout]):timeout;
     active++;

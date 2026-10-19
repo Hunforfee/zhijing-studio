@@ -609,7 +609,7 @@ export function createServer(options={}) {
         file=path.join(outputRoot,pathname.slice('/generated/'.length));
       } else {
         const decoded=decodeURIComponent(pathname);
-        const entry=['/','/home','/home/'].includes(decoded)?'/home.html':['/tools','/tools/'].includes(decoded)?'/toolbox.html':['/pattern-design','/pattern-design/'].includes(decoded)?'/pattern-design.html':['/scenes','/scenes/','/scene-studio','/scene-studio/'].includes(decoded)?'/scene-studio.html':['/library','/library/'].includes(decoded)?'/asset-library.html':['/workspace','/workspace/'].includes(decoded)?'/index.html':decoded;
+        const entry=['/','/home','/home/'].includes(decoded)?'/home.html':['/tools','/tools/'].includes(decoded)?'/toolbox.html':['/pattern-design','/pattern-design/'].includes(decoded)?'/pattern-design.html':['/scenes','/scenes/','/scene-studio','/scene-studio/'].includes(decoded)?'/scene-studio.html':['/library','/library/'].includes(decoded)?'/asset-library.html':['/ecommerce','/ecommerce/'].includes(decoded)?'/ecommerce.html':['/workspace','/workspace/'].includes(decoded)?'/index.html':decoded;
         file=path.resolve(root,'dist','.'+entry);
         if(!file.startsWith(path.join(root,'dist')+path.sep))return json(res,403,{error:'访问被拒绝'});
       }
