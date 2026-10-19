@@ -387,6 +387,86 @@
       "sha256": "dbba49c01b7e85a1de0b30401112d86d2b6abaadf20883ab20a121aca0d830e0"
     },
     {
+      "path": "dist/assets/home-board-v2.webp",
+      "bytes": 63700,
+      "sha256": "3150716f61eac5e68ed1f5e5b130ccba4c4fc43635b61b716314395d2c621a18"
+    },
+    {
+      "path": "dist/assets/home-commerce-v2.webp",
+      "bytes": 135348,
+      "sha256": "8722f71cba5ef32b897c10236f3c501fd98008e8eba310ce2f6f51cd79415973"
+    },
+    {
+      "path": "dist/assets/home-copy-v2.webp",
+      "bytes": 93978,
+      "sha256": "869d377c18c4d0b5923d804ff2949ce46165765fef6d7b8e92acfe0b7095c61f"
+    },
+    {
+      "path": "dist/assets/home-delivery-v2.webp",
+      "bytes": 153962,
+      "sha256": "3ac62abeaf5e7e023ac1a6149fc16760cf379066d8e30e6ed5d592e6163f5392"
+    },
+    {
+      "path": "dist/assets/home-detail-v2.webp",
+      "bytes": 173978,
+      "sha256": "d8e7c13dea2d64d977bbd18ed59fbe38228aead02db4f36b2afe2f62be6bb573"
+    },
+    {
+      "path": "dist/assets/home-extract-v2.webp",
+      "bytes": 141790,
+      "sha256": "81094f7e52efe5b38d82bc88b65b5c5dec071426e5578c069b9ff0f74475e13f"
+    },
+    {
+      "path": "dist/assets/home-free-v2.webp",
+      "bytes": 85368,
+      "sha256": "d1db62fe902def199d59a99bf745cec2f17997489c5008eaf6a1a5b6b23dcce9"
+    },
+    {
+      "path": "dist/assets/home-hd-v2.webp",
+      "bytes": 104050,
+      "sha256": "8f9d64ee86d3816a1dbc19123baa58be179984ec83720e9064fb2433c33c82a1"
+    },
+    {
+      "path": "dist/assets/home-hero-small-v2.webp",
+      "bytes": 81288,
+      "sha256": "621412bc0e9da2cc41d16d9748a4261e107aa2bd611b9269c35bb8f6d19d5f91"
+    },
+    {
+      "path": "dist/assets/home-hero-v2.webp",
+      "bytes": 296370,
+      "sha256": "1ad7784abebe5a84e9ab85822e7fc1578885a834dee788c8155cd8a5c1c9a43b"
+    },
+    {
+      "path": "dist/assets/home-inspiration-a-v2.webp",
+      "bytes": 123970,
+      "sha256": "89d65f24936957c59ec768cdaa9df4e35ab694ddc7f2ae108fe0d2cc7ebd4446"
+    },
+    {
+      "path": "dist/assets/home-inspiration-b-v2.webp",
+      "bytes": 107518,
+      "sha256": "302f033ace269d165ed3186541ee9c36203e7e0c6aa5dd146245a62f5c2d15fc"
+    },
+    {
+      "path": "dist/assets/home-pattern-v2.webp",
+      "bytes": 176990,
+      "sha256": "cca85efcace901a38057e6de3c71154fa00ab4f63738d94c396682e43f1c5c34"
+    },
+    {
+      "path": "dist/assets/home-scene-v2.webp",
+      "bytes": 90050,
+      "sha256": "104c5e3dab88de27b25d1dd24074879a37a1a8dea830426d2f26d7cfa77c4940"
+    },
+    {
+      "path": "dist/assets/home-shoot-v2.webp",
+      "bytes": 193058,
+      "sha256": "88b58edb27776b4dc2aee7d5d32312b6ac5817b5c7fe91d817aac909aadf2131"
+    },
+    {
+      "path": "dist/assets/home-video-v2.webp",
+      "bytes": 137508,
+      "sha256": "911fd8abd233b73717b10aa7e30cc6ad25bb5ce4eee0aad512635984470efbe3"
+    },
+    {
       "path": "dist/assets/mat-bamboo-angles-v1.png",
       "bytes": 2408928,
       "sha256": "5029dc5573a7ff25d5472fcaf7b7fad4a84e66c8e76ef0834e5fbe790a2f959a"

@@ -31,7 +31,7 @@ try {
   await page.waitForFunction(()=>getComputedStyle(document.querySelector('[data-home-motion]')).getPropertyValue('--home-motion-state').trim()==='paused');
   await page.evaluate(()=>scrollTo(0,0));await page.waitForFunction(()=>getComputedStyle(document.querySelector('[data-home-motion]')).getPropertyValue('--home-motion-state').trim()==='running');
   await page.emulateMedia({reducedMotion:'reduce'});await page.waitForFunction(()=>document.documentElement.dataset.homeMotionState==='paused');assert.equal(await toggle.isDisabled(),true);assert.equal(await toggle.locator('.motion-toggle-label').textContent(),'已减少动态');
-  assert.ok(await page.locator('.ambient-photo img').evaluate(image=>image.complete&&image.naturalWidth>0));
+  assert.ok(await page.locator('.hero-picture img').evaluate(image=>image.complete&&image.naturalWidth>0));
   const reducedAnimations=await page.evaluate(()=>document.getAnimations().filter(item=>item.effect?.target?.closest('[data-home-motion]')).map(item=>item.playState));assert.ok(reducedAnimations.every(state=>state!=='running'));
   await page.emulateMedia({reducedMotion:'no-preference'});await page.waitForFunction(()=>document.documentElement.dataset.homeMotionState==='running');
   await mkdir('.share',{recursive:true});await page.screenshot({path:'.share/homepage-motion-first-screen.png'});

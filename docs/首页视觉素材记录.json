@@ -1,0 +1,50 @@
+{
+  "mode": "built-in image_gen (not the website Sub2API service)",
+  "purpose": "Curated built-in homepage illustrations; no user uploads or generated user works were read.",
+  "generationDate": "2026-10-19",
+  "images": [
+    {
+      "file": "dist/assets/home-hero-v2.webp",
+      "prompt": "Use case: photorealistic. Asset type: full bleed editorial hero for a premium Chinese home textile AI studio website, landscape 16:10. Create a sophisticated sunlit contemporary bedroom with dramatic warm plaster arch, pale travertine platform, a bed dressed in sage green linen and delicate hand-drawn muted coral and cream meadow floral print. A sculptural walnut side table, tiny terracotta vase, an olive branch and soft window shadow. Architectural editorial photography, authentic visible textile weave, natural folds, refined beautiful composition, three-quarter elevated perspective. Palette chalk ivory, sage, warm coral, walnut. Entire scene photograph edge to edge, no writing, logos, interface, frames or collage. The bed remains the clear subject. This is a fresh art-directed bedding campaign, not a generic white bedroom."
+    },
+    {
+      "file": "dist/assets/home-pattern-v2.webp",
+      "prompt": "Use case: product photography. Asset type: editorial textile designer studio flatlay, landscape 4:3. Beautiful top-down composition on warm ivory paper: a large richly detailed original hand-painted gouache botanical textile design with cobalt blue cornflowers, persimmon orange petals, pale pink stems and soft sage leaves; overlapping blue pinstripe woven swatch, scallop-edge pink cotton sample, a small fan of muted color chips, a ceramic paint palette and two elegant brushes. Natural side daylight, tactile paper, exact clean weave, airy refined art direction, some negative space. No readable text, no logos, no interface, no frames. Lush original print must be central, unlike stock bedroom photos."
+    },
+    {
+      "file": "dist/assets/home-detail-v2.webp",
+      "prompt": "Use case: product photography. Asset type: luxurious textile macro campaign banner, landscape 3:2. Extreme close textile still-life of dusty plum and powder rose sculptural jacquard folds, warm apricot piping edge passing diagonally, fine champagne woven botanical pattern, one soft sage silk ribbon. A refined macro lens reveals beautiful actual woven texture, luminous grazing side light and rich gentle shadows; abstract soft architecture, highly aesthetic luxury home linen advertising. Distinct sophisticated muted lilac rose mauve palette. Full bleed photograph with no lettering, logos, frames, swatch charts, collage, furniture, people or interface."
+    },
+    {
+      "file": "dist/assets/home-shoot-v2.webp",
+      "prompt": "Use case: architectural interior photography. Asset type: landscape 4:3 premium home textile campaign. A creative coastal modern bedroom in powder blue, creamy plaster and honey oak, with a large asymmetric curved window revealing a quiet pale sky, late-afternoon sunlight falling across a bed with rich rust red pinstriped linen and a pale blue quilt, one sculptural cobalt bedside object, refined playful composition, delicate branch shadow, restrained colors, linen drape and stitching clearly visible. Authentic magazine editorial, broad cinematic framing with entire bed visible, stylish room unlike a generic white or farmhouse bedroom. No text, logo, frames, borders, montage or UI."
+    },
+    {
+      "file": "dist/assets/home-free-v2.webp",
+      "prompt": "Use case: premium product photography. Asset type: landscape 4:3 website card for a home textile AI creative editing tool. A folded powder-blue and cream gingham quilt with a refined scalloped edge, styled on a low sculptural walnut bench, a warm muted peach plaster wall behind and a tiny branch casting gentle shadows, a pale apricot linen cushion placed alongside. Close editorial view focused on product texture and small styling details, natural daylight, refined art direction, crisp weave. Distinct tactile, beautiful home textile photograph. No writing, diagrams, line drawings, user interface, labels, borders, text, logos or watermark."
+    },
+    {
+      "file": "dist/assets/home-extract-v2.webp",
+      "prompt": "Use case: macro product photography. Asset type: landscape 4:3 textile pattern extraction tool cover. Close overhead photograph of beautiful soft cream cotton cloth printed with intricate indigo blue cornflower sprays and tiny warm orange berries, gently draped in broad low folds across warm stone. A small portion of the same cloth lies flat so its clean printed motifs are visible. A real photographic fabric still-life with natural soft daylight, tactile woven fibers, subtle fold shadows, quiet beautiful composition. No collage, no before-after panels, no diagrams, no text, no rulers, no interface, no frames, no logos."
+    },
+    {
+      "file": "dist/assets/home-commerce-v2.webp",
+      "prompt": "Use case: premium ecommerce editorial product photography. Asset type: landscape 4:3 home linen website banner. Three beautifully folded cotton quilts stacked and casually arranged on a light oak display table, dusty sage, muted blue botanical and warm cream stripe fabrics, pillowcase corner and refined contrast piping visible, a small sculptural ceramic object and a single branch in the background. Natural soft side light and gentle shadows, high-end linen catalog style, beautiful honest fabric texture and precise product construction, airy but visually rich crop. No text, prices, logos, product tags, packaging labels, borders, diagrams, line drawing or interface."
+    }
+  ],
+  "delivery": "WebP encoding and bounded resize only; original generated PNGs retained in Codex. The homepage uses 15 distinct images exactly once each, plus a smaller responsive hero source.",
+  "otherBuiltInSources": {
+    "home-video-v2.webp": "scene-photos/outdoor-v1.png",
+    "home-hd-v2.webp": "fabrics/weave-waffle.png",
+    "home-board-v2.webp": "fabrics/tencel.png",
+    "home-delivery-v2.webp": "fabrics/weave-slub.png",
+    "home-copy-v2.webp": "fabrics/washed.png",
+    "home-scene-v2.webp": "scene-photos/terrace-v1.png",
+    "home-inspiration-a-v2.webp": "scene-photos/childbed-v1.png",
+    "home-inspiration-b-v2.webp": "fabrics/velvet.png"
+  },
+  "generationDates": [
+    "2026-10-19",
+    "2026-10-20"
+  ]
+}

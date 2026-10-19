@@ -42,8 +42,9 @@ test('all homepage modules and illustrative images are locally served without ge
   const html=await(await fetch(base)).text();
   const resources=new Set([...html.matchAll(/(?:src|href)="(\/(?!workspace)[^"#?]+)(?:[?#][^"]*)?"/g)].map(match=>match[1]).filter(route=>route!=='/'));
   for(const resource of resources){const response=await fetch(base+resource);assert.equal(response.status,200,resource);assert.ok((await response.arrayBuffer()).byteLength>0,resource);}
-  assert.ok(resources.has('/assets/bedding-scenes.png'));
-  assert.ok(resources.has('/home.js'));assert.ok(resources.has('/home.css'));
+  assert.ok(resources.has('/assets/home-hero-v2.webp'));assert.ok(resources.has('/home-editorial.css'));
+  assert.ok(resources.has('/home.js'));
+  const imageSources=[...html.matchAll(/<img[^>]*src="([^"]+)"/g)].map(m=>m[1]);assert.equal(imageSources.length,15);assert.equal(new Set(imageSources).size,15,'homepage images must not repeat across sections');assert.ok(imageSources.every(src=>src.startsWith('/assets/home-')&&src.endsWith('-v2.webp')));for(const tool of ['marketing','sku','size','audit'])assert.ok(html.includes('/ecommerce?tool='+tool));
   const links=[...html.matchAll(/class="utility-card [^"]*" href="([^"]+)"/g)].map(match=>match[1]);
   assert.deepEqual(links,['/pattern-design',...['hd','extract','recolor','repeat','board','delivery','copy'].map(id=>'/tools?tool='+id),'/scenes']);
   assert.equal(new Set(links).size,9);assert.equal([...html.matchAll(/class="cover-demo">效果示意/g)].length,9);

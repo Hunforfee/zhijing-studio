@@ -167,3 +167,21 @@ Thumbs.db
 !/dist/assets/sleeping-mats.png
 !/styling-references/relaxed-fold-1.png
 !/styling-references/relaxed-fold-2.png
+
+# Curated homepage editorial assets (not user media)
+!/dist/assets/home-board-v2.webp
+!/dist/assets/home-commerce-v2.webp
+!/dist/assets/home-copy-v2.webp
+!/dist/assets/home-delivery-v2.webp
+!/dist/assets/home-detail-v2.webp
+!/dist/assets/home-extract-v2.webp
+!/dist/assets/home-free-v2.webp
+!/dist/assets/home-hd-v2.webp
+!/dist/assets/home-hero-small-v2.webp
+!/dist/assets/home-hero-v2.webp
+!/dist/assets/home-inspiration-a-v2.webp
+!/dist/assets/home-inspiration-b-v2.webp
+!/dist/assets/home-pattern-v2.webp
+!/dist/assets/home-scene-v2.webp
+!/dist/assets/home-shoot-v2.webp
+!/dist/assets/home-video-v2.webp
