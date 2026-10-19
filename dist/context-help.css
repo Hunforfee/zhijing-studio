@@ -1,0 +1,17 @@
+/* Hover help on desktop, with click/touch and keyboard support. */
+.zh-help-source{display:none!important}
+html body button.zh-help-trigger{appearance:none;display:inline-flex!important;align-items:center;justify-content:center;vertical-align:middle;flex:0 0 26px!important;width:26px!important;min-width:26px!important;max-width:26px!important;height:26px!important;min-height:26px!important;margin:0 0 0 8px!important;padding:0!important;border:1px solid #bdcebc!important;border-radius:50%!important;background:#f5f8f1!important;color:#607d64!important;font:600 12px/1 Arial,sans-serif!important;letter-spacing:0!important;box-shadow:none!important;cursor:pointer;position:relative;overflow:visible!important;text-decoration:none}
+html body button.zh-help-trigger::before{content:"";position:absolute;inset:-4px}
+html body button.zh-help-trigger::after{display:none!important}
+html body button.zh-help-trigger:hover,html body button.zh-help-trigger[aria-expanded=true]{background:#e5eddf!important;border-color:#819c7d!important;color:#31573e!important}
+html body button.zh-help-trigger:focus-visible{outline:3px solid #91ad86!important;outline-offset:3px}
+html body dialog.zh-help-dialog{box-sizing:border-box;position:fixed;inset:auto;margin:0;padding:22px;border:1px solid #d6e1d0;border-radius:16px;max-width:calc(100vw - 24px);overflow:auto;background:#fcfcf7;color:#35523f;box-shadow:0 18px 60px #24412f28;font:13px/1.85 "Microsoft YaHei","PingFang SC",sans-serif}
+html body dialog.zh-help-dialog:popover-open{display:block}
+html body dialog.zh-help-dialog:popover-open::backdrop{background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;pointer-events:none!important}
+.zh-help-dialog::backdrop{background:#24382e38}
+html body .zh-help-dialog>header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 14px;padding:0;border:0;background:none}
+html body .zh-help-dialog h2{font:600 17px/1.5 "Microsoft YaHei","PingFang SC",sans-serif;margin:0;padding:0;color:#294c36;letter-spacing:0}
+html body .zh-help-dialog button.zh-help-close{display:flex;align-items:center;justify-content:center;flex:0 0 34px;width:34px;min-width:34px;min-height:34px;height:34px;margin:0;padding:0;border:0;border-radius:50%;background:#edf2e6;color:#67815f;font:22px/1 Arial;cursor:pointer;box-shadow:none}
+html body .zh-help-dialog #contextHelpContent p{margin:0 0 12px;font:13px/1.9 "Microsoft YaHei","PingFang SC",sans-serif;color:#5b705b;white-space:pre-line;overflow-wrap:anywhere}
+html body .zh-help-dialog #contextHelpContent p:last-child{margin-bottom:0}
+@media(max-width:600px){html body button.zh-help-trigger{flex-basis:28px!important;width:28px!important;min-width:28px!important;max-width:28px!important;height:28px!important;min-height:28px!important}html body dialog.zh-help-dialog{padding:20px;border-radius:18px}html body .zh-help-dialog #contextHelpContent p{font-size:14px}}

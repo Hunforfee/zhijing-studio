@@ -25,6 +25,7 @@ import {loadServiceConfig,saveServiceConfig} from './secure-service-store.mjs';
 import {loadDeploymentConfiguration} from './deployment-config.mjs';
 import {createFreeCreation} from './free-creation.mjs';
 import {createSceneCreation} from './scene-creation.mjs';
+import {createAssetLibrary} from './asset-library.mjs';
 import {createTextilePlanner} from './textile-ai-planner.mjs';
 import {analysisSettings,resolveAnalysisService,classifyServiceModels} from './ai-service-models.mjs';
 import {createRequestSourcePolicy,deploymentPublicOrigin} from './request-source.mjs';
@@ -274,6 +275,7 @@ export function createServer(options={}) {
   }
   const freeCreation=createFreeCreation({outputDir:outputRoot,fetchImpl,getConfig:()=>imageTaskConfig({...service},true),downloadImage:(url,signal)=>downloadImage(url,signal,options),getJob:id=>jobs.get(id),enqueue:task=>enqueueImageWorkspace(task,'free'),cancelJob:cancelImageWorkspace});
   const sceneCreation=createSceneCreation({outputDir:outputRoot,fetchImpl,getConfig:()=>imageTaskConfig({...service}),downloadImage:(url,signal)=>downloadImage(url,signal,options),getJob:id=>jobs.get(id),enqueue:task=>enqueueImageWorkspace(task,'scene'),cancelJob:cancelImageWorkspace});
+  const assetLibrary=createAssetLibrary({outputDir:outputRoot});
   // Keep initialization errors observable by API requests without unhandled rejections.
   history.list().catch(()=>{});
   const promptEdits=createPromptEdits(options.promptEditsFile||path.join(outputRoot,'prompt-edits.json'),{products:productMap,scenes:sceneMap,angles:angleMap});
@@ -415,6 +417,7 @@ export function createServer(options={}) {
       if(await videoService.handle(req,res,pathname,body,json))return;
       if(await freeCreation.handle(req,res,pathname,body,json))return;
       if(await sceneCreation.handle(req,res,pathname,body,json))return;
+      if(await assetLibrary.handle(req,res,pathname,body,json))return;
       if(await textilePlanner.handle(req,res,pathname,body,json))return;
       if(pathname==='/api/admin/catalog'&&req.method==='GET')return json(res,200,await inspector.catalog());
       if(pathname==='/api/admin/preview'&&req.method==='POST')return json(res,200,await inspector.preview(await body(req,16384)));
@@ -606,7 +609,7 @@ export function createServer(options={}) {
         file=path.join(outputRoot,pathname.slice('/generated/'.length));
       } else {
         const decoded=decodeURIComponent(pathname);
-        const entry=['/','/home','/home/'].includes(decoded)?'/home.html':['/tools','/tools/'].includes(decoded)?'/toolbox.html':['/pattern-design','/pattern-design/'].includes(decoded)?'/pattern-design.html':['/scenes','/scenes/','/scene-studio','/scene-studio/'].includes(decoded)?'/scene-studio.html':['/workspace','/workspace/'].includes(decoded)?'/index.html':decoded;
+        const entry=['/','/home','/home/'].includes(decoded)?'/home.html':['/tools','/tools/'].includes(decoded)?'/toolbox.html':['/pattern-design','/pattern-design/'].includes(decoded)?'/pattern-design.html':['/scenes','/scenes/','/scene-studio','/scene-studio/'].includes(decoded)?'/scene-studio.html':['/library','/library/'].includes(decoded)?'/asset-library.html':['/workspace','/workspace/'].includes(decoded)?'/index.html':decoded;
         file=path.resolve(root,'dist','.'+entry);
         if(!file.startsWith(path.join(root,'dist')+path.sep))return json(res,403,{error:'访问被拒绝'});
       }

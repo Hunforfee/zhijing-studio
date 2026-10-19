@@ -10,6 +10,7 @@
   "scripts": {
     "start": "node server.mjs",
     "check:video": "node tools/check-video-runtime.mjs",
+    "test:library": "node --test asset-library-test.mjs asset-library-integration-test.mjs textile-print-metadata-test.mjs",
     "test:free": "node --test free-creation-test.mjs share-test.mjs request-source-test.mjs",
     "test:textile": "node --test scene-creation-test.mjs textile-tools-test.mjs textile-ai-planner-test.mjs textile-image-assistant-test.mjs homepage-test.mjs share-test.mjs request-source-test.mjs free-creation-test.mjs",
     "test:first-image-review": "node --test --test-concurrency=1 first-image-review-test.mjs bedding-fidelity-test.mjs prompt-admin-test.mjs share-test.mjs current-image-edit-test.mjs set-construction-test.mjs",

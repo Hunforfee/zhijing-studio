@@ -33,12 +33,12 @@ async function lastPatternStorage(mode,value){
     transaction.onabort=()=>reject(transaction.error||Error('花型保存未完成'));
   });
 }
-function validSavedPattern(item){return !!item&&item.blob instanceof Blob&&['image/png','image/jpeg','image/webp'].includes(item.blob.type)&&item.blob.size>0&&item.blob.size<=10*1024*1024;}
+function validSavedPattern(item){return !!item&&item.blob instanceof Blob&&['image/png','image/jpeg','image/webp'].includes(item.blob.type)&&item.blob.size>0&&item.blob.size<=32*1024*1024;}
 function refreshLastPatternButton(){const button=$('restoreLastPatterns');if(!button)return;button.disabled=!lastPatternPair||state.busy||restoringLastPatterns;button.textContent=restoringLastPatterns?'正在填入…':'使用上次花型';button.title=lastPatternPair?(lastPatternPair.b?'一键填入上次的 A/B 面花型':'填入上次 A 面花型，B 面留空'):'上传花型后，会自动保存在当前浏览器';}
 async function rememberLastPatterns(){
   if(restoringLastPatterns||!state.upload)return;
-  const pack=file=>({blob:file,name:file.name,lastModified:file.lastModified});
-  const pair={a:pack(state.upload.file),b:state.uploadB?pack(state.uploadB.file):null,materials:globalThis.patternMaterials?.storage()};
+  const pack=(file,metadata)=>({blob:file,name:file.name,lastModified:file.lastModified,metadata});
+  const pair={a:pack(state.upload.file,state.upload.metadata),b:state.uploadB?pack(state.uploadB.file,state.uploadB.metadata):null,materials:globalThis.patternMaterials?.storage()};
   lastPatternPair=pair;refreshLastPatternButton();
   try{await lastPatternStorage('readwrite',pair);}catch{toast('花型已加载，但浏览器未能保存；关闭页面后需重新上传');}
 }
@@ -85,7 +85,7 @@ function updateCount(){
   if(typeof refreshApplyLastButton==='function')refreshApplyLastButton();
   const plan=options();$('count').textContent=(plan.recommendScene||plan.recommendAngle)?plan.recommendCount*(plan.recommendScene?1:plan.scenes.length):plan.scenes.length*plan.angles.length;
   document.querySelectorAll('[data-angle]').forEach(el=>el.disabled=state.busy);
-  $('generateBtn').disabled=state.busy||state.customSceneApplying||(plan.recommendAngle&&plan.recommendCount<1)||!plan.scenes.length||!plan.angles.length||(state.textureSource==='upload'&&!state.texturePattern);
+  $('generateBtn').disabled=state.busy||state.customSceneApplying||state.libraryApplying||(plan.recommendAngle&&plan.recommendCount<1)||!plan.scenes.length||!plan.angles.length||(state.textureSource==='upload'&&!state.texturePattern);
   $('modeHint').textContent=state.mode==='local'?'本地结构示意':state.ready?(state.service?.approximate?'智谱效果探索 · 花型近似':'AI 摄影 · 按张计费'):'需要连接图像服务';
   $('generateBtn').innerHTML=state.busy?'<span class="launch-button-label"><i class="launch-button-spinner" aria-hidden="true"></i>拍摄进行中…</span>':state.mode==='ai'&&!state.ready?'<span class="launch-button-label">连接服务，开始拍摄</span><span class="launch-button-arrow" aria-hidden="true">↗</span>':'<span class="launch-button-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7h4l2-3h4l2 3h4v13H4z" stroke-linejoin="round"/><circle cx="12" cy="13" r="4"/></svg>'+(state.mode==='ai'?'开始拍摄':'制作结构示意')+'</span><span class="launch-button-arrow" aria-hidden="true">↗</span>';
   if(plan.recommendAngle&&!plan.recommendScene)$('modeHint').textContent=plan.scenes.length+' 个场景 × 每场景 '+plan.recommendCount+' 张';
@@ -140,7 +140,7 @@ async function status(){
   catch {state.ready=false;$('serviceBadge').textContent='○ 服务状态暂不可用';updateCount()}
 }
 
-async function upload(file){if(state.busy)return toast('请等待当前生成完成');if(!file)return;if(!['image/png','image/jpeg','image/webp'].includes(file.type))return toast('请上传 JPG、PNG 或 WEBP 图片');if(file.size>10*1024*1024)return toast('图片不能超过 10 MB');try{const url=URL.createObjectURL(file);const img=new Image();img.src=url;await img.decode();if(img.naturalWidth>16000||img.naturalHeight>16000){URL.revokeObjectURL(url);return toast('图片边长不能超过 16000 像素')}if(state.upload)URL.revokeObjectURL(state.upload.url);state.pattern=img;state.upload={file,url};$('uploadThumb').src=url;$('uploadInfo').hidden=false;$('uploadName').textContent=file.name;$('uploadName').title=file.name;$('uploadDimensions').textContent=`${img.naturalWidth} × ${img.naturalHeight} · ${(file.size/1048576).toFixed(1)} MB`;$('uploadBtn').querySelector('strong').textContent='更换 A 面花型';renderSelections();$('resultSubtitle').textContent='你的花型已就绪，请开始 AI 产品摄影';toast('花型已加载');rememberLastPatterns();}catch{toast('图片无法读取，请换一张有效的图片')}}
+async function upload(file){if(state.busy)return toast('请等待当前生成完成');if(!file)return;if(!['image/png','image/jpeg','image/webp'].includes(file.type))return toast('请上传 JPG、PNG 或 WEBP 图片');if(file.size>32*1024*1024)return toast('图片不能超过 32 MB');try{const url=URL.createObjectURL(file);const img=new Image();img.src=url;await img.decode();if(img.naturalWidth>16000||img.naturalHeight>16000||img.naturalWidth*img.naturalHeight>64e6){URL.revokeObjectURL(url);return toast('图片不能超过 16000 像素边长或 6400 万像素')}if(state.upload)URL.revokeObjectURL(state.upload.url);state.pattern=img;state.upload={file,url};$('uploadThumb').src=url;$('uploadInfo').hidden=false;$('uploadName').textContent=file.name;$('uploadName').title=file.name;$('uploadDimensions').textContent=`${img.naturalWidth} × ${img.naturalHeight} · ${(file.size/1048576).toFixed(1)} MB`;$('uploadBtn').querySelector('strong').textContent='更换 A 面花型';renderSelections();$('resultSubtitle').textContent='你的花型已就绪，请开始 AI 产品摄影';toast('花型已加载');rememberLastPatterns();}catch{toast('图片无法读取，请换一张有效的图片')}}
 function referenceEntries(){return[{reference:true,scene:'warm',angle:'side',panel:0},{reference:true,scene:'warm',angle:'front',panel:1},{reference:true,scene:'hotel',angle:'side',panel:2},{reference:true,scene:'warm',angle:'detail',panel:3}]}
 function referencePlanDescription(v){if(v.recommendAngle)return '参考图场景 × 智能角度 · '+v.recommendCount+' 张';const count=v.scenes.length*v.angles.length;return (v.referenceScene!==false&&v.referenceAngle!==false?'参考图场景 + 参考图角度':v.referenceScene!==false?'参考图场景 × '+v.angles.length+' 个自选角度':v.scenes.length+' 个自选场景 × 参考图角度')+' · '+count+' 张'}
 function resultSceneLabel(r){if(r.detailPage)return "商品详情页";if(r.recommendScene)return r.recommendSceneName||'AI 推荐场景';return r.referenceGuided&&r.referenceScene!==false?'参考图场景':scenes.find(s=>s.id===r.scene).name}
@@ -167,8 +167,8 @@ function showGenerated(outputs,opt,isAI){
   state.resultProduct=opt.product;state.resultSheetVariant=opt.sheetVariant||'flat';state.resultMattressVariant=opt.mattressVariant||'thin';state.resultBlanketVariant=opt.blanketVariant||'fleece';state.resultSleepbagVariant=opt.sleepbagVariant||'travel';$('resultProduct').textContent=opt.product==='pillowcore'?'枕芯 · '+(typeof currentPillowcoreVariant==='function'?currentPillowcoreVariant().name:'纤维枕'):opt.product==='sheet'?({flat:'床单',fitted:'床笠',quilted:'夹棉床笠'}[state.resultSheetVariant]):opt.product==='mattress'?'床垫 · '+(cameraTools?.mattressVariantNames?.[state.resultMattressVariant]||'床垫'):opt.product==='blanket'?'毯子 · '+(cameraTools?.blanketVariantNames?.[state.resultBlanketVariant]||'毯子'):opt.product==='sleepbag'?'更多产品 · '+(cameraTools?.sleepbagVariantNames?.[state.resultSleepbagVariant]||'旅行睡袋'):opt.product==='quilt'?'被芯 · '+(opt.quiltSeason==='summer'?'夏凉被':'冬被'):products.find(p=>p.id===opt.product).name;
   $('resultFabric').textContent=opt.textureSource==='upload'?'优先参考自上传面料质感':opt.fabricMode==='selected'?fabrics[opt.fabric][0]+' · 优先使用所选质感':'质感参考上传图片';
   const approximate=isAI&&outputs.some(r=>r.approximate);$('resultKind').textContent=isAI?(approximate?'智谱 AI 摄影 · 花型近似':'AI 产品摄影 · 请核对细节'):'结构示意 · 非实拍';
-  
-  
+
+
   renderResults();
 }
 const generationTasks=new Map();let generationTaskSequence=0,focusedGenerationTask=null;
@@ -259,7 +259,7 @@ setTimeout(()=>{
   if(generationTasks.size){state.queueDisplay=true;renderGenerationTasks();clearInterval(galleryClock);galleryClock=setInterval(updateGenerationTaskTimes,1000);}
 },0);
 async function generate(generationModel=null){
-  if(state.customSceneApplying)return toast('正在应用场景，请稍等。');
+  if(state.customSceneApplying||state.libraryApplying)return toast('正在应用素材，请稍等。');
   if(generationModel&&(!['sub2api','openai','compatible'].includes(state.service?.provider)||!/^gpt-image-2\.5-(flare|sunburst)(?:-2026-09-08)?$/.test(state.service?.model)||state.mode!=='ai'))return toast('请先连接 GPT Image 2.5 服务并选择 AI 摄影');
   if(state.busy)return;
   state.mode='ai';
@@ -322,7 +322,7 @@ state.selected=0;$('resultTitle').textContent=fabrics[state.fabric][0]+' · 摄�
 }
 
 function updatePatternRule(){if(!$('patternRule'))return;$('patternRule').hidden=!state.patternB;$('patternRule').textContent=state.patternB?'A/B 双面：被套正面 A、反面 B；床单 B；枕套正面 A、反面 B。':'';}
-async function uploadBack(file){if(state.busy)return toast('请等待当前生成完成');if(!file)return;if(!['image/png','image/jpeg','image/webp'].includes(file.type)||file.size>10*1024*1024)return toast('B 面请上传 10 MB 以内的 JPG、PNG 或 WEBP');const url=URL.createObjectURL(file);try{const img=new Image();img.src=url;await img.decode();if(img.naturalWidth>16000||img.naturalHeight>16000)throw Error('B 面图片边长超过限制');if(state.uploadB)URL.revokeObjectURL(state.uploadB.url);state.patternB=img;state.uploadB={file,url};$('uploadThumbB').src=url;$('uploadNameB').textContent=file.name;$('uploadNameB').title=file.name;$('uploadDimensionsB').textContent=img.naturalWidth+' × '+img.naturalHeight;$('uploadInfoB').hidden=false;$('uploadBtnB').querySelector('strong').textContent='更换 B 面花型';renderSelections();rememberLastPatterns();toast(state.upload||state.sampleChosen?'B 面已加载，请确认 A/B 面后开始生成':'B 面已加载，请继续上传 A 面花型')}catch(e){URL.revokeObjectURL(url);toast(e.message||'B 面图片无法读取')}}
+async function uploadBack(file){if(state.busy)return toast('请等待当前生成完成');if(!file)return;if(!['image/png','image/jpeg','image/webp'].includes(file.type)||file.size>32*1024*1024)return toast('B 面请上传 32 MB 以内的 JPG、PNG 或 WEBP');const url=URL.createObjectURL(file);try{const img=new Image();img.src=url;await img.decode();if(img.naturalWidth>16000||img.naturalHeight>16000||img.naturalWidth*img.naturalHeight>64e6)throw Error('B 面图片不能超过 16000 像素边长或 6400 万像素');if(state.uploadB)URL.revokeObjectURL(state.uploadB.url);state.patternB=img;state.uploadB={file,url};$('uploadThumbB').src=url;$('uploadNameB').textContent=file.name;$('uploadNameB').title=file.name;$('uploadDimensionsB').textContent=img.naturalWidth+' × '+img.naturalHeight;$('uploadInfoB').hidden=false;$('uploadBtnB').querySelector('strong').textContent='更换 B 面花型';renderSelections();rememberLastPatterns();toast(state.upload||state.sampleChosen?'B 面已加载，请确认 A/B 面后开始生成':'B 面已加载，请继续上传 A 面花型')}catch(e){URL.revokeObjectURL(url);toast(e.message||'B 面图片无法读取')}}
 $('uploadBtnB').onclick=()=>$('uploadB').click();$('uploadB').onchange=()=>uploadBack($('uploadB').files[0]);$('uploadBtnB').ondragover=e=>e.preventDefault();$('uploadBtnB').ondrop=e=>{e.preventDefault();uploadBack(e.dataTransfer.files[0])};$('removeUploadB').onclick=()=>{if(state.busy)return;if(state.uploadB)URL.revokeObjectURL(state.uploadB.url);state.uploadB=null;state.patternB=null;$('uploadB').value='';$('uploadInfoB').hidden=true;$('uploadBtnB').querySelector('strong').textContent='上传 B 面花型（选填）';renderSelections();rememberLastPatterns()};updatePatternRule();
 $('restoreLastPatterns').onclick=restoreLastPatterns;loadLastPatterns();
 

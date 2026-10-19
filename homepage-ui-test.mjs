@@ -23,11 +23,17 @@ try {
   await page.route('**/*',route=>{const url=route.request().url();return url.startsWith(base)||url.startsWith('data:')||url.startsWith('blob:')?route.continue():route.abort();});
   await page.goto(base,{waitUntil:'networkidle'});await page.locator('#heroTitle').waitFor();
   assert.equal(await page.locator('#workspace').count(),0);
-  const expectedTools=['/pattern-design',...['hd','extract','recolor','repeat','board','delivery','copy'].map(id=>'/tools?tool='+id),'/scenes'];
+  const expectedEntries=[
+    ['/pattern-design','花型设计'],['/tools?tool=hd','花型高清'],['/tools?tool=extract','花型提取'],
+    ['/tools?tool=recolor','花型配色'],['/tools?tool=repeat','四方连续'],['/tools?tool=board','灵感搭配'],
+    ['/tools?tool=delivery','上架适配'],['/tools?tool=copy','商品文案'],['/scenes','场景创建'],
+  ];
+  const expectedTools=expectedEntries.map(([href])=>href);
   assert.deepEqual(await page.locator('.utility-card').evaluateAll(elements=>elements.map(element=>element.getAttribute('href'))),expectedTools);
-  for(const href of expectedTools){
+  for(const [href,title] of expectedEntries){
     const card=page.locator('.utility-card[href="'+href+'"]');await card.scrollIntoViewIfNeeded();
-    assert.equal(await card.locator('.cover-demo').textContent(),'效果示意');assert.match(await card.locator('h2').textContent(),/^AI /);
+    assert.equal(await card.locator('.cover-demo').textContent(),'效果示意');
+    assert.equal(await card.locator('h2').evaluate(element=>[...element.childNodes].filter(node=>node.nodeType===Node.TEXT_NODE).map(node=>node.textContent).join('').trim()),title,'Tool title matches its entry: '+href);
     assert.equal(await card.evaluate(element=>{const box=element.getBoundingClientRect();return document.elementFromPoint(box.left+box.width/2,Math.max(box.top+50,box.top+box.height/3))?.closest('a')===element;}),true,'Effect art is an actual clickable link: '+href);
     await card.click({position:{x:Math.min(90,(await card.boundingBox()).width/2),y:90}});
     await page.waitForURL(url=>url.pathname===(href==='/scenes'?'/scenes':href==='/pattern-design'?'/pattern-design':'/tools'));
