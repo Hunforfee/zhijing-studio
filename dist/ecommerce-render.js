@@ -8,6 +8,7 @@ function block(ctx,text,x,y,w,h,size,color,weight=400){if(!text)return;let actua
 function arrow(ctx,x1,y1,x2,y2,color,size=8){ctx.save();ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();const angle=Math.atan2(y2-y1,x2-x1);for(const [x,y,a]of [[x1,y1,angle],[x2,y2,angle+Math.PI]]){ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+Math.cos(a-.45)*size,y+Math.sin(a-.45)*size);ctx.lineTo(x+Math.cos(a+.45)*size,y+Math.sin(a+.45)*size);ctx.closePath();ctx.fill();}ctx.restore();}
 export function artworkSize(design){const [rw,rh]=design.ratio.split(':').map(Number),edge=Number(design.edge);return {width:Math.round(edge*rw/Math.max(rw,rh)),height:Math.round(edge*rh/Math.max(rw,rh))};}
 export function renderCommerce(canvas,{tool,facts,images,design,variant,sizeCopy={},skuLabels={}}){
+  if(tool==='sku'){const source=images[variant?.imageIndex??0]?.image||images[0]?.image;canvas.width=source?.naturalWidth||source?.width||1;canvas.height=source?.naturalHeight||source?.height||1;if(source)canvas.getContext('2d').drawImage(source,0,0);return {width:canvas.width,height:canvas.height};}
   const {width:W,height:H}=artworkSize(design);canvas.width=W;canvas.height=H;const ctx=canvas.getContext('2d');ctx.fillStyle=design.background;ctx.fillRect(0,0,W,H);ctx.textBaseline='top';
   const M=W*.055,ink=design.ink,accent=design.accent,landscape=W>H*1.2;
   const source=images[variant?.imageIndex??0]?.image||images[0]?.image;
@@ -15,7 +16,7 @@ export function renderCommerce(canvas,{tool,facts,images,design,variant,sizeCopy
   block(ctx,brand,M,H-M*.66,W-M*2,M*.6,Math.max(13,W*.012),accent,500);
   if(facts.code)block(ctx,facts.code,W*.64,H-M*.66,W*.3,M*.6,Math.max(13,W*.012),accent);
   if(tool==='marketing'){
-    const headline=design.headline||facts.name,subline=design.subline,badge=design.badge||facts.campaign;
+    const headline=design.headline||facts.name||'把日常，铺成喜欢。',subline=design.subline,badge=design.badge||facts.campaign;
     if(design.layout==='split'){
       panel(ctx,M,H*.08,W*.53,H*.79,'#ffffff',W*.012);photo(ctx,source,M+W*.015,H*.1,W*.5,H*.75);
       block(ctx,headline,W*.64,H*.18,W*.3,H*.3,W*.058,ink,600);
@@ -37,18 +38,9 @@ export function renderCommerce(canvas,{tool,facts,images,design,variant,sizeCopy
       block(ctx,badge,M+W*.065,H*.846,W*.55,H*.055,W*.02,accent,500);
       if(facts.price)block(ctx,'¥ '+facts.price,W*.72,H*.843,W*.23,H*.07,W*.047,accent,600);
     }
-  }else if(tool==='sku'){
-    block(ctx,facts.name,M,H*.045,W-M*2,H*.06,Math.min(W*.033,H*.055),ink,500);
-    const x=M,y=H*.14,pw=landscape?W*.49:W-M*2,ph=landscape?H*.7:H*.48;
-    panel(ctx,x,y,pw,ph,'#fff',W*.012);photo(ctx,source,x+W*.015,y+H*.015,pw-W*.03,ph-H*.03);
-    const tx=landscape?W*.6:M,ty=landscape?H*.15:H*.65,tw=landscape?W*.34:W-M*2;
-    block(ctx,skuLabels[variant?.id]||variant?.name||'请填写规格名称',tx,ty,tw,H*.09,Math.min(W*.047,H*.07),ink,600);
-    const rows=specLines(variant,facts.category),rowH=landscape?H*.066:H*.035;
-    rows.forEach(([name,value],i)=>block(ctx,name+'  '+value,tx+(landscape?0:i%2*W*.46),ty+H*.11+(landscape?i:Math.floor(i/2))*rowH,landscape?tw:W*.43,rowH,Math.min(W*.019,H*.03),ink));
-    const price=variant?.price||facts.price;if(price)block(ctx,'¥ '+price,landscape?tx:W*.74,landscape?H*.82:H*.87,W*.22,H*.07,W*.04,accent,600);
   }else if(tool==='size'){
     block(ctx,sizeCopy.title||'尺寸怎么选',M,H*.045,W-M*2,H*.075,Math.min(W*.055,H*.075),ink,600);
-    block(ctx,sizeCopy.intro||facts.name+' · '+(variant?.name||'规格说明'),M,H*.13,W-M*2,H*.06,Math.min(W*.025,H*.035),ink);
+    block(ctx,sizeCopy.intro||[facts.name,variant?.name||'规格说明'].filter(Boolean).join(' · '),M,H*.13,W-M*2,H*.06,Math.min(W*.025,H*.035),ink);
     const dx=M,dy=H*.24,dw=landscape?W*.42:W*.59,dh=H*.32;
     ctx.strokeStyle=accent;ctx.lineWidth=Math.max(2,W*.003);round(ctx,dx+dw*.13,dy,dw*.76,dh*.86,W*.012);ctx.stroke();
     ctx.globalAlpha=.10;panel(ctx,dx+dw*.13,dy+dh*.25,dw*.76,dh*.61,accent,4);ctx.globalAlpha=1;

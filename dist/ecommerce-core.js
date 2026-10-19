@@ -1,6 +1,6 @@
 export const commerceTools=[
   {id:'marketing',name:'营销排版',action:'AI 策划营销方案',tag:'CAMPAIGN',description:'把已确认的商品图，做成可修改的营销物料。'},
-  {id:'sku',name:'SKU 规格图',action:'AI 整理 SKU 方案',tag:'PRODUCT VARIANTS',description:'一款一图，花色、尺寸和件数清楚对应。'},
+  {id:'sku',name:'SKU 图片处理',action:'AI 处理 SKU 图片',tag:'PRODUCT VARIANTS',description:'批量上传，按要求单张或批量修改，原图保留。'},
   {id:'size',name:'尺寸导购图',action:'AI 整理尺寸导购',tag:'SIZE GUIDE',description:'区分床宽、被套规格与床笠包高。'},
   {id:'audit',name:'商品一致性检查',action:'AI 核对商品资料',tag:'PRODUCT REVIEW',description:'对照真实资料，逐项确认图片与文字中的疑点。'}
 ];
@@ -12,6 +12,21 @@ export const emptyVariant=()=>({id:crypto.randomUUID(),name:'',price:'',imageInd
 export const defaultDesign=()=>({headline:'',subline:'',badge:'',layout:'editorial',background:'#f6f2e8',accent:'#285a45',ink:'#243b30',ratio:'3:4',edge:1600});
 export const defaultFacts=()=>({name:'',category:'四件套',brand:'',code:'',material:'',craft:'',features:'',campaign:'',price:'',platform:'通用',variants:[emptyVariant()],imageNotes:[]});
 export function textContrast(a,b){const light=color=>{const rgb=[1,3,5].map(i=>parseInt(color.slice(i,i+2),16)/255).map(n=>n<=.04045?n/12.92:((n+.055)/1.055)**2.4);return rgb.reduce((sum,n,i)=>sum+n*[.2126,.7152,.0722][i],0);};const x=light(a),y=light(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);}
+// Repair a valid AI palette locally. An unreadable shade must not discard paid content.
+export function readableCommercePalette(value){
+  const palette={};for(const key of ['background','accent','ink']){if(typeof value[key]!=='string'||!/^#[a-f\d]{6}$/i.test(value[key]))throw Error('配色格式无效');palette[key]=value[key].toUpperCase();}
+  let colorAdjusted=false;
+  for(const key of ['ink','accent']){
+    const original=palette[key];if(textContrast(original,palette.background)>=4.5)continue;
+    const target=textContrast('#000000',palette.background)>=textContrast('#FFFFFF',palette.background)?'#000000':'#FFFFFF';
+    const source=[1,3,5].map(i=>parseInt(original.slice(i,i+2),16)),end=target==='#000000'?0:255;
+    const mix=t=>'#'+source.map(n=>Math.round(n+(end-n)*t).toString(16).padStart(2,'0')).join('').toUpperCase();
+    const goal=Math.min(5,textContrast(target,palette.background));let low=0,high=1;
+    for(let i=0;i<24;i++){const mid=(low+high)/2;if(textContrast(mix(mid),palette.background)>=goal)high=mid;else low=mid;}
+    palette[key]=mix(high);colorAdjusted=true;
+  }
+  return {...palette,colorAdjusted};
+}
 export function specLines(variant,category){
   if(!variant)return [];
   const rows=[];const add=(name,value)=>{if(value)rows.push([name,value]);};

@@ -92,12 +92,6 @@
   document.getElementById('referenceScene')?.addEventListener('change', render);
   window.addEventListener('focus', () => { if (Date.now() - loadedAt > 5000) void requestScenes(); });
   window.addEventListener('storage', event => { if (event.key === 'zhijing-scenes-updated-v1') void requestScenes(); });
-  function addNavigation() {
-    const navigation = document.getElementById('workspaceNavLinks');
-    if (!navigation || navigation.querySelector('a[href="/scenes"]')) return !!navigation;
-    const link = document.createElement('a'); link.href = '/scenes'; link.title = link.ariaLabel = '场景创建'; link.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M3 21V9l9-6 9 6v12M8 21v-7h8v7M7 9h.01M17 9h.01"/><path d="M1 21h22"/></svg><span>场景</span>'; navigation.append(link); return true;
-  }
-  if (!addNavigation()) { const observer = new MutationObserver(() => { if (addNavigation()) observer.disconnect(); }); observer.observe(document.body, {childList:true, subtree:true}); }
   const entryReferenceRevision = referenceUploadRevision;
   let entryChanged = false;
   function manualSceneChoice() {

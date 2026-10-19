@@ -65,6 +65,7 @@ try {
   await page.locator('#menuToggle').click();await page.locator('#siteNav a[href="#toolbox"]').click();assert.equal(await page.locator('#siteNav').isVisible(),false);
   await page.setViewportSize({width:1440,height:1000});await page.locator('.header-cta').click();await page.locator('#freeCreationWorkspace').waitFor();
   assert.equal(new URL(page.url()).pathname,'/workspace');assert.equal(await page.locator('#ratio').inputValue(),'3:4');
+  assert.equal(await page.locator('.workspace-nav-links a[href="/ecommerce"],.workspace-nav-links a[href="/scenes"]').count(),0);assert.equal(await page.locator('.workspace-nav-links a[href^="#"]').count(),4);assert.equal(await page.locator('.workspace-nav-links a[href="/library"]').count(),1);
   for(const id of ['results','detailPageModule','videoDesignModule','freeCreationWorkspace'])await page.locator('#'+id).waitFor({state:'attached'});
   for(const target of ['detailPageModule','videoDesignModule','freeCreationWorkspace','results']) {
     console.log('Checking workspace entry: '+target);

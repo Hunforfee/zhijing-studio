@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {PNG} from 'pngjs';
-import {defaultFacts,emptyVariant,variantsCSV,importVariants,localCommerceChecks,reportCSV} from './dist/ecommerce-core.js';
+import {skuEditIntent,skuImageName} from './dist/sku-image-policy.js';
+import {defaultFacts,emptyVariant,variantsCSV,importVariants,localCommerceChecks,reportCSV,textContrast,readableCommercePalette} from './dist/ecommerce-core.js';
 import {normalizeTextileRequest,validateTextilePlan,createTextilePlanner} from './textile-ai-planner.mjs';
 const png=new PNG({width:3,height:3});png.data.fill(255);const image='data:image/png;base64,'+PNG.sync.write(png).toString('base64');
 const facts={...defaultFacts(),name:'春日四件套',material:'纯棉',craft:'宽边',price:'199',campaign:'春日上新',imageNotes:[{name:'商品.png',role:'商品主图'}]};Object.assign(facts.variants[0],{name:'花语',bedWidth:180,coverWidth:200,coverLength:230,sheetWidth:250,sheetLength:270,pillowWidth:48,pillowLength:74,pillowCount:2,pieces:4,imageIndex:0});
@@ -20,4 +21,32 @@ test('CSV round trips quoted names, preserves dimensions and neutralizes spreads
 test('local consistency checks flag explicit component count mismatch without inventing sizes',()=>{assert.deepEqual(localCommerceChecks(facts),[]);assert.match(localCommerceChecks({...facts,variants:[{...facts.variants[0],pieces:3}]}).join(''),/总件数/);});
 test('commerce reuses configured Sub2API Responses, sends references only on explicit plan and suppresses upstream secrets',async()=>{let calls=0,payload;const planner=createTextilePlanner({getConfig:()=>({provider:'sub2api',apiKey:'synthetic-ecommerce-key',baseUrl:'https://mock.invalid/v1',model:'image-model',recognitionModel:'vision-configured'}),fetchImpl:async(url,init)=>{calls++;assert.equal(url,'https://mock.invalid/v1/responses');payload=JSON.parse(init.body);return Response.json({output_text:JSON.stringify(marketing)});}});assert.equal(calls,0);const result=await planner.plan({kind:'commerce-marketing',facts,images:[image]});assert.equal(calls,1);assert.equal(payload.store,false);assert.equal(payload.model,'vision-configured');assert.match(payload.input[0].content.at(-1).text,/TEXTILE_KIND=commerce-marketing/);assert.equal(JSON.stringify(result).includes('synthetic-ecommerce-key'),false);});
 
-test('size guides require actual category measurements, AI palettes stay readable and audit cannot certify products',()=>{assert.throws(()=>normalizeTextileRequest({kind:'commerce-size',images:[image],facts:{...facts,category:'枕芯',variants:[{...emptyVariant(),name:'枕芯',coverWidth:200,coverLength:230,pieces:1}]}}),/真实尺寸/);assert.throws(()=>validateTextilePlan('commerce-sku',{...sku,ink:'#F5F4F2'},{facts,images:[image]}),/对比度/);assert.throws(()=>validateTextilePlan('commerce-audit',{...audit,summary:'全部合格，无需人工核对'},{facts,images:[image]}),/验收/);});
+test('size guides require actual category measurements, AI palettes stay readable and audit cannot certify products',()=>{assert.throws(()=>normalizeTextileRequest({kind:'commerce-size',images:[image],facts:{...facts,category:'枕芯',variants:[{...emptyVariant(),name:'枕芯',coverWidth:200,coverLength:230,pieces:1}]}}),/真实尺寸/);const readable=validateTextilePlan('commerce-sku',{...sku,ink:'#F5F4F2'},{facts,images:[image]});assert.equal(readable.colorAdjusted,true);assert.ok(textContrast(readable.ink,readable.background)>=4.5);assert.throws(()=>validateTextilePlan('commerce-audit',{...audit,summary:'全部合格，无需人工核对'},{facts,images:[image]}),/验收/);});
+
+test('AI palette corrections preserve background and factual content without extra provider requests',async()=>{
+ for(const background of ['#FFFFFF','#F6F2E8','#222222','#777777','#123456'])for(const ink of ['#FFFFFF','#F5F4F2','#888888','#222222']){
+  const before={background,ink,accent:ink},p=readableCommercePalette(before);assert.equal(p.background,background);assert.ok(textContrast(p.ink,p.background)>=4.5);assert.ok(textContrast(p.accent,p.background)>=4.5);if(textContrast(ink,background)>=4.5){assert.equal(p.ink,ink);assert.equal(p.colorAdjusted,false);}assert.deepEqual(readableCommercePalette(p),{...p,colorAdjusted:false});
+ }
+ assert.throws(()=>readableCommercePalette({...colors,ink:'url(bad)'}),/格式/);
+ let calls=0;const planner=createTextilePlanner({getConfig:()=>({provider:'sub2api',apiKey:'synthetic-only',baseUrl:'https://mock.invalid/v1',model:'image-model'}),fetchImpl:async()=>{calls++;return Response.json({output_text:JSON.stringify({...sku,ink:'#F5F4F2',accent:'#EEECE7'})});}});
+ const result=await planner.plan({kind:'commerce-sku',facts,images:[image],brief:'不要这么粗的边框'});assert.equal(calls,1);assert.equal(result.plan.colorAdjusted,true);assert.deepEqual(result.plan.items,sku.items);assert.equal(result.plan.background,sku.background);assert.ok(textContrast(result.plan.ink,result.plan.background)>=4.5);
+});
+
+test('SKU editing follows user instructions and source framing without imposing a specification card',()=>{
+ const edit=skuEditIntent('清理背景');assert.equal(edit.ratio,'source');assert.equal(edit.sourceVersion,'original');assert.equal(edit.mode,'custom');assert.equal(edit.lockPattern,true);assert.equal(edit.lockCraft,true);assert.equal(edit.region,null);assert.match(edit.prompt,/默认不添加边框/);assert.match(edit.prompt,/用户本次要求：清理背景/);
+ const decorated=skuEditIntent('添加细边框和花色名','version-id');assert.match(decorated.prompt,/只有用户明确要求时才添加/);assert.match(decorated.prompt,/用户本次要求：添加细边框和花色名/);assert.equal(decorated.sourceVersion,'version-id');assert.throws(()=>skuEditIntent(' '));assert.throws(()=>skuEditIntent('长'.repeat(2001)));assert.equal(skuImageName('../花:色.png',1,true),'02_.._花_色_已处理');
+});
+
+test('minimal ecommerce inputs allow image-only marketing and audit, but never fabricate facts',()=>{
+ const minimal={...defaultFacts(),name:'',category:'其他',variants:[],imageNotes:[{name:'原图.png',role:'商品主图'}]};
+ for(const kind of ['commerce-marketing','commerce-audit']){const request=normalizeTextileRequest({kind,facts:minimal,images:[image]});assert.equal(request.facts.name,'');assert.equal(request.facts.material,'');assert.equal(request.facts.price,'');assert.deepEqual(request.facts.variants,[]);}
+ const mood=structuredClone(marketing);for(const p of mood.proposals)Object.assign(p,{headline:'把日常，铺成喜欢',subline:'',badge:''});assert.equal(validateTextilePlan('commerce-marketing',mood,{facts:minimal,images:[image]}).proposals.length,3);
+ mood.proposals[0].headline='纯棉抗菌床品';assert.throws(()=>validateTextilePlan('commerce-marketing',mood,{facts:minimal,images:[image]}),{code:'TEXTILE_FACTS_UNVERIFIED'});
+ assert.throws(()=>normalizeTextileRequest({kind:'commerce-audit',facts:{...minimal,imageNotes:[]},images:[]}));
+});
+test('size guides accept only actual measurements without images, product name or variant naming',()=>{
+ const minimal={...defaultFacts(),name:'',category:'枕芯',imageNotes:[],variants:[{...emptyVariant(),pillowWidth:48,pillowLength:74}]};
+ const request=normalizeTextileRequest({kind:'commerce-size',facts:minimal,images:[]});assert.equal(request.images.length,0);assert.equal(request.facts.name,'');assert.equal(request.facts.variants[0].name,'规格 1');assert.equal(request.facts.variants[0].pillowWidth,48);assert.equal(request.facts.variants[0].coverWidth,null);
+ assert.throws(()=>normalizeTextileRequest({kind:'commerce-size',facts:{...minimal,variants:[{...minimal.variants[0],pillowLength:null}]},images:[]}),/长和宽/);
+ assert.throws(()=>normalizeTextileRequest({kind:'commerce-size',facts:{...minimal,variants:[]},images:[]}),/真实尺寸/);
+});
